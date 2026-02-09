@@ -1,0 +1,68 @@
+# AI Factory Newsletter Configuration
+
+newsletter:
+  title: "AI Factory Newsletter"
+  subtitle: "Weekly startup funding, events, and accelerators"
+  
+search:
+  # Date range for collection (days back from today)
+  default_days_back: 7
+  
+  # Geographic focus
+  primary_city: "NYC"
+  include_cities: ["New York", "NYC", "Brooklyn", "Manhattan"]
+  
+limits:
+  # Maximum items per section
+  funding_items: 10
+  event_items: 12
+  accelerator_items: 8
+  
+  # Minimum thresholds
+  min_funding_amount: 0  # in USD; 0 means include all including undisclosed
+  
+sources:
+  techcrunch:
+    enabled: true
+    base_url: "https://techcrunch.com"
+    search_paths:
+      - "/category/startups/"
+      - "/category/venture/"
+    
+  alleywatch:
+    enabled: true
+    base_url: "https://www.alleywatch.com"
+    search_paths:
+      - "/startup-daily/"
+      - "/funding-roundup/"
+    
+  garys_guide:
+    enabled: true
+    base_url: "https://www.garysguide.com"
+    listing_path: "/events"
+    
+  openvc:
+    enabled: true
+    base_url: "https://www.openvc.app"
+    directory_path: "/accelerators"
+
+categories:
+  # Keywords for automatic categorization
+  ai_ml: ["ai", "artificial intelligence", "machine learning", "ml", "llm", "agents", "genai", "generative"]
+  fintech: ["fintech", "financial", "banking", "payments", "crypto", "blockchain"]
+  health: ["health", "medical", "biotech", "healthcare", "pharma", "wellness"]
+  edtech: ["education", "edtech", "learning", "university", "teaching"]
+  cybersecurity: ["security", "cybersecurity", "cyber", "infosec", "encryption"]
+  infrastructure: ["infrastructure", "cloud", "devops", "platform", "saas", "iaas"]
+  ecommerce: ["ecommerce", "retail", "marketplace", "shopping", "commerce"]
+  enterprise: ["enterprise", "b2b", "business software", "productivity", "workflow"]
+  climate: ["climate", "sustainability", "clean energy", "carbon", "green tech"]
+  
+output:
+  formats: ["md", "html"]
+  output_dir: "output"
+  
+storage:
+  data_dir: "data"
+  raw_dir: "data/raw"
+  use_json: true  # Use JSON files for MVP (vs SQLite)
