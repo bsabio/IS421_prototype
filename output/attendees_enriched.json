@@ -1,0 +1,399 @@
+{
+  "summary": {
+    "total_ingested": 17,
+    "total_after_dedup": 17,
+    "duplicates_removed": 0,
+    "pct_with_any_social": 100.0,
+    "pct_with_linkedin": 100.0,
+    "pct_with_twitter": 82.4,
+    "pct_with_github": 23.5,
+    "pct_with_website": 47.1
+  },
+  "attendees": [
+    {
+      "full_name": "Jessica Chen",
+      "company": "ClimateOS",
+      "role": "Co-Founder & CEO",
+      "event": "Climate Tech Pitch Night",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/jessicachen",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/jessicachen",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://climateos.com",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Marcus Rivera",
+      "company": "BlockFin",
+      "role": "CTO",
+      "event": "Brooklyn FinTech Happy Hour",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/marcusrivera",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/marcusrivera",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Priya Patel",
+      "company": "NeuralEdge AI",
+      "role": "Founder",
+      "event": "AI Builders Summit 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/priyapatel",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/priyapatel",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "github",
+          "url": "https://github.com/priyapatel",
+          "provenance": "csv.github_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://neuraledge.ai",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.github_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "David Kim",
+      "company": "TechStars NYC",
+      "role": "Managing Director",
+      "event": "TechStars NYC Demo Day - Winter 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/davidkim",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/davidkim",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Samantha Brooks",
+      "company": "First Round Capital",
+      "role": "Partner",
+      "event": "First Round Capital Portfolio Meetup",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/samanthabrooks",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/sambrooks",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Aisha Williams",
+      "company": "GreenGrid",
+      "role": "Founder",
+      "event": "Climate Tech Pitch Night",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/aishawilliams",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/aishawilliams",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://greengrid.io",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Tom Nguyen",
+      "company": "PayStream",
+      "role": "Co-Founder",
+      "event": "Brooklyn FinTech Happy Hour",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/tomnguyen",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/tomnguyen",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Rachel Goldstein",
+      "company": "Women Who Code NYC",
+      "role": "Chapter Lead",
+      "event": "Women in Tech Brunch",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/rachelgoldstein",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/rachelgoldstein",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Carlos Mendez",
+      "company": "AgentStack",
+      "role": "CEO",
+      "event": "AI Builders Summit 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/carlosmendez",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "github",
+          "url": "https://github.com/carlosmendez",
+          "provenance": "csv.github_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://agentstack.dev",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.github_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Emily Zhang",
+      "company": "DataPipe",
+      "role": "Co-Founder",
+      "event": "NY Tech Meetup - February 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/emilyzhang",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/emilyzhang",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://datapipe.io",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Jason Park",
+      "company": "Nomad Robotics",
+      "role": "CTO",
+      "event": "TechStars NYC Demo Day - Winter 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/jasonpark",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/jasonpark",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "github",
+          "url": "https://github.com/jasonpark",
+          "provenance": "csv.github_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.github_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Sofia Martinez",
+      "company": "UrbanAI",
+      "role": "Founder & CEO",
+      "event": "AI Builders Summit 2026",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/sofiamartinez",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/sofiamartinez",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://urbanai.co",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Michael O'Brien",
+      "company": "EcoVolt Energy",
+      "role": "VP Engineering",
+      "event": "Climate Tech Pitch Night",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/michaelobrien",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://ecovolt.energy",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Nina Kapoor",
+      "company": "Ada Ventures",
+      "role": "Principal",
+      "event": "Women in Tech Brunch",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/ninakapoor",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/ninakapoor",
+          "provenance": "csv.twitter_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Alex Torres",
+      "company": "FairLend",
+      "role": "CEO",
+      "event": "Brooklyn FinTech Happy Hour",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/alextorres",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/alextorres",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "website",
+          "url": "https://fairlend.com",
+          "provenance": "csv.website_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.website_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Lauren Davis",
+      "company": "NYU Tandon",
+      "role": "Student Founder",
+      "event": "Student Founder Office Hours",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/laurendavis",
+          "provenance": "csv.linkedin_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url",
+      "source_type": "csv"
+    },
+    {
+      "full_name": "Ryan Mitchell",
+      "company": "Columbia Startup Lab",
+      "role": "Student Founder",
+      "event": "Student Founder Office Hours",
+      "social_links": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/ryanmitchell",
+          "provenance": "csv.linkedin_url"
+        },
+        {
+          "platform": "twitter",
+          "url": "https://twitter.com/ryanmitchell",
+          "provenance": "csv.twitter_url"
+        },
+        {
+          "platform": "github",
+          "url": "https://github.com/ryanmitchell",
+          "provenance": "csv.github_url"
+        }
+      ],
+      "provenance_summary": "csv.linkedin_url, csv.twitter_url, csv.github_url",
+      "source_type": "csv"
+    }
+  ]
+}

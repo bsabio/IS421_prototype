@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Factory Newsletter - Knowledge Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fff;
+            padding: 40px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .subtitle {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border: 2px solid #000;
+        }
+        .legend {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f8f8;
+            border-left: 4px solid #e00;
+        }
+        .legend h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #000;
+        }
+        .color-startup { background: #e00; }
+        .color-investor { background: #000; }
+        .color-category { background: #f0f0f0; }
+        .color-location { background: #fff; border-color: #e00; }
+        .color-event { background: #fff; }
+        .color-accelerator { background: #666; }
+        .legend-label {
+            font-weight: 700;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Factory Newsletter</h1>
+    <div class="subtitle">Knowledge Graph Visualization — February 2026</div>
+    
+    <div class="mermaid">
+graph TB
+    %% Startups (Funding)
+    CampusAI[CampusAI<br/>$2.5M Seed]
+    FinanceFlow[FinanceFlow<br/>$8M Series A]
+    ClimateOS[ClimateOS<br/>$20M Series A]
+    DataPipe[DataPipe<br/>$18M Series B]
+    HealthOS[HealthOS<br/>$12M Series A]
+    
+    %% Investors
+    UV[University Ventures]
+    ReachCap[Reach Capital]
+    FintechVC[Fintech Ventures NYC]
+    CommerceCapital[Commerce Capital]
+    ClimateVC[Climate Tech VC]
+    FirstRound[First Round Capital]
+    
+    %% Categories
+    AIML[AI/ML Category]
+    EdTech[EdTech Category]
+    FinTech[FinTech Category]
+    Climate[Climate Tech Category]
+    Infrastructure[Infrastructure Category]
+    HealthTech[HealthTech Category]
+    
+    %% Locations
+    NYC[New York City]
+    Brooklyn[Brooklyn]
+    Manhattan[Manhattan]
+    
+    %% Events
+    NYTechMeetup[NY Tech Meetup]
+    AIBuilders[AI Builders Summit]
+    FinTechHH[Brooklyn FinTech Happy Hour]
+    
+    %% Accelerators
+    TechStars[TechStars NYC]
+    ERA[ERA Accelerator]
+    ColumbiaLab[Columbia Startup Lab]
+    
+    %% Relationships - Funding
+    CampusAI -->|Led by| UV
+    CampusAI -->|Backed by| ReachCap
+    CampusAI -->|Located in| NYC
+    CampusAI -->|Category| AIML
+    CampusAI -->|Category| EdTech
+    
+    FinanceFlow -->|Led by| FintechVC
+    FinanceFlow -->|Backed by| CommerceCapital
+    FinanceFlow -->|Located in| Brooklyn
+    FinanceFlow -->|Category| FinTech
+    FinanceFlow -->|Category| AIML
+    
+    ClimateOS -->|Led by| ClimateVC
+    ClimateOS -->|Located in| NYC
+    ClimateOS -->|Category| Climate
+    ClimateOS -->|Category| AIML
+    
+    DataPipe -->|Led by| FirstRound
+    DataPipe -->|Located in| NYC
+    DataPipe -->|Category| Infrastructure
+    
+    HealthOS -->|Located in| Brooklyn
+    HealthOS -->|Category| HealthTech
+    HealthOS -->|Category| AIML
+    
+    %% Event Relationships
+    NYTechMeetup -->|Hosted in| Manhattan
+    NYTechMeetup -->|For| AIML
+    NYTechMeetup -->|For| EdTech
+    
+    AIBuilders -->|Hosted in| Manhattan
+    AIBuilders -->|Focus| AIML
+    
+    FinTechHH -->|Hosted in| Brooklyn
+    FinTechHH -->|Focus| FinTech
+    
+    %% Accelerator Relationships
+    TechStars -->|Located in| NYC
+    TechStars -->|Focus| AIML
+    TechStars -->|Focus| Infrastructure
+    
+    ERA -->|Located in| NYC
+    ERA -->|Focus| FinTech
+    
+    ColumbiaLab -->|Located in| NYC
+    ColumbiaLab -->|Focus| EdTech
+    ColumbiaLab -->|Focus| AIML
+    
+    %% Cross-connections
+    AIML -.->|Hot Sector| AIBuilders
+    FinTech -.->|Networking| FinTechHH
+    EdTech -.->|Pipeline| ColumbiaLab
+    
+    %% Styling
+    classDef startup fill:#e00,stroke:#000,stroke-width:2px,color:#fff
+    classDef investor fill:#000,stroke:#000,stroke-width:2px,color:#fff
+    classDef category fill:#f0f0f0,stroke:#000,stroke-width:2px,color:#000
+    classDef location fill:#fff,stroke:#e00,stroke-width:2px,color:#000
+    classDef event fill:#fff,stroke:#000,stroke-width:1px,color:#000
+    classDef accelerator fill:#666,stroke:#000,stroke-width:2px,color:#fff
+    
+    class CampusAI,FinanceFlow,ClimateOS,DataPipe,HealthOS startup
+    class UV,ReachCap,FintechVC,CommerceCapital,ClimateVC,FirstRound investor
+    class AIML,EdTech,FinTech,Climate,Infrastructure,HealthTech category
+    class NYC,Brooklyn,Manhattan location
+    class NYTechMeetup,AIBuilders,FinTechHH event
+    class TechStars,ERA,ColumbiaLab accelerator
+    </div>
+
+    <div class="legend">
+        <h2>Legend</h2>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <div class="legend-color color-startup"></div>
+                <span class="legend-label">Startups</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-investor"></div>
+                <span class="legend-label">Investors</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-category"></div>
+                <span class="legend-label">Categories</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-location"></div>
+                <span class="legend-label">Locations</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-event"></div>
+                <span class="legend-label">Events</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-accelerator"></div>
+                <span class="legend-label">Accelerators</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                fontSize: '16px',
+                fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif'
+            }
+        });
+    </script>
+</body>
+</html>

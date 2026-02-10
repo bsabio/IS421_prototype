@@ -1,0 +1,18 @@
+full_name,company,role,event,linkedin,twitter,github,website,provenance
+Jessica Chen,ClimateOS,Co-Founder & CEO,Climate Tech Pitch Night,https://www.linkedin.com/in/jessicachen,https://twitter.com/jessicachen,,https://climateos.com,"csv.linkedin_url, csv.twitter_url, csv.website_url"
+Marcus Rivera,BlockFin,CTO,Brooklyn FinTech Happy Hour,https://www.linkedin.com/in/marcusrivera,https://twitter.com/marcusrivera,,,"csv.linkedin_url, csv.twitter_url"
+Priya Patel,NeuralEdge AI,Founder,AI Builders Summit 2026,https://www.linkedin.com/in/priyapatel,https://twitter.com/priyapatel,https://github.com/priyapatel,https://neuraledge.ai,"csv.linkedin_url, csv.twitter_url, csv.github_url, csv.website_url"
+David Kim,TechStars NYC,Managing Director,TechStars NYC Demo Day - Winter 2026,https://www.linkedin.com/in/davidkim,https://twitter.com/davidkim,,,"csv.linkedin_url, csv.twitter_url"
+Samantha Brooks,First Round Capital,Partner,First Round Capital Portfolio Meetup,https://www.linkedin.com/in/samanthabrooks,https://twitter.com/sambrooks,,,"csv.linkedin_url, csv.twitter_url"
+Aisha Williams,GreenGrid,Founder,Climate Tech Pitch Night,https://www.linkedin.com/in/aishawilliams,https://twitter.com/aishawilliams,,https://greengrid.io,"csv.linkedin_url, csv.twitter_url, csv.website_url"
+Tom Nguyen,PayStream,Co-Founder,Brooklyn FinTech Happy Hour,https://www.linkedin.com/in/tomnguyen,https://twitter.com/tomnguyen,,,"csv.linkedin_url, csv.twitter_url"
+Rachel Goldstein,Women Who Code NYC,Chapter Lead,Women in Tech Brunch,https://www.linkedin.com/in/rachelgoldstein,https://twitter.com/rachelgoldstein,,,"csv.linkedin_url, csv.twitter_url"
+Carlos Mendez,AgentStack,CEO,AI Builders Summit 2026,https://www.linkedin.com/in/carlosmendez,,https://github.com/carlosmendez,https://agentstack.dev,"csv.linkedin_url, csv.github_url, csv.website_url"
+Emily Zhang,DataPipe,Co-Founder,NY Tech Meetup - February 2026,https://www.linkedin.com/in/emilyzhang,https://twitter.com/emilyzhang,,https://datapipe.io,"csv.linkedin_url, csv.twitter_url, csv.website_url"
+Jason Park,Nomad Robotics,CTO,TechStars NYC Demo Day - Winter 2026,https://www.linkedin.com/in/jasonpark,https://twitter.com/jasonpark,https://github.com/jasonpark,,"csv.linkedin_url, csv.twitter_url, csv.github_url"
+Sofia Martinez,UrbanAI,Founder & CEO,AI Builders Summit 2026,https://www.linkedin.com/in/sofiamartinez,https://twitter.com/sofiamartinez,,https://urbanai.co,"csv.linkedin_url, csv.twitter_url, csv.website_url"
+Michael O'Brien,EcoVolt Energy,VP Engineering,Climate Tech Pitch Night,https://www.linkedin.com/in/michaelobrien,,,https://ecovolt.energy,"csv.linkedin_url, csv.website_url"
+Nina Kapoor,Ada Ventures,Principal,Women in Tech Brunch,https://www.linkedin.com/in/ninakapoor,https://twitter.com/ninakapoor,,,"csv.linkedin_url, csv.twitter_url"
+Alex Torres,FairLend,CEO,Brooklyn FinTech Happy Hour,https://www.linkedin.com/in/alextorres,https://twitter.com/alextorres,,https://fairlend.com,"csv.linkedin_url, csv.twitter_url, csv.website_url"
+Lauren Davis,NYU Tandon,Student Founder,Student Founder Office Hours,https://www.linkedin.com/in/laurendavis,,,,csv.linkedin_url
+Ryan Mitchell,Columbia Startup Lab,Student Founder,Student Founder Office Hours,https://www.linkedin.com/in/ryanmitchell,https://twitter.com/ryanmitchell,https://github.com/ryanmitchell,,"csv.linkedin_url, csv.twitter_url, csv.github_url"
