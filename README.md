@@ -29,8 +29,10 @@ newsroom/
 ├── dedupe.py        # Merge duplicates across sources
 ├── rank.py          # Rank by amount, round type, credibility
 ├── render.py        # Generate newsletter (Markdown/HTML)
+├── editorial.py     # Editorial layer: StoryCard mapping, headlines, ledes
+├── web_template.py  # Newsletter HTML/CSS renderer (journalist layout)
 ├── sources.py       # Source-specific collectors
-├── templates.py     # Deterministic templates
+├── templates.py     # Markdown templates
 ├── models.py        # Data models (FundingItem, EventItem, etc.)
 ├── schema.py        # Canonical JSON types (Company, Person, Event, etc.)
 ├── json_builder.py  # Mapper, normalizer, validator, JSON writer
@@ -177,14 +179,18 @@ python3 -m newsroom.collect --source mock
 # Rank the items by importance
 python3 -m newsroom.rank
 
-# Generate the newsletter
-python3 -m newsroom.render --format md
+# Generate the newsletter (HTML with journalist layout)
+python3 -m newsroom.render --format html
 
-# View the result
-cat output/newsletter.md
+# Serve and view in browser
+python3 serve.py
 ```
 
-That's it! The mock data is already in normalized format, so you skip collection/normalization steps.
+That's it! Open `http://localhost:8000/newsletter.html` to see the full newsletter.
+
+The HTML output features a masthead, editor's note, lead story hero, table of
+contents, "Why It Matters" callouts, key-number chips, and a full bibliography.
+It is responsive (mobile + print-friendly).
 
 ### 3. Customize Content
 

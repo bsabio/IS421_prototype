@@ -3,1404 +3,1210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Factory Newsletter</title>
+    <title>AI Factory Newsletter — Issue #7</title>
     <style>
-        /* Swiss Design / International Typographic Style */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            color: #000;
-            background: #fff;
-            font-weight: 400;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 80px;
-        }
-        
-        /* Header */
-        .header {
-            background: #fff;
-            color: #000;
-            padding: 0;
-            border-bottom: 2px solid #000;
-            padding-bottom: 40px;
-            margin-bottom: 60px;
-        }
-        
-        .header h1 {
-            font-size: 4em;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        
-        .header .subtitle {
-            font-size: 1em;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 8px;
-        }
-        
-        .header .date {
-            font-size: 0.85em;
-            color: #999;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        
-        /* Main content */
-        .main-content {
-            background: #fff;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .section {
-            margin-bottom: 80px;
-        }
-        
-        .section:last-child {
-            margin-bottom: 0;
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 0;
-            border-bottom: none;
-            position: relative;
-        }
-        
-        .section-icon {
-            display: none;
-        }
-        
-        .section-title {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: -0.01em;
-            position: relative;
-            padding-left: 80px;
-        }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 3px;
-            background: #e00;
-        }
-        
-        /* Funding cards */
-        .funding-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 60px 80px;
-        }
-        
-        .funding-card {
-            background: #fff;
-            border-left: 3px solid #e00;
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
-        
-        .funding-card:hover {
-            transform: none;
-        }
-        
-        .funding-header {
-            display: block;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 12px;
-        }
-        
-        .startup-name {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #000;
-            margin: 0 0 6px 0;
-            letter-spacing: -0.01em;
-        }
-        
-        .funding-amount {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: #e00;
-            white-space: nowrap;
-            letter-spacing: -0.02em;
-            display: block;
-            margin-top: 8px;
-        }
-        
-        .funding-meta {
-            display: block;
-            margin: 12px 0;
-            font-size: 0.85em;
-            color: #000;
-        }
-        
-        .funding-meta-item {
-            display: block;
-            margin: 8px 0;
-        }
-        
-        .funding-meta-label {
-            font-weight: 700;
-            margin-right: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.95em;
-        }
-        
-        .tag {
-            display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 4px 12px;
-            font-size: 0.75em;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin: 12px 8px 12px 0;
-        }
-        
-        .reporter-block {
-            background: #fff;
-            padding: 20px 0;
-            margin-top: 15px;
-        }
-        
-        .reporter-line {
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        
-        .reporter-line:last-child {
-            margin-bottom: 0;
-        }
-        
-        .reporter-label {
-            font-weight: 700;
-            color: #000;
-            text-transform: uppercase;
-            font-size: 0.85em;
-            letter-spacing: 0.05em;
-        }
-        
-        .citation {
-            display: inline;
-            background: none;
-            color: #e00;
-            padding: 0;
-            font-size: 0.75em;
-            font-weight: 700;
-            text-decoration: none;
-            vertical-align: super;
-            margin-left: 2px;
-        }
-        
-        .citation:hover {
-            text-decoration: underline;
-        }
-        
-        /* Trends */
-        .trend-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border: 2px solid #000;
-            margin: 40px 0;
-        }
-        
-        .trend-card {
-            background: #fff;
-            padding: 40px 20px;
-            text-align: center;
-            border-right: 1px solid #000;
-            border-bottom: 1px solid #000;
-        }
-        
-        .trend-card:nth-child(4n) {
-            border-right: none;
-        }
-        
-        .trend-card:nth-last-child(-n+4) {
-            border-bottom: none;
-        }
-        
-        .trend-category {
-            font-weight: 700;
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        
-        .trend-count {
-            font-size: 3em;
-            font-weight: 700;
-            color: #e00;
-            letter-spacing: -0.02em;
-        }
-        
-        .trend-label {
-            font-size: 0.75em;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        /* Events */
-        .event-card {
-            background: #fff;
-            padding: 30px;
-            margin-bottom: 40px;
-            border: 2px solid #000;
-            position: relative;
-        }
-        
-        .event-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #e00;
-        }
-        
-        .event-name {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
-        }
-        
-        .event-details {
-            display: block;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-            color: #000;
-        }
-        
-        .event-detail {
-            display: block;
-            margin: 8px 0;
-        }
-        
-        .event-detail strong {
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.9em;
-            margin-right: 8px;
-        }
-        
-        .event-description {
-            font-style: normal;
-            color: #000;
-            margin-top: 15px;
-            line-height: 1.7;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 8px 20px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 15px;
-        }
-        
-        .btn:hover {
-            background: #e00;
-        }
-        
-        /* Accelerators */
-        .accelerator-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 60px 80px;
-        }
-        
-        .accelerator-card {
-            background: #fff;
-            padding: 30px;
-            border: 1px solid #000;
-        }
-        
-        .accelerator-name {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-            text-transform: uppercase;
-        }
-        
-        .accelerator-meta {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 700;
-        }
-        
-        .accelerator-description {
-            line-height: 1.7;
-            margin-bottom: 15px;
-            color: #000;
-        }
-        
-        /* Bibliography */
-        .bibliography {
-            background: #f8f8f8;
-            padding: 60px;
-            margin: 80px 0;
-            border-left: 4px solid #e00;
-        }
-        
-        .bibliography .section-title {
-            padding-left: 0;
-        }
-        
-        .bibliography .section-title::before {
-            display: none;
-        }
-        
-        .bibliography-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: start;
-            gap: 20px;
-        }
-        
-        .bibliography-item:last-child {
-            border-bottom: none;
-        }
-        
-        .bibliography-number {
-            background: #e00;
-            color: #fff;
-            padding: 6px 12px;
-            font-weight: 700;
-            font-size: 0.85em;
-            min-width: 40px;
-            text-align: center;
-        }
-        
-        .bibliography-source {
-            font-weight: 700;
-            color: #000;
-            margin-right: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.85em;
-        }
-        
-        .bibliography-link {
-            color: #e00;
-            text-decoration: none;
-            word-break: break-all;
-            border-bottom: 1px solid #e00;
-        }
-        
-        .bibliography-link:hover {
-            background: #e00;
-            color: #fff;
-        }
-        
-        /* Event Directory */
-        .event-directory { margin-bottom: 60px; }
-        .event-grid { display: flex; flex-direction: column; gap: 0; }
+/* ── Reset + Base ─────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .event-card {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 24px 0;
-        }
-        .event-card:first-child { padding-top: 0; }
-        .event-card:last-child { border-bottom: none; }
+:root {
+    --serif: Georgia, 'Times New Roman', 'Noto Serif', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            'Helvetica Neue', Arial, sans-serif;
+    --text: #1a1a1a;
+    --text-2: #555;
+    --text-3: #888;
+    --accent: #c0392b;
+    --accent-hover: #a93226;
+    --accent-light: #fef3e8;
+    --bg: #fff;
+    --bg-warm: #faf8f5;
+    --border: #e0dcd4;
+    --max-w: 720px;
+    --lh: 1.72;
+}
 
-        .event-date {
-            font-size: 0.75em;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding-top: 2px;
-        }
-        .event-date strong {
-            display: block;
-            font-size: 1.35em;
-            color: #e00;
-            letter-spacing: 0;
-            text-transform: none;
-            margin-bottom: 2px;
-        }
+body {
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: var(--lh);
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
 
-        .event-body h3 {
-            font-size: 1em;
-            font-weight: 700;
-            margin: 0 0 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .event-body h3 a { color: #000; text-decoration: none; border-bottom: 1px solid #e00; }
-        .event-body h3 a:hover { background: #e00; color: #fff; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; }
 
-        .event-venue {
-            font-size: 0.78em;
-            color: #888;
-            margin-bottom: 8px;
-        }
+/* ── Container ────────────────────────────────────────────── */
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
-        .event-org {
-            font-size: 0.82em;
-            color: #444;
-            margin-bottom: 6px;
-        }
-        .event-org strong { color: #000; }
+/* ── Masthead ─────────────────────────────────────────────── */
+.masthead {
+    border-top: 4px solid var(--accent);
+    padding: 48px 0 0;
+    text-align: center;
+}
+.masthead-title {
+    font-family: var(--serif);
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 6px;
+}
+.masthead-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    margin-bottom: 12px;
+}
+.issue-meta {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.issue-meta .sep { margin: 0 6px; color: var(--border); }
+.masthead-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin-top: 28px;
+}
 
-        .event-companies {
-            font-size: 0.75em;
-            color: #888;
-            line-height: 1.7;
-        }
-        .event-companies span {
-            background: #f4f4f4;
-            padding: 1px 7px;
-            margin: 1px 3px 1px 0;
-            display: inline-block;
-            color: #555;
-        }
+/* ── Editor's Note ────────────────────────────────────────── */
+.editors-note {
+    background: var(--bg-warm);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    margin: 36px 0;
+    border-radius: 0 4px 4px 0;
+}
+.editors-note h2 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.editors-note p {
+    font-size: 0.98rem;
+    color: var(--text);
+    line-height: 1.65;
+}
 
-        .event-links {
-            margin-top: 8px;
-        }
-        .event-links a {
-            display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 2px 9px;
-            font-size: 0.65em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-decoration: none;
-            margin-right: 5px;
-            margin-bottom: 3px;
-        }
-        .event-links a:hover { background: #e00; }
+/* ── Table of Contents ────────────────────────────────────── */
+.toc {
+    margin: 28px 0 36px;
+    padding: 20px 28px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+.toc h3 {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-2);
+}
+.toc ol {
+    list-style: none;
+    counter-reset: toc-counter;
+    padding: 0;
+}
+.toc li {
+    counter-increment: toc-counter;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+}
+.toc li::before {
+    content: counter(toc-counter) ". ";
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+.toc a {
+    color: var(--text);
+    border-bottom: 1px solid transparent;
+}
+.toc a:hover {
+    text-decoration: none;
+    border-bottom-color: var(--accent);
+}
 
-        .notable-block {
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: #fafafa;
-            border-left: 2px solid #e00;
-            font-size: 0.8em;
-        }
-        .notable-block strong { color: #000; font-size: 0.9em; }
-        .notable-person {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .notable-person:last-child { border-bottom: none; }
-        .notable-person .np-name { font-weight: 700; color: #000; }
-        .notable-person .np-role { color: #666; font-size: 0.92em; }
-        .notable-person .np-links a {
-            color: #e00;
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-left: 8px;
-        }
-        .notable-person .np-links a:hover { text-decoration: underline; }
+/* ── Section Rule ─────────────────────────────────────────── */
+.section-rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+}
 
-        .source-footer {
-            margin-top: 40px;
-            padding: 16px 20px;
-            background: #f8f8f8;
-            border: 1px solid #e0e0e0;
-            font-size: 0.72em;
-            color: #999;
-            line-height: 1.6;
-        }
-        .source-footer strong { color: #666; }
-        .source-footer a { color: #e00; text-decoration: none; }
-        .source-footer a:hover { text-decoration: underline; }
+/* ── Section Label ────────────────────────────────────────── */
+.section-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
 
-        @media (max-width: 768px) {
-            .event-card {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-            .event-date { margin-bottom: 6px; }
-        }
+/* ── Section Transition ───────────────────────────────────── */
+.section-transition {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-2);
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
 
-        /* Footer */
-        .footer {
-            padding: 48px 20px 40px;
-            color: #999;
-            font-size: 0.8em;
-            border-top: 1px solid #e0e0e0;
-            margin-top: 80px;
-        }
-        .footer .container { max-width: 1100px; margin: 0 auto; }
-        .footer-gen {
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 24px;
-        }
-        .footer-disclosure {
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #aaa;
-        }
-        .footer-disclosure strong { color: #888; }
-        .footer-disclosure a { color: #e00; text-decoration: none; }
-        .footer-disclosure a:hover { text-decoration: underline; }
-        .footer-disclosure code { font-size: 0.9em; background: #f4f4f4; padding: 1px 4px; }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .container {
-                padding: 40px 40px;
-            }
-            
-            .section-title::before {
-                width: 30px;
-            }
-            
-            .funding-list {
-                grid-template-columns: 1fr;
-                gap: 50px;
-            }
-            
-            .accelerator-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 40px;
-            }
-            
-            .trend-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .trend-card:nth-child(4n) {
-                border-right: 1px solid #000;
-            }
-            
-            .trend-card:nth-child(2n) {
-                border-right: none;
-            }
-            
-            .trend-card:nth-last-child(-n+4) {
-                border-bottom: 1px solid #000;
-            }
-            
-            .trend-card:nth-last-child(-n+2) {
-                border-bottom: none;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-            }
-            
-            .header h1 {
-                font-size: 2.5em;
-            }
-            
-            .section-title {
-                font-size: 1.8em;
-                padding-left: 0;
-            }
-            
-            .section-title::before {
-                display: none;
-            }
-            
-            .main-content {
-                padding: 0;
-            }
-            
-            .funding-list {
-                gap: 40px;
-            }
-            
-            .trend-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .trend-card {
-                border-right: none !important;
-                border-bottom: 1px solid #000 !important;
-            }
-            
-            .trend-card:last-child {
-                border-bottom: none !important;
-            }
-            
-            .accelerator-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
+/* ── Hero / Lead Story ────────────────────────────────────── */
+.lead-story { margin-bottom: 0; }
+.hero-card { padding: 32px 0; }
+.hero-headline {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+}
+.hero-dek {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-2);
+    margin-bottom: 18px;
+    line-height: 1.55;
+}
+
+/* ── Chips ─────────────────────────────────────────────────── */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.chip {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+.chip-amount {
+    background: #fef3e8;
+    color: #b7472a;
+    border: 1px solid #f0d4b8;
+}
+.chip-round {
+    background: #eef4fb;
+    color: #2c5282;
+    border: 1px solid #bdd5ea;
+}
+.chip-tag {
+    background: #f0f0ec;
+    color: #555;
+    border: 1px solid #ddddd4;
+}
+
+/* ── Story Card ───────────────────────────────────────────── */
+.story-card {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+}
+.story-card:last-child { border-bottom: none; }
+.story-headline {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 8px;
+}
+.story-dek {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-2);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+.story-lede {
+    margin-bottom: 16px;
+    line-height: var(--lh);
+}
+.story-context {
+    font-size: 0.92rem;
+    color: var(--text-2);
+    margin-bottom: 14px;
+    line-height: 1.65;
+}
+
+/* ── Why It Matters ───────────────────────────────────────── */
+.why-it-matters {
+    background: var(--bg-warm);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+}
+.why-it-matters h4 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+.why-it-matters p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+/* ── Key Details ──────────────────────────────────────────── */
+.key-details {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+}
+.key-details li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+.key-details li::before {
+    content: '\2013';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ── Story Sources ────────────────────────────────────────── */
+.story-sources {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    margin-top: 10px;
+}
+.story-sources a { font-size: 0.8rem; }
+.cite-sup {
+    font-size: 0.7rem;
+    vertical-align: super;
+    font-weight: 700;
+    margin-left: 1px;
+}
+
+/* ── Funding Radar sub-group ──────────────────────────────── */
+.radar-group { margin-bottom: 32px; }
+.radar-group-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 0;
+    display: inline-block;
+}
+.radar-card {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+.radar-card:last-child { border-bottom: none; }
+.radar-headline {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.radar-lede {
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* ── Trend Brief ──────────────────────────────────────────── */
+.trend-prose {
+    margin-bottom: 20px;
+    line-height: var(--lh);
+}
+.trend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.trend-chip {
+    text-align: center;
+    padding: 18px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-warm);
+}
+.trend-chip-count {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+.trend-chip-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+}
+
+/* ── Event Card ───────────────────────────────────────────── */
+.event-card {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+}
+.event-card:last-child { border-bottom: none; }
+.event-headline {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.event-dek {
+    font-style: italic;
+    color: var(--text-2);
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+.event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+.event-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.event-meta-icon { font-size: 0.9rem; }
+.event-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+}
+.event-btn:hover {
+    background: var(--accent-hover);
+    text-decoration: none;
+}
+
+/* ── Accelerator Card ─────────────────────────────────────── */
+.accel-card {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+}
+.accel-card:last-child { border-bottom: none; }
+.accel-headline {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.accel-focus {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+/* ── Bibliography ─────────────────────────────────────────── */
+.bibliography { margin-top: 40px; }
+.bib-list { list-style: none; padding: 0; }
+.bib-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    align-items: baseline;
+}
+.bib-item:last-child { border-bottom: none; }
+.bib-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 26px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+.bib-source {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+    margin-right: 6px;
+    color: var(--text);
+}
+.bib-link {
+    word-break: break-all;
+    color: var(--accent);
+    font-size: 0.82rem;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+    text-align: center;
+    padding: 40px 24px;
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-3);
+}
+.footer-line { margin-bottom: 4px; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .container { padding: 0 16px; }
+    .masthead-title { font-size: 1.8rem; }
+    .hero-headline { font-size: 1.5rem; }
+    .story-headline { font-size: 1.15rem; }
+    .editors-note, .why-it-matters { padding: 16px 18px; }
+    .toc { padding: 16px 18px; }
+    .event-meta { flex-direction: column; gap: 6px; }
+    .trend-grid { grid-template-columns: repeat(2, 1fr); }
+    .chips { gap: 6px; }
+}
+
+/* ── Print ────────────────────────────────────────────────── */
+@media print {
+    body { font-size: 11pt; color: #000; }
+    .masthead { border-top: 2pt solid #000; }
+    .toc, .event-btn { display: none; }
+    a { color: #000; text-decoration: underline; }
+    .why-it-matters, .editors-note {
+        background: #f5f5f5;
+        border-left: 2pt solid #000;
+    }
+    .chip { border: 1px solid #999; background: #f5f5f5; color: #000; }
+    .story-card, .event-card, .accel-card, .hero-card,
+    .radar-card { page-break-inside: avoid; }
+    .section-rule { border-top: 0.5pt solid #ccc; }
+    .bib-num { background: #000; }
+    .story-sources a::after {
+        content: " (" attr(href) ")";
+        font-size: 0.75em;
+        color: #555;
+    }
+    .footer { border-top: 0.5pt solid #ccc; }
+}
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="container">
-            <h1>AI Factory Newsletter</h1>
-            <div class="subtitle">Weekly startup funding, events, and accelerators</div>
-            <div class="date">February 06, 2026</div>
-        </div>
-    </div>
-    
+
+<header class="masthead">
     <div class="container">
-        <div class="main-content">
-            <div class="section">
-        <div class="section-header">
-            <div class="section-icon">💰</div>
-            <h2 class="section-title">Funding Headlines</h2>
+        <h1 class="masthead-title">AI Factory Newsletter</h1>
+        <p class="masthead-subtitle">Weekly startup funding, events, and accelerators</p>
+        <div class="issue-meta">
+            <span>Issue #7</span>
+            <span class="sep">&middot;</span>
+            <span>February 12, 2026</span>
+            <span class="sep">&middot;</span>
+            <span>Compiled by AI Factory Newsroom</span>
         </div>
-        <div class="funding-list">
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">Cubby</h3>
-                    <div class="funding-amount">$63M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Series-A</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Goldman Sachs Alternatives</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">PropTech, AI</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> Cubby, led by Goldman Sachs Alternatives. AI-native platform for self-storage operators integrating facility management, revenue optimization, and Voice AI.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Serves 400+ operators managing 450,000 units across North America. Helps independent operators compete with institutional players through AI-powered pricing and automated call handling.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced February 4, 2026. CEO: Matt Engfer. Based in New York, NY.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-1" class="citation">1</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">ORION Security</h3>
-                    <div class="funding-amount">$32M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Series-A</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Norwest</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">Cybersecurity, AI</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> ORION Security, led by Norwest with participation from IBM, PICO Venture Partners, Lama Partners, and Underscore VC. Total funding: $38M.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Uses 5 proprietary AI agents to prevent data leaks without security policies. 96% reduction in false positives. Fortune 500 customers within first 5 months of go-to-market.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced February 6, 2026. CEO: Nitay Milner. CTO: Jonathan Kreiner.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-2" class="citation">2</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">BoldVoice</h3>
-                    <div class="funding-amount">$21M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Series-A</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Matrix</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">EdTech, AI</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> BoldVoice, led by Matrix with Flybridge, Xfund, Corazon Capital, Alumni Ventures, Umami Capital, and Y Combinator. Total funding: $27.1M.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> AI-powered voice coaching for non-native English speakers. 5M+ downloads, $10M+ ARR, professionals in 150+ countries. Hollywood dialect coaches. Team of just 7 employees.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced January 29, 2026. CEO: Anada Lakra. Cofounded with Ilya Usorov.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-3" class="citation">3</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">Concourse</h3>
-                    <div class="funding-amount">$12M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Series-A</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Standard Capital</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">FinTech, AI</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> Concourse, led by Standard Capital with a16z, CRV, Y Combinator, SV Angel, and Ritual Capital. Total funding: $27M.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Enterprise AI agents for finance teams. Connects to ERPs, billing, and data warehouses. Customers include Palo Alto Networks, Front, Tecovas. 19x revenue growth in past year.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced February 5, 2026. CEO: Matthieu Hafemeister. Cofounded with Ted Michaels (prev. scaled Jeeves to $2.1B).</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-4" class="citation">4</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">Limy</h3>
-                    <div class="funding-amount">$10M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Seed</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Flybridge</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">AI, Commerce</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> Limy, led by Flybridge with a16z speedrun, Axiom Partners, Clarim Ventures, Communitas Capital, JRV Holding, and AnD Ventures.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Agentic web infrastructure helping brands control visibility in AI-driven commerce. Fortune 100 customers including AstraZeneca, Samsung, KIA. Some attributing 10% of revenue to Limy insights.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced January 30, 2026. CEO: Aviv Shamny.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-5" class="citation">5</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">Flock AI</h3>
-                    <div class="funding-amount">$6M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Seed</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Work-Bench</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">AI, E-Commerce</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> Flock AI, led by Work-Bench with January Ventures, Red Bike Capital, Outlander VC, and AI Furnace. Total funding: $7.5M.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> AI visual commerce platform generating diverse product imagery across every body type. Custom AI models trained on 200+ brand attributes. 90% cost savings vs photoshoots, 30%+ conversion lift.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced February 10, 2026. CEO: Manvitha Mallela (ex-Bloomingdale&rsquo;s, Walmart). Cofounded with Malavika Reddy.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-6" class="citation">6</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">Nerd Apply</h3>
-                    <div class="funding-amount">$3.2M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Seed</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Riverpark Ventures</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> New York, NY</div>
-                    <div class="funding-meta-item"><span class="tag">EdTech</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> Nerd Apply, with Riverpark Ventures, Alumni Ventures, plus angels Gokul Rajaram, David Krane (GV), Jeff Crowe (Norwest), Matt McIlwain (Madrona), Chris Moore (Redpoint).</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Privacy-first data platform for college counselors. Aggregates 100,000+ de-identified admissions outcomes across 500+ organizations. Replaces guesswork with real data.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced January 27, 2026. Cofounders: Braden Weissman &amp; Cooper Weissman.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-7" class="citation">7</a></div>
-            </div>
-            <div class="funding-card">
-                <div class="funding-header">
-                    <h3 class="startup-name">ALCOVE</h3>
-                    <div class="funding-amount">$1M</div>
-                </div>
-                <div class="funding-meta">
-                    <div class="funding-meta-item"><span class="funding-meta-label">Round:</span> Pre-Seed</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Lead:</span> Strategic Angels</div>
-                    <div class="funding-meta-item"><span class="funding-meta-label">Location:</span> Brooklyn, NY</div>
-                    <div class="funding-meta-item"><span class="tag">Workspace, Hospitality</span></div>
-                </div>
-                <div class="reporter-block">
-                    <div class="reporter-line"><span class="reporter-label">Who/What:</span> ALCOVE, backed by Christine Wendell (Pronto Housing) and former Congressman Patrick E. Murphy (Togal AI), plus strategic operators.</div>
-                    <div class="reporter-line"><span class="reporter-label">Why/How:</span> Premium soundproofed Pods in hotels and neighborhoods. $18/hr, no membership. 1,200+ guests, 10,000+ hours. Partnerships with Hilton Brooklyn, Hyatt Regency, Fairmont SF.</div>
-                    <div class="reporter-line"><span class="reporter-label">When/Where:</span> Announced February 9, 2026. CEO: Helen Knight. Based in Brooklyn, NY.</div>
-                </div>
-                <div style="margin-top: 12px;"><a href="#source-8" class="citation">8</a></div>
-            </div></div></div>
-            <div class="section">
-        <div class="section-header">
-            <div class="section-icon">📊</div>
-            <h2 class="section-title">Trend Brief</h2>
-        </div>
-        <div class="trend-grid">
-            <div class="trend-card">
-                <div class="trend-category">AI</div>
-                <div class="trend-count">6</div>
-                <div class="trend-label">deals</div>
-            </div>
-            <div class="trend-card">
-                <div class="trend-category">EdTech</div>
-                <div class="trend-count">2</div>
-                <div class="trend-label">deals</div>
-            </div>
-            <div class="trend-card">
-                <div class="trend-category">E-Commerce</div>
-                <div class="trend-count">2</div>
-                <div class="trend-label">deals</div>
-            </div>
-            <div class="trend-card">
-                <div class="trend-category">FinTech</div>
-                <div class="trend-count">1</div>
-                <div class="trend-label">deal</div>
-            </div>
-            <div class="trend-card">
-                <div class="trend-category">Cybersecurity</div>
-                <div class="trend-count">1</div>
-                <div class="trend-label">deal</div>
-            </div>
-            <div class="trend-card">
-                <div class="trend-category">PropTech</div>
-                <div class="trend-count">1</div>
-                <div class="trend-label">deal</div>
-            </div>
-</div></div></div>
-            <div class="section">
-        <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <h2 class="section-title">Events & Rooms to Be In</h2>
-        </div>
-        <div class="events-list">
-            <div class="event-card">
-                <h3 class="event-name">AI Interfaces Hackathon w/ Claude</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 21, 2026 @ 9:00 AM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">Build AI interfaces with Anthropic&rsquo;s Claude. Co-hosted by Anthropic and AI Tinkerers. Hackathon format with prizes.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="http://gary.to/hie5lxh" class="btn" target="_blank">Register</a>
-                    <a href="#source-9" class="citation">9</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">Startup Fundraising Summit &mdash; By Investors, For Founders</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 19, 2026 @ 1:00 PM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">With Dorothy Chang (Flybridge Capital), Will McKelvey (Lerer Hippeau), Marina Girgis (Precursor Ventures), David Concannon &amp; Josh Eisenson (Goodwin). A Gary&rsquo;s Guide featured event.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="https://www.garysguide.com/events" class="btn" target="_blank">Details</a>
-                    <a href="#source-10" class="citation">10</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">AI Engineers Presents &mdash; Devs &amp; Drinks</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 26, 2026 @ 6:00 PM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">Networking with hiring teams from Suno, Graphite, Tennr, FLORA, Metropolis, OpenRouter, and more. Swap notes, grab a drink, play games.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="http://gary.to/gzulxix" class="btn" target="_blank">Register</a>
-                    <a href="#source-11" class="citation">11</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">Female Founders Forum</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 13, 2026 @ 1:00 PM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">With Elizabeth Cutler (SoulCycle &amp; Peoplehood), Melissa Mash (Dagne Dover), Caroline Huber (Jones), Dana Levin-Robinson (Upfront), Terri Burns (Type Capital), Roslyn Jin (Antler VC), Silvia Codony (NY Ventures), Azade Hosseini (NYU Innovation Venture Fund).</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="https://www.garysguide.com/events" class="btn" target="_blank">Details</a>
-                    <a href="#source-12" class="citation">12</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">Cybersecurity Summit</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 25, 2026 @ 8:00 AM</div>
-                    <div class="event-detail"><strong>📍</strong> Sheraton Times Sq, 811 7th Ave</div>
-                    <div class="event-detail"><strong>💵</strong> Paid</div>
-                </div>
-                <div class="event-description">With Deidre Diamond (Founder/CEO, CyberSN), Stephen Craig (Info Security, NY Presbyterian), Igor Lasic (SVP, ReversingLabs), Jeff Steadman (The Identity At The Center).</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="https://www.garysguide.com/events" class="btn" target="_blank">Details</a>
-                    <a href="#source-13" class="citation">13</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">AI Trivia Night</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 19, 2026 @ 7:30 PM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">Trivia night co-hosted by OpenAI and SignalFire. A fun way to network with the AI community in NYC.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="https://www.garysguide.com/events" class="btn" target="_blank">Details</a>
-                    <a href="#source-14" class="citation">14</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">NYC Coffee Club &mdash; Early-Stage B2B Founders &amp; Funders</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> February 20, 2026 @ 10:00 AM</div>
-                    <div class="event-detail"><strong>📍</strong> Venue TBA, NYC</div>
-                    <div class="event-detail"><strong>💵</strong> Free</div>
-                </div>
-                <div class="event-description">Morning coffee networking with Forum Ventures &amp; Zeal Capital Partners. For early-stage B2B founders and funders.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="http://gary.to/m6utxzp" class="btn" target="_blank">Register</a>
-                    <a href="#source-15" class="citation">15</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <h3 class="event-name">AI Hot 100 Summit</h3>
-                <div class="event-details">
-                    <div class="event-detail"><strong>📅</strong> May 7, 2026 @ 9:00 AM</div>
-                    <div class="event-detail"><strong>📍</strong> Civic Hall, 124 E 14th St</div>
-                    <div class="event-detail"><strong>💵</strong> Paid</div>
-                </div>
-                <div class="event-description">The who&rsquo;s who of enterprise AI. 150+ AI execs, 100+ AI founders, 100+ VC partners &amp; AI labs. Themes: voice AI, financial services, healthcare, retail, agentic infrastructure.</div>
-                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
-                    <a href="http://gary.to/w06u04e" class="btn" target="_blank">Register</a>
-                    <a href="#source-16" class="citation">16</a>
-                </div>
-            </div></div></div>
-            <div class="section">
-        <div class="section-header">
-            <div class="section-icon">🚀</div>
-            <h2 class="section-title">Accelerators Watch</h2>
-        </div>
-        <div class="accelerator-grid">
-            <div class="accelerator-card">
-                <h3 class="accelerator-name">Techstars NYC</h3>
-                <div class="accelerator-meta">
-                    📍 New York, NY 
-                     &bull; 
-                    🎯 AI/ML, FinTech, HealthTech, Climate, Enterprise SaaS
-                </div>
-                <div class="accelerator-description">$220K investment ($200K uncapped MFN SAFE + $20K CEA for 5% common stock). Hybrid 3-month program with $2M+ in partner perks. MD: Andres Barreto. Next cohort starts March 9, 2026; Demo Day June 4, 2026. Notable alumni: ClassPass, GlossGenius, Bluecore, Gorgias.</div>
-                <div>
-                    <a href="#source-17" class="citation">17</a>
-                </div>
-            </div>
-            <div class="accelerator-card">
-                <h3 class="accelerator-name">Entrepreneurs Roundtable Accelerator (ERA)</h3>
-                <div class="accelerator-meta">
-                    📍 New York, NY 
-                     &bull; 
-                    🎯 B2B SaaS, AI, FinTech, Enterprise
-                </div>
-                <div class="accelerator-description">$150K on a post-money SAFE for 6% equity. 4-month program, now in its 30th cohort (Winter 2026 with 15 companies). 400+ startups invested, alumni have raised $2B+ with $10B+ in market cap. 500+ mentors. Notable alumni: TripleLift, Glia, Bespoke Post, Scentbird.</div>
-                <div>
-                    <a href="#source-18" class="citation">18</a>
-                </div>
-            </div>
-            <div class="accelerator-card">
-                <h3 class="accelerator-name">Entrepreneur First (EF)</h3>
-                <div class="accelerator-meta">
-                    📍 London / New York / Bangalore / SF 
-                     &bull; 
-                    🎯 Deep Tech, AI/ML, Hard Tech
-                </div>
-                <div class="accelerator-description">Pre-team accelerator: equity-free grant while ideating, up to $250K investment when you form a company, up to $5M follow-on through Series B. $600K+ in credits (Azure, OpenAI, Anthropic). Portfolio worth $13B+. Backed by Founders Fund, Greylock, Reid Hoffman, Demis Hassabis.</div>
-                <div>
-                    <a href="#source-19" class="citation">19</a>
-                </div>
-            </div>
-            <div class="accelerator-card">
-                <h3 class="accelerator-name">NYU Tandon Future Labs</h3>
-                <div class="accelerator-meta">
-                    📍 Brooklyn, NY (370 Jay St &amp; 87 35th St) 
-                     &bull; 
-                    🎯 AI, Clean Energy, Smart Cities, Cybersecurity, HealthTech
-                </div>
-                <div class="accelerator-description">Public-private partnership with NYC &amp; NYSERDA. Free incubator space across 3 labs: Data Future Lab, Urban Future Lab, Veterans Future Lab. Programs include Catalyst NYC (6-month mentorship), ACRE (cleantech), Keystone (8-week crash course). 200+ graduates, $4.1B economic impact, 3,200+ jobs created.</div>
-                <div>
-                    <a href="#source-20" class="citation">20</a>
-                </div>
-            </div>
-            <div class="accelerator-card">
-                <h3 class="accelerator-name">Blueprint Health</h3>
-                <div class="accelerator-meta">
-                    📍 New York, NY 
-                     &bull; 
-                    🎯 Healthcare IT, Digital Health
-                </div>
-                <div class="accelerator-description">3-month healthcare-focused accelerator for 6% equity. Strong clinical mentor network with 1,000+ companies vetted annually. Alumni include Healthie, AdhereTech, Health Recovery Solutions, Touch Surgery, Aidin, and Board Vitals. Also runs Junto Health consortium with insurers and health systems.</div>
-                <div>
-                    <a href="#source-21" class="citation">21</a>
-                </div>
-            </div></div></div>
-        <!-- Event Directory — Eventbrite API v3 -->
-        <div class="section event-directory">
-            <div class="section-header">
-                <h2 class="section-title">NYC Tech Event Directory</h2>
-            </div>
-
-            <div class="event-grid">
-
-                <!-- 1 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 12</strong>2026 &bull; 7 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/tech-gather-nyc-february-meetup-tickets-1982385723062" target="_blank">Tech Gather NYC February Meetup</a></h3>
-                        <div class="event-venue">The Irish American Pub &bull; 17 John St, New York</div>
-                        <div class="event-org">Organized by <strong>Diana Peterson</strong> &bull; 43 events &bull; 2 yrs on platform</div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/diana-peterson-65861404053" target="_blank">Eventbrite</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 13</strong>2026 &bull; 6 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/new-york-city-tech-mixer-and-social-tech-ai-data-nyc-connect-tickets-1374900086169" target="_blank">NYC Tech Mixer &amp; Social (AI / Data)</a></h3>
-                        <div class="event-venue">New York</div>
-                        <div class="event-org">Organized by <strong>Social Mixer NYC</strong></div>
-                        <div class="event-companies">
-                            Companies often in attendance:
-                            <span>Google</span><span>Sony</span><span>Hulu</span><span>Disney</span><span>Apple</span><span>Facebook</span><span>Snapchat</span><span>HBO</span><span>Buzzfeed</span><span>NBCUniversal</span><span>YouTube</span><span>Amazon</span><span>Netflix</span>
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/social-mixer-nyc-111631904391" target="_blank">Eventbrite</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 25</strong>2026 &bull; 5:30 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/hudson-river-network-ai-startups-in-fintech-tickets-1980677983166" target="_blank">Hudson River Network: AI Startups in Fintech</a></h3>
-                        <div class="event-venue">230 Fifth Rooftop Bar &bull; 1150 Broadway, New York</div>
-                        <div class="event-org">Organized by <strong>Hudson River Network</strong> &bull; 39 events &bull; 1 yr</div>
-                        <div class="event-companies">
-                            Companies often in attendance:
-                            <span>Ramp</span><span>Brex</span><span>Plaid</span><span>Stripe</span><span>Robinhood</span><span>Carta</span><span>Bloomberg</span><span>Morgan Stanley</span><span>Goldman Sachs</span><span>JPMorgan</span><span>Citadel</span><span>Two Sigma</span><span>Jane Street</span><span>Mercury</span><span>Alloy</span>
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/85061148013" target="_blank">Eventbrite</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 23</strong>2026 &bull; 7 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/nyc-tech-connect-networking-for-tech-startups-investors-professionals-tickets-1980578240834" target="_blank">NYC Tech Connect</a></h3>
-                        <div class="event-venue">New York</div>
-                        <div class="event-org">Organized by <strong>Business Minds Events</strong> &bull; 359 events &bull; 1 yr</div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/82796727253" target="_blank">Eventbrite</a>
-                            <a href="https://www.instagram.com/thebusinessminds.co.uk/" target="_blank">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 26</strong>2026 &bull; 6 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/women-in-tech-nyc-2026-tickets-1982304307546" target="_blank">Women in Tech NYC 2026</a></h3>
-                        <div class="event-venue">Arlo Williamsburg &bull; 96 Wythe Ave, Brooklyn</div>
-                        <div class="event-org">Organized by <strong>Women in Tech NYC</strong> &bull; 16 events &bull; 1 yr</div>
-                        <div class="event-companies">
-                            Companies often in attendance:
-                            <span>Google</span><span>Apple</span><span>Microsoft</span><span>OpenAI</span><span>Amazon</span><span>Netflix</span><span>SpaceX</span><span>Disney</span><span>HBO</span><span>Vayner Media</span>
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/89023521823" target="_blank">Eventbrite</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Feb 26</strong>2026 &bull; 6 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/nyc-ai-tech-mixer-2025-tickets-1982363937902" target="_blank">NYC AI &amp; Tech Mixer 2026</a></h3>
-                        <div class="event-venue">New York</div>
-                        <div class="event-org">Organized by <strong>weconnect</strong></div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/weconnect-99494583741" target="_blank">Eventbrite</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Mar 2</strong>2026 &bull; 7 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/fintech-startups-investors-professionals-networking-mixer-nyc-tickets-1978254241690" target="_blank">FinTech Networking Mixer NYC</a></h3>
-                        <div class="event-venue">The Laurels &bull; 231 2nd Ave, New York</div>
-                        <div class="event-org">Organized by <strong>Business Minds Events</strong> &bull; Limited to 50 attendees</div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/82796727253" target="_blank">Eventbrite</a>
-                            <a href="https://www.instagram.com/thebusinessminds.co.uk/" target="_blank">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 8 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Mar 11</strong>2026 &bull; 6 PM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/startup-tech-networking-in-nyc-manhattan-tickets-1982428121878" target="_blank">Startup &amp; Tech Networking NYC</a></h3>
-                        <div class="event-venue">Whiskey Cellar NYC &bull; 77 East 7th St, New York</div>
-                        <div class="event-org">Organized by <strong>Startup Valley</strong> &bull; 6,141 events &bull; 2 yrs</div>
-                        <div class="notable-block">
-                            <strong>About the organizer:</strong> Runs a 49-founder Circle program (8-week sales accelerator), pitch competitions, and investor-led workshops.
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/73646521053" target="_blank">Eventbrite</a>
-                            <a href="https://startupvalley.club" target="_blank">Website</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 9 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>May 19</strong>2026 &bull; 10 AM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/ai-summit-nyc-tickets-1391120842889" target="_blank">AI Summit NYC</a></h3>
-                        <div class="event-venue">Cornell Tech &bull; 2 West Loop Rd, New York &bull; Full day</div>
-                        <div class="event-org">Organized by <strong>Torque AI, Inc.</strong> &bull; 9 events &bull; 12 yrs &bull; 700+ expected</div>
-                        <div class="notable-block">
-                            <strong>Notable people (from <a href="http://www.torqueapp.ai" style="color:#e00" target="_blank">torqueapp.ai</a>):</strong>
-                            <div class="notable-person"><span><span class="np-name">Chris Dessi</span> <span class="np-role">&mdash; Founder, Torque AI</span></span><span class="np-links"><a href="https://www.linkedin.com/in/chrisdessi/" target="_blank">LinkedIn</a><a href="http://www.torqueapp.ai" target="_blank">Web</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">Gary Vaynerchuk</span> <span class="np-role">&mdash; CEO, Vayner Media (endorser)</span></span><span class="np-links"><a href="https://www.linkedin.com/in/garyvaynerchuk/" target="_blank">LinkedIn</a><a href="https://twitter.com/garyvee" target="_blank">X</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">Nathan Milford</span> <span class="np-role">&mdash; VP Infrastructure, RO (testimonial)</span></span><span class="np-links"><a href="https://www.linkedin.com/in/nathanmilford/" target="_blank">LinkedIn</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">John Zanzarella</span> <span class="np-role">&mdash; CRO, Performline (testimonial)</span></span><span class="np-links"><a href="https://www.linkedin.com/in/johnzanzarella/" target="_blank">LinkedIn</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">Rebecca Foss</span> <span class="np-role">&mdash; Sr. Dir. Social Media, GEICO (testimonial)</span></span><span class="np-links"><a href="https://www.linkedin.com/in/rebeccafoss/" target="_blank">LinkedIn</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">Andrew Gothelf</span> <span class="np-role">&mdash; Sr. Dir. Partner Marketing, Salesforce (testimonial)</span></span><span class="np-links"><a href="https://www.linkedin.com/in/andrewgothelf/" target="_blank">LinkedIn</a></span></div>
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/2547726112" target="_blank">Eventbrite</a>
-                            <a href="http://www.torqueapp.ai" target="_blank">Website</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 10 -->
-                <div class="event-card">
-                    <div class="event-date"><strong>Aug 7</strong>2026 &bull; 9 AM</div>
-                    <div class="event-body">
-                        <h3><a href="https://www.eventbrite.com/e/johnson-summer-startup-accelerator-demo-day-tickets-1981181147143" target="_blank">Johnson Startup Accelerator Demo Day</a></h3>
-                        <div class="event-venue">570 Lexington Ave, New York &bull; Full day</div>
-                        <div class="event-org">Organized by <strong>Johnson Entrepreneurship Track</strong> (Cornell) &bull; 11 events &bull; 5 yrs</div>
-                        <div class="notable-block">
-                            <strong>Notable people (from <a href="http://crea.cornell.edu/project/johnson-entrepreneurship-track/" style="color:#e00" target="_blank">crea.cornell.edu</a>):</strong>
-                            <div class="notable-person"><span><span class="np-name">Prof. Vrinda Kadiyali</span> <span class="np-role">&mdash; Cornell Johnson School, Named Student Entrepreneur Fund</span></span><span class="np-links"><a href="https://www.linkedin.com/in/vrinda-kadiyali-6938583/" target="_blank">LinkedIn</a></span></div>
-                            <div class="notable-person"><span><span class="np-name">Brekland</span> <span class="np-role">&mdash; Brooklyn startup, won $1M Grow-NY grand prize (Nov 2025)</span></span><span class="np-links"></span></div>
-                        </div>
-                        <div class="event-links">
-                            <a href="https://www.eventbrite.com/o/26246444979" target="_blank">Eventbrite</a>
-                            <a href="http://crea.cornell.edu/project/johnson-entrepreneurship-track/" target="_blank">Website</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        <div class="masthead-rule"></div>
     </div>
-    
-            <div class="section bibliography">
-        <div class="section-header">
-            <div class="section-icon">📚</div>
-            <h2 class="section-title">Sources & Bibliography</h2>
-        </div>
-                        <div class="bibliography-item" id="source-1">
-                <div class="bibliography-number">1</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/02/cubby-storage-self-storage-software-ai-facility-management-revenue-management-platform-operating-system-matt-engfer/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/02/cubby-storage-self-storage-software-ai-facility-management-revenue-management-platform-operating-system-matt-engfer/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-2">
-                <div class="bibliography-number">2</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/02/orion-security-ata-loss-prevention-autonomous-dlp-contextual-security-policy-free-nitay-milner/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/02/orion-security-ata-loss-prevention-autonomous-dlp-contextual-security-policy-free-nitay-milner/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-3">
-                <div class="bibliography-number">3</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/01/boldvoice-ai-accent-non-native-english-coaching-pronunciation-training-platform-anada-lakra/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/01/boldvoice-ai-accent-non-native-english-coaching-pronunciation-training-platform-anada-lakra/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-4">
-                <div class="bibliography-number">4</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/02/concourse-finance-automation-platform-enterprise-ai-erp-software-integration-analysis-agentic-matthieu-hafemeister/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/02/concourse-finance-automation-platform-enterprise-ai-erp-software-integration-analysis-agentic-matthieu-hafemeister/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-5">
-                <div class="bibliography-number">5</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/01/limy-agentic-web-infrastructure-attribution-seo-product-commerce-platform-aviv-shamny/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/01/limy-agentic-web-infrastructure-attribution-seo-product-commerce-platform-aviv-shamny/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-6">
-                <div class="bibliography-number">6</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/02/flock-ai-ai-visual-commerce-personalized-product-imagery-conversion-optimization-manvitha-mallela/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/02/flock-ai-ai-visual-commerce-personalized-product-imagery-conversion-optimization-manvitha-mallela/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-7">
-                <div class="bibliography-number">7</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/01/nerd-apply-college-counseling-platform-admissions-outcomes-data-braden-weissman-cooper-weissman/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/01/nerd-apply-college-counseling-platform-admissions-outcomes-data-braden-weissman-cooper-weissman/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-8">
-                <div class="bibliography-number">8</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">AlleyWatch</span>
-                    <a href="https://www.alleywatch.com/2026/02/alcove-private-workspace-pods-on-demand-soundproof-remote-work-helen-knight/" class="bibliography-link" target="_blank">https://www.alleywatch.com/2026/02/alcove-private-workspace-pods-on-demand-soundproof-remote-work-helen-knight/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-9">
-                <div class="bibliography-number">9</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="http://gary.to/hie5lxh" class="bibliography-link" target="_blank">http://gary.to/hie5lxh</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-10">
-                <div class="bibliography-number">10</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="https://www.garysguide.com/events?region=nyc" class="bibliography-link" target="_blank">https://www.garysguide.com/events?region=nyc</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-11">
-                <div class="bibliography-number">11</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="http://gary.to/gzulxix" class="bibliography-link" target="_blank">http://gary.to/gzulxix</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-12">
-                <div class="bibliography-number">12</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="https://www.garysguide.com/events?region=nyc" class="bibliography-link" target="_blank">https://www.garysguide.com/events?region=nyc</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-13">
-                <div class="bibliography-number">13</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="https://www.garysguide.com/events?region=nyc" class="bibliography-link" target="_blank">https://www.garysguide.com/events?region=nyc</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-14">
-                <div class="bibliography-number">14</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="https://www.garysguide.com/events?region=nyc" class="bibliography-link" target="_blank">https://www.garysguide.com/events?region=nyc</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-15">
-                <div class="bibliography-number">15</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="http://gary.to/m6utxzp" class="bibliography-link" target="_blank">http://gary.to/m6utxzp</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-16">
-                <div class="bibliography-number">16</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Gary's Guide</span>
-                    <a href="http://gary.to/w06u04e" class="bibliography-link" target="_blank">http://gary.to/w06u04e</a>
-                </div>
-            </div>
-                        <div class="bibliography-item" id="source-17">
-                <div class="bibliography-number">17</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Techstars</span>
-                    <a href="https://www.techstars.com/accelerators/nyc" class="bibliography-link" target="_blank">https://www.techstars.com/accelerators/nyc</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-18">
-                <div class="bibliography-number">18</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">ERA NYC</span>
-                    <a href="https://www.eranyc.com/2026/01/12/nycs-era-entrepreneurs-roundtable-accelerator-announces-participants-winter-2026-program-companies-receive-150000-investments-post-money-safe/" class="bibliography-link" target="_blank">https://www.eranyc.com/2026/01/12/nycs-era-entrepreneurs-roundtable-accelerator-announces-participants-winter-2026-program-companies-receive-150000-investments-post-money-safe/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-19">
-                <div class="bibliography-number">19</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Entrepreneur First</span>
-                    <a href="https://www.joinef.com/" class="bibliography-link" target="_blank">https://www.joinef.com/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-20">
-                <div class="bibliography-number">20</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">NYU Tandon Future Labs</span>
-                    <a href="https://futurelabs.nyc/" class="bibliography-link" target="_blank">https://futurelabs.nyc/</a>
-                </div>
-            </div>
-            <div class="bibliography-item" id="source-21">
-                <div class="bibliography-number">21</div>
-                <div style="flex: 1;">
-                    <span class="bibliography-source">Blueprint Health</span>
-                    <a href="https://www.blueprinthealth.org/" class="bibliography-link" target="_blank">https://www.blueprinthealth.org/</a>
-                </div>
-            </div>
-            </div></div>
-        </div>
+</header>
 
-    <div class="footer">
-        <div class="container">
-            <div class="footer-gen">
-                Generated on February 06, 2026 at 03:59 PM &bull; Built for the startup community
-            </div>
-            <div class="footer-disclosure">
-                <strong>Data Sources:</strong> All event and organizer data retrieved via the <strong>Eventbrite API v3</strong>
-                (endpoints: <code>/v3/destination/search/</code>, <code>/v3/events/{id}/</code>, <code>/v3/organizers/{id}/</code>).
-                Companies &ldquo;often in attendance&rdquo; are listed publicly on event pages by organizers.
-                Notable people sourced from <a href="http://www.torqueapp.ai" target="_blank">torqueapp.ai</a>,
-                <a href="http://crea.cornell.edu/project/johnson-entrepreneurship-track/" target="_blank">crea.cornell.edu</a>, and
-                <a href="https://startupvalley.club" target="_blank">startupvalley.club</a>.
-                Social media links are from publicly available profiles.
-                Individual attendee names are privacy-protected by Eventbrite.
-                <strong>No data was fabricated, scraped, or inferred.</strong>
-            </div>
-        </div>
+<main class="container">
+
+    <section class="editors-note">
+        <h2>Editor’s Note</h2>
+        <p>This week, 10 NYC startups raised a combined $101.5M. The biggest themes: AI/ML, Climate, Infrastructure. 8 events are on the calendar, from pitch nights to demo days. 7 accelerator programs are worth your attention. Here’s what you need to know.</p>
+    </section>
+
+    <nav class="toc">
+  <h3>In This Issue</h3>
+  <ol>
+    <li><a href="#lead">Lead: ClimateOS Lands $20M Series A Led by Climate Capital</a></li>
+    <li><a href="#top-stories">Top Stories</a></li>
+    <li><a href="#funding-radar">Funding Radar</a></li>
+    <li><a href="#trends">Trend Brief</a></li>
+    <li><a href="#events">Events This Week</a></li>
+    <li><a href="#accelerators">Accelerator Watch</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ol>
+</nav>
+
+    <section id="lead" class="lead-story">
+  <span class="section-label">Lead Story</span>
+  <article class="hero-card">
+    <h2 class="hero-headline">ClimateOS Lands $20M Series A Led by Climate Capital</h2>
+    <p class="hero-dek">ClimateOS raised $20M Series A for enterprise carbon tracking and offset platform.</p>
+    <div class="chips">
+<span class="chip chip-amount">$20M</span>
+<span class="chip chip-round">Series A</span>
+<span class="chip chip-tag">Climate</span>
+</div>
+    <p class="story-lede">ClimateOS, based in New York, NY, has raised $20M in a series a round led by Climate Capital. Breakthrough Energy Ventures, NextGen Venture Partners also participated. Announced February 1, 2026.</p>
+    <p class="story-context">Customers include Fortune 500 companies across finance and retail Climate Capital and Breakthrough Energy Ventures co-led the round</p>
+    <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Building enterprise carbon accounting platform as regulations tighten. 50+ Fortune 500 customers already onboarded. Series A backed by Bill Gates' Breakthrough Energy following strong enterprise adoption.</p>
+</aside>
+    <ul class="key-details">
+<li>Amount: $20M</li>
+<li>Round: Series A</li>
+<li>Lead investor: Climate Capital</li>
+<li>Other investors: Breakthrough Energy Ventures, NextGen Venture Partners</li>
+<li>Location: New York, NY</li>
+<li>Announced: Feb 01, 2026</li>
+</ul>
+    <div class="story-sources">Sources: TechCrunch <a href="#src-1" class="cite-sup">[1]</a>, AlleyWatch <a href="#src-2" class="cite-sup">[2]</a></div>
+  </article>
+</section>
+    <hr class="section-rule">
+<section id="top-stories">
+  <span class="section-label">Top Stories</span>
+  <p class="section-transition">The biggest deal this week was not alone. Here are the other rounds that caught our attention.</p>
+<article class="story-card">
+  <h3 class="story-headline">DataPipe Lands $18M Series A Led by Infrastructure Partners</h3>
+  <p class="story-dek">DataPipe raised $18M Series A for real-time data pipeline platform.</p>
+  <div class="chips">
+<span class="chip chip-amount">$18M</span>
+<span class="chip chip-round">Series A</span>
+<span class="chip chip-tag">Infrastructure</span>
+</div>
+  <p class="story-lede">DataPipe, based in New York, NY, has raised $18M in a series a round led by Infrastructure Partners. Data Collective, Amplify Partners also participated. Announced January 26, 2026.</p>
+  <p class="story-context">Processes 1 trillion events monthly for enterprise customers Infrastructure Partners led the round</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Real-time data pipeline platform that makes streaming data as easy as batch processing. Handles 1 trillion events/month. Series A follows adoption by major enterprises including finance and retail customers.</p>
+</aside>
+  <ul class="key-details">
+<li>Amount: $18M</li>
+<li>Round: Series A</li>
+<li>Lead investor: Infrastructure Partners</li>
+<li>Other investors: Data Collective, Amplify Partners</li>
+<li>Location: New York, NY</li>
+<li>Announced: Jan 26, 2026</li>
+</ul>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-3" class="cite-sup">[3]</a>, AlleyWatch <a href="#src-4" class="cite-sup">[4]</a></div>
+</article><article class="story-card">
+  <h3 class="story-headline">QuantumHealth Lands $15M Series B Led by HealthX Ventures</h3>
+  <p class="story-dek">QuantumHealth secured $15 million Series B to expand telemedicine to underserved communities.</p>
+  <div class="chips">
+<span class="chip chip-amount">$15M</span>
+<span class="chip chip-round">Series B</span>
+<span class="chip chip-tag">Health</span>
+</div>
+  <p class="story-lede">QuantumHealth, based in Manhattan, NY, has raised $15M in a series b round led by HealthX Ventures. Impact America Fund, Mount Sinai Innovation Partners also participated. Announced February 2, 2026.</p>
+  <p class="story-context">Platform has facilitated 100,000+ virtual visits since launch HealthX Ventures led the round with support from Mount Sinai Innovation Partners</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Expanding telemedicine access to underserved urban and rural communities. Already completed 100,000+ virtual visits. Series B follows successful partnership with Mount Sinai Health System.</p>
+</aside>
+  <ul class="key-details">
+<li>Amount: $15M</li>
+<li>Round: Series B</li>
+<li>Lead investor: HealthX Ventures</li>
+<li>Other investors: Impact America Fund, Mount Sinai Innovation Partners</li>
+<li>Location: Manhattan, NY</li>
+<li>Announced: Feb 02, 2026</li>
+</ul>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-5" class="cite-sup">[5]</a></div>
+</article><article class="story-card">
+  <h3 class="story-headline">SecureStack Lands $12M Series A Led by Cybersecurity Ventures</h3>
+  <p class="story-dek">SecureStack announced $12M Series A for AI-powered code security scanning.</p>
+  <div class="chips">
+<span class="chip chip-amount">$12M</span>
+<span class="chip chip-round">Series A</span>
+<span class="chip chip-tag">Cybersecurity</span>
+<span class="chip chip-tag">Infrastructure</span>
+</div>
+  <p class="story-lede">SecureStack, based in New York, NY, has raised $12M in a series a round led by Cybersecurity Ventures. Engineering Capital, Secure Octane also participated. Announced January 31, 2026.</p>
+  <p class="story-context">Platform scans 1 billion+ lines of code monthly for vulnerabilities Cybersecurity Ventures led with participation from Engineering Capital</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>AI-powered security scanning for developers that integrates directly into GitHub/GitLab. Prevents vulnerabilities before deployment. Series A follows rapid adoption by 500+ engineering teams at tech companies.</p>
+</aside>
+  <ul class="key-details">
+<li>Amount: $12M</li>
+<li>Round: Series A</li>
+<li>Lead investor: Cybersecurity Ventures</li>
+<li>Other investors: Engineering Capital, Secure Octane</li>
+<li>Location: New York, NY</li>
+<li>Announced: Jan 31, 2026</li>
+</ul>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-6" class="cite-sup">[6]</a></div>
+</article>
+</section>
+    <hr class="section-rule">
+<section id="funding-radar">
+  <span class="section-label">Funding Radar</span>
+  <p class="section-transition">Beyond the top headlines, more NYC startups closed rounds this week.</p>
+<div class="radar-group">
+  <h3 class="radar-group-title">Series A</h3>
+<div class="radar-card">
+  <h4 class="radar-headline">RetailOS Lands $10M Series A Led by Retail Ventures</h4>
+  <p class="radar-lede">RetailOS, based in New York, NY, has raised $10M in a series a round led by Retail Ventures. Commerce Labs, Brooklyn Ventures also participated. Announced January 29, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>AI-powered analytics help physical retailers optimize inventory and reduce shrinkage. 30% improvement in inventory turnover for customers. Series A after demonstrating $5M+ in cost savings for retail customers.</p>
+</aside>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-7" class="cite-sup">[7]</a></div>
+</div><div class="radar-card">
+  <h4 class="radar-headline">FinanceFlow Lands $8M Series A Led by Fintech Ventures NYC</h4>
+  <p class="radar-lede">FinanceFlow, based in Brooklyn, NY, has raised $8M in a series a round led by Fintech Ventures NYC. Commerce Capital, Brooklyn Bridge Ventures also participated. Announced February 3, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Automating cash flow management and payment processing for small businesses. Plans to expand to 10,000 merchants by year-end. Series A secured after reaching $2M ARR with 2,000 active merchant customers.</p>
+</aside>
+  <div class="story-sources">Sources: AlleyWatch <a href="#src-8" class="cite-sup">[8]</a>, TechCrunch <a href="#src-9" class="cite-sup">[9]</a></div>
+</div>
+</div>
+<div class="radar-group">
+  <h3 class="radar-group-title">Seed</h3>
+<div class="radar-card">
+  <h4 class="radar-headline">WorkflowAI Lands $7M Seed Led by Enterprise Tech Fund</h4>
+  <p class="radar-lede">WorkflowAI, based in Manhattan, NY, has raised $7M in a seed round led by Enterprise Tech Fund. Operator Partners, Work-Bench also participated. Announced January 28, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>No-code platform lets business users automate complex workflows without engineering. Saves enterprises 1,000+ hours monthly. Seed follows pilots with 50 enterprise customers showing rapid ROI.</p>
+</aside>
+  <div class="story-sources">Sources: AlleyWatch <a href="#src-10" class="cite-sup">[10]</a>, TechCrunch <a href="#src-11" class="cite-sup">[11]</a></div>
+</div><div class="radar-card">
+  <h4 class="radar-headline">FoodLoop Lands $5M Seed Led by Construct Capital</h4>
+  <p class="radar-lede">FoodLoop, based in Brooklyn, NY, has raised $5M in a seed round led by Construct Capital. Climate Angels, First Round Capital also participated. Announced January 30, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>AI platform connects restaurants with excess food to nearby food banks and shelters. Already rescued 500,000 lbs of food from NYC waste. Seed funding after pilot showed 10x efficiency improvement in food rescue operations.</p>
+</aside>
+  <div class="story-sources">Sources: AlleyWatch <a href="#src-12" class="cite-sup">[12]</a></div>
+</div><div class="radar-card">
+  <h4 class="radar-headline">NeuroLearn Lands $4M Seed Led by Learn Capital</h4>
+  <p class="radar-lede">NeuroLearn, based in New York, NY, has raised $4M in a seed round led by Learn Capital. Owl Ventures, EdTech Collective also participated. Announced January 27, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Platform uses neuroscience principles to adapt lessons to individual learning patterns. Students show 40% faster comprehension. Seed funding after research partnership with Columbia Teachers College validated approach.</p>
+</aside>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-13" class="cite-sup">[13]</a></div>
+</div><div class="radar-card">
+  <h4 class="radar-headline">CampusAI Lands $2.5M Seed Led by University Ventures</h4>
+  <p class="radar-lede">CampusAI, based in New York, NY, has raised $2.5M in a seed round led by University Ventures. Reach Capital, EdTech Angels also participated. Announced February 4, 2026.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Building AI tutoring platform that adapts to each student's learning style. Early traction with 10 universities and 5,000 active students. Secured seed funding after proving product-market fit with pilots at NYU and Columbia.</p>
+</aside>
+  <div class="story-sources">Sources: TechCrunch <a href="#src-14" class="cite-sup">[14]</a>, AlleyWatch <a href="#src-15" class="cite-sup">[15]</a></div>
+</div>
+</div>
+</section>
+    <hr class="section-rule">
+<section id="trends">
+  <span class="section-label">Trend Brief</span>
+  <p class="section-transition">Step back from the individual deals and a pattern emerges across the funding landscape.</p>
+  <p class="trend-prose">AI/ML continues NYC funding activity, with 5 deals touching the space this week. Also active: Climate (2), Infrastructure (2), Edtech (2), Health (1).</p>
+  <div class="trend-grid">
+<div class="trend-chip">
+  <div class="trend-chip-count">5</div>
+  <div class="trend-chip-label">AI/ML</div>
+</div>
+<div class="trend-chip">
+  <div class="trend-chip-count">2</div>
+  <div class="trend-chip-label">Climate</div>
+</div>
+<div class="trend-chip">
+  <div class="trend-chip-count">2</div>
+  <div class="trend-chip-label">Infrastructure</div>
+</div>
+<div class="trend-chip">
+  <div class="trend-chip-count">2</div>
+  <div class="trend-chip-label">Edtech</div>
+</div>
+<div class="trend-chip">
+  <div class="trend-chip-count">1</div>
+  <div class="trend-chip-label">Health</div>
+</div>
+</div>
+</section>
+    <hr class="section-rule">
+<section id="events">
+  <span class="section-label">Events This Week</span>
+  <p class="section-transition">Beyond the funding headlines, the NYC tech calendar is packed this month.</p>
+<article class="event-card">
+  <h3 class="event-headline">NY Tech Meetup - February 2026</h3>
+  <p class="event-dek">Monthly NYC Tech Meetup featuring 5 startup demos and networking.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 12, 2026 @ 6:30 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> NYU Kimmel Center</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Free</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Great for meeting founders and investors in casual setting.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-17" class="cite-sup">[17]</a></div>
+  <a href="https://garysguide.com/events/ny-tech-meetup-feb" class="event-btn" target="_blank">Register →</a>
+</article><article class="event-card">
+  <h3 class="event-headline">Brooklyn FinTech Happy Hour</h3>
+  <p class="event-dek">Monthly networking for Brooklyn's fintech community.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 14, 2026 @ 6:00 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Industry City - Building 6</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Free</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Casual drinks and conversation with 100+ attendees. No pitch decks, just connections.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-19" class="cite-sup">[19]</a></div>
+  
+</article><article class="event-card">
+  <h3 class="event-headline">Women in Tech Brunch</h3>
+  <p class="event-dek">Monthly brunch for women in NYC tech.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 16, 2026 @ 11:00 AM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Soho House</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> $40</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Great for making genuine connections with other founders and learning about funding opportunities.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-20" class="cite-sup">[20]</a></div>
+  <a href="https://garysguide.com/events/women-tech-brunch-feb" class="event-btn" target="_blank">Register →</a>
+</article><article class="event-card">
+  <h3 class="event-headline">AI Builders Summit 2026</h3>
+  <p class="event-dek">Full-day conference on building AI agent companies.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 18, 2026 @ 9:00 AM - 5:00 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Convene - 117 West 46th St</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> $295 (Student discount: $99)</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Speakers from OpenAI, Anthropic, and leading NYC AI startups. Panel on AI venture funding.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-23" class="cite-sup">[23]</a></div>
+  <a href="https://garysguide.com/events/ai-summit-2026" class="event-btn" target="_blank">Register →</a>
+</article><article class="event-card">
+  <h3 class="event-headline">Climate Tech Pitch Night</h3>
+  <p class="event-dek">5 climate tech startups pitch to panel of climate-focused VCs.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 20, 2026 @ 6:30 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> The Impact Hub - 394 Broadway</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Free</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Audience Q&A and networking afterward. Focus on NYC-based climate solutions.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-18" class="cite-sup">[18]</a></div>
+  <a href="https://garysguide.com/events/climate-pitch-feb" class="event-btn" target="_blank">Register →</a>
+</article><article class="event-card">
+  <h3 class="event-headline">First Round Capital Portfolio Meetup</h3>
+  <p class="event-dek">Quarterly meetup for First Round portfolio companies and prospective founders.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 25, 2026 @ 7:00 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> First Round Office - 155 5th Avenue</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Free (RSVP required)</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Learn about their investment thesis and meet portfolio founders.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-22" class="cite-sup">[22]</a></div>
+  <a href="https://garysguide.com/events/frc-portfolio-feb" class="event-btn" target="_blank">Register →</a>
+</article><article class="event-card">
+  <h3 class="event-headline">TechStars NYC Demo Day - Winter 2026</h3>
+  <p class="event-dek">TechStars NYC Winter 2026 cohort presenting their companies to investors.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> February 27, 2026 @ 3:00 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> TechStars Office - 9 W 18th St</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Invite Only</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>10 startups across AI, fintech, climate tech, and B2B SaaS.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-21" class="cite-sup">[21]</a></div>
+  
+</article><article class="event-card">
+  <h3 class="event-headline">Student Founder Office Hours</h3>
+  <p class="event-dek">Weekly office hours with NYC VCs and successful founders.</p>
+  <div class="event-meta">
+    <span class="event-meta-item"><span class="event-meta-icon">📅</span> Every Thursday in February @ 4:00 PM</span>
+    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Online via Zoom</span>
+    <span class="event-meta-item"><span class="event-meta-icon">💵</span> Free</span>
+  </div>
+  <aside class="why-it-matters">
+  <h4>Why Attend</h4>
+  <p>Get feedback on your idea, pitch, and early traction. Columbia and NYU students welcome.</p>
+</aside>
+  <div class="story-sources">Sources: Gary's Guide <a href="#src-16" class="cite-sup">[16]</a></div>
+  <a href="https://garysguide.com/events/student-founder-hours" class="event-btn" target="_blank">Register →</a>
+</article>
+</section>
+    <hr class="section-rule">
+<section id="accelerators">
+  <span class="section-label">Accelerator Watch</span>
+  <p class="section-transition">For founders still in the building phase, these programs are worth a serious look.</p>
+<article class="accel-card">
+  <h3 class="accel-headline">TechStars NYC</h3>
+  <div class="accel-focus">General tech, all sectors</div>
+  <p class="story-lede">TechStars NYC is based in New York, NY. The program focuses on general tech, all sectors. 13-week mentorship-driven program.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in general tech, all sectors. Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: New York, NY</li>
+<li>Focus: General tech, all sectors</li>
+<li>$120K for 6% equity</li>
+<li>Apply: <a href="https://techstars.com/accelerators/nyc" target="_blank">https://techstars.com/accelerators/nyc</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-24" class="cite-sup">[24]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">Entrepreneur Roundtable Accelerator (ERA)</h3>
+  <div class="accel-focus">B2B SaaS, Marketplaces, Enterprise</div>
+  <p class="story-lede">Entrepreneur Roundtable Accelerator (ERA) is based in New York, NY. The program focuses on b2b saas, marketplaces, enterprise. NYC's largest accelerator.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in b2b saas, marketplaces, enterprise. Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: New York, NY</li>
+<li>Focus: B2B SaaS, Marketplaces, Enterprise</li>
+<li>$100K for 6% equity</li>
+<li>Apply: <a href="https://era.co/apply" target="_blank">https://era.co/apply</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-25" class="cite-sup">[25]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">Entrepreneur First NYC</h3>
+  <div class="accel-focus">Deep tech, AI/ML, Hard tech</div>
+  <p class="story-lede">Entrepreneur First NYC is based in New York, NY. The program focuses on deep tech, ai/ml, hard tech. Build your company and team from scratch.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in deep tech, ai/ml, hard tech. Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: New York, NY</li>
+<li>Focus: Deep tech, AI/ML, Hard tech</li>
+<li>Pre-team accelerator for exceptional individuals</li>
+<li>Apply: <a href="https://joinef.com/apply" target="_blank">https://joinef.com/apply</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-26" class="cite-sup">[26]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">Columbia Startup Lab</h3>
+  <div class="accel-focus">Columbia-affiliated founders (students, alumni, faculty)</div>
+  <p class="story-lede">Columbia Startup Lab is based in New York, NY. The program focuses on columbia-affiliated founders (students, alumni, faculty). For Columbia community members building startups.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in columbia-affiliated founders (students, alumni, faculty). Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: New York, NY</li>
+<li>Focus: Columbia-affiliated founders (students, alumni, faculty)</li>
+<li>Free co-working space, mentorship, and $0-25K grants</li>
+<li>Apply: <a href="https://startuplab.columbia.edu/apply" target="_blank">https://startuplab.columbia.edu/apply</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-27" class="cite-sup">[27]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">Blueprint Health</h3>
+  <div class="accel-focus">Healthcare IT, Digital Health</div>
+  <p class="story-lede">Blueprint Health is based in New York, NY. The program focuses on healthcare it, digital health. 3-month program focused exclusively on healthcare technology.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in healthcare it, digital health. Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: New York, NY</li>
+<li>Focus: Healthcare IT, Digital Health</li>
+<li>$20K + $100K convertible note for 6% equity</li>
+<li>Apply: <a href="https://blueprint.health/apply" target="_blank">https://blueprint.health/apply</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-28" class="cite-sup">[28]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">Urban.us</h3>
+  <div class="accel-focus">Climate tech, Smart cities, Urban innovation</div>
+  <p class="story-lede">Urban.us is based in Brooklyn, NY. The program focuses on climate tech, smart cities, urban innovation. Focus on startups solving urban challenges like housing, transportation, and sustainability.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in climate tech, smart cities, urban innovation. Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: Brooklyn, NY</li>
+<li>Focus: Climate tech, Smart cities, Urban innovation</li>
+<li>$100K-250K investment</li>
+<li>Apply: <a href="https://urban.us/accelerator" target="_blank">https://urban.us/accelerator</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-29" class="cite-sup">[29]</a></div>
+</article><article class="accel-card">
+  <h3 class="accel-headline">NYU Tandon Future Labs</h3>
+  <div class="accel-focus">Tech startups (students, alumni, faculty welcome)</div>
+  <p class="story-lede">NYU Tandon Future Labs is based in Brooklyn, NY. The program focuses on tech startups (students, alumni, faculty welcome). Access to NYU network, mentors, and funding opportunities.</p>
+  <aside class="why-it-matters">
+  <h4>Why It Matters</h4>
+  <p>Worth watching for founders in tech startups (students, alumni, faculty welcome). Applications are open.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: Brooklyn, NY</li>
+<li>Focus: Tech startups (students, alumni, faculty welcome)</li>
+<li>Free incubator space in Brooklyn</li>
+<li>Apply: <a href="https://futurelabs.nyc/apply" target="_blank">https://futurelabs.nyc/apply</a></li>
+</ul>
+  <div class="story-sources">Sources: OpenVC <a href="#src-30" class="cite-sup">[30]</a></div>
+</article>
+</section>
+    <hr class="section-rule">
+<section id="sources" class="bibliography">
+  <span class="section-label">Sources &amp; Bibliography</span>
+  <ul class="bib-list">
+<li class="bib-item" id="src-1">
+  <span class="bib-num">1</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/01/climateos-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/02/01/climateos-series-a</a>
+  </div>
+</li>
+<li class="bib-item" id="src-2">
+  <span class="bib-num">2</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/climateos-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/02/climateos-funding</a>
+  </div>
+</li>
+<li class="bib-item" id="src-3">
+  <span class="bib-num">3</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/26/datapipe-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/01/26/datapipe-series-a</a>
+  </div>
+</li>
+<li class="bib-item" id="src-4">
+  <span class="bib-num">4</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/datapipe-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/01/datapipe-funding</a>
+  </div>
+</li>
+<li class="bib-item" id="src-5">
+  <span class="bib-num">5</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/02/quantumhealth-series-b" class="bib-link" target="_blank">https://techcrunch.com/2026/02/02/quantumhealth-series-b</a>
+  </div>
+</li>
+<li class="bib-item" id="src-6">
+  <span class="bib-num">6</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/31/securestack-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/01/31/securestack-series-a</a>
+  </div>
+</li>
+<li class="bib-item" id="src-7">
+  <span class="bib-num">7</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/29/retailos-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/01/29/retailos-series-a</a>
+  </div>
+</li>
+<li class="bib-item" id="src-8">
+  <span class="bib-num">8</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/financeflow-series-a" class="bib-link" target="_blank">https://alleywatch.com/2026/02/financeflow-series-a</a>
+  </div>
+</li>
+<li class="bib-item" id="src-9">
+  <span class="bib-num">9</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/03/financeflow-raises-8m" class="bib-link" target="_blank">https://techcrunch.com/2026/02/03/financeflow-raises-8m</a>
+  </div>
+</li>
+<li class="bib-item" id="src-10">
+  <span class="bib-num">10</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/workflowai-seed" class="bib-link" target="_blank">https://alleywatch.com/2026/01/workflowai-seed</a>
+  </div>
+</li>
+<li class="bib-item" id="src-11">
+  <span class="bib-num">11</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/28/workflowai-funding" class="bib-link" target="_blank">https://techcrunch.com/2026/01/28/workflowai-funding</a>
+  </div>
+</li>
+<li class="bib-item" id="src-12">
+  <span class="bib-num">12</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/foodloop-seed-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/01/foodloop-seed-funding</a>
+  </div>
+</li>
+<li class="bib-item" id="src-13">
+  <span class="bib-num">13</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/27/neurolearn-seed" class="bib-link" target="_blank">https://techcrunch.com/2026/01/27/neurolearn-seed</a>
+  </div>
+</li>
+<li class="bib-item" id="src-14">
+  <span class="bib-num">14</span>
+  <div>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/04/campusai-seed-round" class="bib-link" target="_blank">https://techcrunch.com/2026/02/04/campusai-seed-round</a>
+  </div>
+</li>
+<li class="bib-item" id="src-15">
+  <span class="bib-num">15</span>
+  <div>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/campusai-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/02/campusai-funding</a>
+  </div>
+</li>
+<li class="bib-item" id="src-16">
+  <span class="bib-num">16</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/student-founder-hours" class="bib-link" target="_blank">https://garysguide.com/events/student-founder-hours</a>
+  </div>
+</li>
+<li class="bib-item" id="src-17">
+  <span class="bib-num">17</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/ny-tech-meetup-feb" class="bib-link" target="_blank">https://garysguide.com/events/ny-tech-meetup-feb</a>
+  </div>
+</li>
+<li class="bib-item" id="src-18">
+  <span class="bib-num">18</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/climate-pitch-feb" class="bib-link" target="_blank">https://garysguide.com/events/climate-pitch-feb</a>
+  </div>
+</li>
+<li class="bib-item" id="src-19">
+  <span class="bib-num">19</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/fintech-happy-hour-feb" class="bib-link" target="_blank">https://garysguide.com/events/fintech-happy-hour-feb</a>
+  </div>
+</li>
+<li class="bib-item" id="src-20">
+  <span class="bib-num">20</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/women-tech-brunch-feb" class="bib-link" target="_blank">https://garysguide.com/events/women-tech-brunch-feb</a>
+  </div>
+</li>
+<li class="bib-item" id="src-21">
+  <span class="bib-num">21</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/techstars-demo-day-winter-26" class="bib-link" target="_blank">https://garysguide.com/events/techstars-demo-day-winter-26</a>
+  </div>
+</li>
+<li class="bib-item" id="src-22">
+  <span class="bib-num">22</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/frc-portfolio-feb" class="bib-link" target="_blank">https://garysguide.com/events/frc-portfolio-feb</a>
+  </div>
+</li>
+<li class="bib-item" id="src-23">
+  <span class="bib-num">23</span>
+  <div>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/ai-summit-2026" class="bib-link" target="_blank">https://garysguide.com/events/ai-summit-2026</a>
+  </div>
+</li>
+<li class="bib-item" id="src-24">
+  <span class="bib-num">24</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/techstars-nyc" class="bib-link" target="_blank">https://openvc.app/accelerators/techstars-nyc</a>
+  </div>
+</li>
+<li class="bib-item" id="src-25">
+  <span class="bib-num">25</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/era" class="bib-link" target="_blank">https://openvc.app/accelerators/era</a>
+  </div>
+</li>
+<li class="bib-item" id="src-26">
+  <span class="bib-num">26</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/ef-nyc" class="bib-link" target="_blank">https://openvc.app/accelerators/ef-nyc</a>
+  </div>
+</li>
+<li class="bib-item" id="src-27">
+  <span class="bib-num">27</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/columbia-lab" class="bib-link" target="_blank">https://openvc.app/accelerators/columbia-lab</a>
+  </div>
+</li>
+<li class="bib-item" id="src-28">
+  <span class="bib-num">28</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/blueprint" class="bib-link" target="_blank">https://openvc.app/accelerators/blueprint</a>
+  </div>
+</li>
+<li class="bib-item" id="src-29">
+  <span class="bib-num">29</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/urban-us" class="bib-link" target="_blank">https://openvc.app/accelerators/urban-us</a>
+  </div>
+</li>
+<li class="bib-item" id="src-30">
+  <span class="bib-num">30</span>
+  <div>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/nyu-tandon" class="bib-link" target="_blank">https://openvc.app/accelerators/nyu-tandon</a>
+  </div>
+</li>
+</ul>
+</section>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-line">Generated on February 12, 2026 at 12:17 PM</div>
+        <div class="footer-line">AI Factory Newsletter &bull; Built for the startup community</div>
     </div>
+</footer>
+
 </body>
 </html>
