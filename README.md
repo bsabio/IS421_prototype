@@ -32,20 +32,102 @@ newsroom/
 ├── sources.py       # Source-specific collectors
 ├── templates.py     # Deterministic templates
 ├── models.py        # Data models (FundingItem, EventItem, etc.)
+├── schema.py        # Canonical JSON types (Company, Person, Event, etc.)
+├── json_builder.py  # Mapper, normalizer, validator, JSON writer
+├── newsletter_schema.json  # JSON Schema (Draft-07) for contract validation
 └── utils.py         # Utility functions
 
 data/
 ├── raw/             # Raw HTML sources (for reproducibility)
 ├── normalized.json  # Extracted structured data
 ├── deduped.json     # Deduplicated data
-└── ranked.json      # Ranked & ready for rendering
+├── ranked.json      # Ranked & ready for rendering
+└── newsletter_data.json  # Canonical JSON contract (generated)
 
 output/
 ├── newsletter.md    # Generated newsletter (Markdown)
 └── newsletter.html  # Generated newsletter (HTML)
 ```
 
-## 📦 Data Sources
+## � Newsletter JSON Builder
+
+The **JSON Builder** converts aggregated newsletter data into a single canonical JSON file (`data/newsletter_data.json`) that serves as the contract between data collection and rendering.
+
+### Build & Validate
+
+```bash
+# Build the canonical JSON from real data
+python3 -m newsroom.json_builder
+
+# Validate an existing JSON file against the schema
+python3 -m newsroom.json_builder --validate data/newsletter_data.json
+
+# Run tests
+python3 -m pytest tests/test_json_builder.py -v
+```
+
+### JSON Structure
+
+```
+{
+  "metadata"              → generatedAt, timeWindow, region, version, provenance
+  "entities.companies"    → canonical company records (id, name, industry, etc.)
+  "entities.people"       → canonical people records (id, name, role, affiliations)
+  "content.investments"   → funding rounds with entityRefs, sources, amounts
+  "content.events"        → events with location, topics, registration URLs
+  "content.accelerators"  → accelerator programs with terms, focus areas
+  "content.articles"      → (extensible) future article summaries
+  "content.resources"     → (extensible) tools, reports, datasets
+  "newsletterDraftPlan"   → AI writer instructions: sections, tone, audience
+}
+```
+
+### Adding New Data Sources
+
+The schema is **additive-only** — you can safely:
+
+1. **Append items** to any `content.*` array or `entities.*` array
+2. **Add new keys** to any object (all definitions use `additionalProperties: true`)
+3. **Add new content categories** (e.g., `content.podcasts`) without breaking existing consumers
+
+**Do NOT:**
+- Remove or rename existing required fields (`id`, `type`, `title`, `summary`, `sources`)
+- Change the id prefix convention (`company:`, `person:`, `event:`, `investment:`, etc.)
+- Remove items from `sources` arrays (every fact must be traceable)
+
+**To add a new data source:**
+
+```python
+from newsroom.schema import Source, Investment, Amount, EntityRefs
+from newsroom.json_builder import EntityRegistry
+
+# 1. Register entities (auto-deduplicates by slug)
+reg = EntityRegistry()
+cid = reg.add_company("New Startup", industry=["AI"])
+pid = reg.add_person("Jane Founder", role="CEO", affiliations=[cid])
+
+# 2. Create content items with sources
+inv = Investment(
+    title="New Startup raises $5M Seed",
+    summary="One-paragraph summary.",
+    date="2026-03-01",
+    round="Seed",
+    amount=Amount(5_000_000),
+    entityRefs=EntityRefs(companies=[cid], people=[pid]),
+    sources=[Source(url="https://...", publisher="TechCrunch", confidence=0.9)],
+    tags=["funding", "ai"],
+)
+
+# 3. Append to the NewsletterData object and write
+```
+
+Schema definition: [`newsroom/newsletter_schema.json`](newsroom/newsletter_schema.json)  
+Python types: [`newsroom/schema.py`](newsroom/schema.py)  
+Builder/validator: [`newsroom/json_builder.py`](newsroom/json_builder.py)
+
+---
+
+## �📦 Data Sources
 
 ### Current (Prototype): Mock Data
 - `data/mock/funding.json` - 10 realistic funding announcements

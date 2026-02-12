@@ -1,0 +1,282 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://is421-prototype.local/newsletter-data-v1",
+  "title": "Newsletter Canonical Data",
+  "description": "Schema for the canonical newsletter JSON contract. Additive-only: new keys or array items may be added; existing required fields must not be removed.",
+  "type": "object",
+  "required": ["metadata", "entities", "content", "newsletterDraftPlan"],
+  "additionalProperties": true,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["generatedAt", "timeWindow", "version"],
+      "additionalProperties": true,
+      "properties": {
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "timeWindow": {
+          "type": "object",
+          "required": ["start", "end"],
+          "properties": {
+            "start": { "type": "string", "format": "date-time" },
+            "end":   { "type": "string", "format": "date-time" }
+          }
+        },
+        "region": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "description": { "type": "string" },
+        "provenance": {
+          "type": "object",
+          "required": ["pipeline", "runId"],
+          "additionalProperties": true,
+          "properties": {
+            "pipeline": { "type": "string" },
+            "runId":    { "type": "string" },
+            "notes":    { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "entities": {
+      "type": "object",
+      "required": ["companies", "people"],
+      "additionalProperties": true,
+      "properties": {
+        "companies": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Company" }
+        },
+        "people": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Person" }
+        }
+      }
+    },
+
+    "content": {
+      "type": "object",
+      "required": ["events", "investments"],
+      "additionalProperties": true,
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Event" }
+        },
+        "investments": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Investment" }
+        },
+        "articles": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Article" }
+        },
+        "resources": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Resource" }
+        },
+        "accelerators": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Accelerator" }
+        }
+      }
+    },
+
+    "newsletterDraftPlan": {
+      "type": "object",
+      "required": ["audience", "tone", "sections"],
+      "additionalProperties": true,
+      "properties": {
+        "audience": { "type": "string" },
+        "tone":     { "type": "string" },
+        "format":   { "type": "string" },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "logic"],
+            "properties": {
+              "title": { "type": "string" },
+              "logic": { "type": "string" }
+            }
+          }
+        },
+        "aiWriterInstructions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Source": {
+      "type": "object",
+      "required": ["url", "publisher", "retrievedAt"],
+      "additionalProperties": true,
+      "properties": {
+        "url":         { "type": "string", "format": "uri" },
+        "publisher":   { "type": "string" },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "confidence":  { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+
+    "Company": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": true,
+      "properties": {
+        "id":       { "type": "string", "pattern": "^company:" },
+        "name":     { "type": "string" },
+        "aliases":  { "type": "array", "items": { "type": "string" } },
+        "industry": { "type": "array", "items": { "type": "string" } },
+        "location": { "type": "string" },
+        "links":    { "type": "array", "items": { "type": "string", "format": "uri" } },
+        "sources":  { "type": "array", "items": { "$ref": "#/definitions/Source" } }
+      }
+    },
+
+    "Person": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": true,
+      "properties": {
+        "id":           { "type": "string", "pattern": "^person:" },
+        "name":         { "type": "string" },
+        "role":         { "type": "string" },
+        "affiliations": { "type": "array", "items": { "type": "string" } },
+        "socials":      { "type": "object", "additionalProperties": { "type": "string" } },
+        "sources":      { "type": "array", "items": { "$ref": "#/definitions/Source" } }
+      }
+    },
+
+    "EntityRefs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "properties": {
+        "companies": { "type": "array", "items": { "type": "string" } },
+        "people":    { "type": "array", "items": { "type": "string" } },
+        "investors": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "Event": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "sources"],
+      "additionalProperties": true,
+      "properties": {
+        "id":         { "type": "string", "pattern": "^event:" },
+        "type":       { "const": "event" },
+        "title":      { "type": "string" },
+        "summary":    { "type": "string" },
+        "startDate":  { "type": "string" },
+        "endDate":    { "type": ["string", "null"] },
+        "location":   {
+          "type": "object",
+          "properties": {
+            "city":     { "type": "string" },
+            "state":    { "type": "string" },
+            "country":  { "type": "string" },
+            "venue":    { "type": "string" },
+            "isOnline": { "type": "boolean" }
+          }
+        },
+        "topics":     { "type": "array", "items": { "type": "string" } },
+        "cost":       { "type": "string" },
+        "registrationUrl": { "type": ["string", "null"], "format": "uri" },
+        "entityRefs": { "$ref": "#/definitions/EntityRefs" },
+        "sources":    { "type": "array", "items": { "$ref": "#/definitions/Source" }, "minItems": 1 },
+        "tags":       { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "Investment": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "sources"],
+      "additionalProperties": true,
+      "properties": {
+        "id":      { "type": "string", "pattern": "^investment:" },
+        "type":    { "const": "investment" },
+        "title":   { "type": "string" },
+        "summary": { "type": "string" },
+        "date":    { "type": "string" },
+        "round":   { "type": "string" },
+        "amount":  {
+          "type": "object",
+          "required": ["value", "currency"],
+          "properties": {
+            "value":       { "type": "number" },
+            "currency":    { "type": "string" },
+            "approximate": { "type": "boolean" }
+          }
+        },
+        "entityRefs": { "$ref": "#/definitions/EntityRefs" },
+        "sources":    { "type": "array", "items": { "$ref": "#/definitions/Source" }, "minItems": 1 },
+        "tags":       { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "Article": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "sources"],
+      "additionalProperties": true,
+      "properties": {
+        "id":         { "type": "string", "pattern": "^article:" },
+        "type":       { "const": "article" },
+        "title":      { "type": "string" },
+        "summary":    { "type": "string" },
+        "publishedAt": { "type": "string" },
+        "entityRefs": { "$ref": "#/definitions/EntityRefs" },
+        "sources":    { "type": "array", "items": { "$ref": "#/definitions/Source" }, "minItems": 1 },
+        "tags":       { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "Resource": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "sources"],
+      "additionalProperties": true,
+      "properties": {
+        "id":         { "type": "string", "pattern": "^resource:" },
+        "type":       { "const": "resource" },
+        "title":      { "type": "string" },
+        "summary":    { "type": "string" },
+        "url":        { "type": "string", "format": "uri" },
+        "entityRefs": { "$ref": "#/definitions/EntityRefs" },
+        "sources":    { "type": "array", "items": { "$ref": "#/definitions/Source" }, "minItems": 1 },
+        "tags":       { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "Accelerator": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "sources"],
+      "additionalProperties": true,
+      "properties": {
+        "id":         { "type": "string", "pattern": "^accelerator:" },
+        "type":       { "const": "accelerator" },
+        "title":      { "type": "string" },
+        "summary":    { "type": "string" },
+        "location":   {
+          "type": "object",
+          "properties": {
+            "city":    { "type": "string" },
+            "state":   { "type": "string" },
+            "country": { "type": "string" }
+          }
+        },
+        "focus":      { "type": "array", "items": { "type": "string" } },
+        "terms":      { "type": "string" },
+        "entityRefs": { "$ref": "#/definitions/EntityRefs" },
+        "sources":    { "type": "array", "items": { "$ref": "#/definitions/Source" }, "minItems": 1 },
+        "tags":       { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
