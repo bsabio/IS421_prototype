@@ -586,7 +586,7 @@ def _details_html(details: List[str]) -> str:
     return '<ul class="key-details">\n' + '\n'.join(items) + '\n</ul>'
 
 
-def _why_html(text: str, label: str = 'Why It Matters') -> str:
+def _why_html(text: str, label: str = 'Here\u2019s What This Means') -> str:
     return (
         f'<aside class="why-it-matters">\n'
         f'  <h4>{label}</h4>\n'
@@ -658,7 +658,7 @@ def _event_html(card: StoryCard) -> str:
         f'    <span class="event-meta-item"><span class="event-meta-icon">\U0001F4CD</span> {card.venue}</span>\n'
         f'    <span class="event-meta-item"><span class="event-meta-icon">\U0001F4B5</span> {card.cost}</span>\n'
         f'  </div>\n'
-        f'  {_why_html(card.why_it_matters, "Why Attend")}\n'
+        f'  {_why_html(card.why_it_matters, "Why You Should Be There")}\n'
         f'  {_cite_source_line(card.citations)}\n'
         f'  {reg}\n'
         f'</article>'
@@ -887,7 +887,7 @@ def render_html_page(
             <span class="sep">&middot;</span>
             <span>{date_str}</span>
             <span class="sep">&middot;</span>
-            <span>Compiled by AI Factory Newsroom</span>
+            <span>Anchored by Lester Holt \u2014 AI Factory Newsroom</span>
         </div>
         <div class="masthead-rule"></div>
     </div>
@@ -896,7 +896,7 @@ def render_html_page(
 <main class="container">
 
     <section class="editors-note">
-        <h2>Editor\u2019s Note</h2>
+        <h2>From the Anchor Desk</h2>
         <p>{en}</p>
     </section>
 
@@ -915,7 +915,7 @@ def render_html_page(
 <footer class="footer">
     <div class="container">
         <div class="footer-line">Generated on {gen_ts}</div>
-        <div class="footer-line">{title} &bull; Built for the startup community</div>
+        <div class="footer-line">{title} &bull; Thank you for being here with us tonight</div>
     </div>
 </footer>
 

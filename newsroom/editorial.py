@@ -1,10 +1,11 @@
 """
-Editorial layer – deterministic mapping from ranked data items to
-journalist-style StoryCards.
+Editorial layer – Lester Holt newscast-style mapping from ranked data
+items to StoryCards.
 
-Every headline, dek, lede, and "why it matters" is assembled from data
-fields using template patterns.  No AI generation, no randomness, no
-invented facts.
+Every headline, dek, lede, and "here's what this means" is assembled
+from data fields using template patterns modeled on Lester Holt's
+authoritative, clear, direct NBC Nightly News delivery.
+No AI generation, no randomness, no invented facts.
 """
 
 from dataclasses import dataclass, field
@@ -125,39 +126,46 @@ def funding_to_story(item: FundingItem, tracker: CitationTracker) -> StoryCard:
     lead = item.lead_investor or ''
     www = item.who_what_why_when_where_how
 
-    # headline
+    # headline — Lester Holt style: declarative, authoritative
     if lead and item.amount != 'Undisclosed':
-        headline = f'{item.startup_name} Lands {item.amount} {rl} Led by {lead}'
+        headline = f'{item.startup_name} Secures {item.amount} {rl} Backed by {lead}'
     elif item.amount != 'Undisclosed':
-        headline = f'{item.startup_name} Raises {item.amount} in {rl}'
+        headline = f'{item.startup_name} Raises {item.amount} in New {rl}'
     else:
-        headline = f'{item.startup_name} Closes {rl}; Terms Undisclosed'
+        headline = f'{item.startup_name} Closes {rl} — Financial Terms Not Disclosed'
 
-    # dek (one-sentence hook)
+    # dek (one-sentence hook — anchor tease)
     raw_dek = item.evidence_snippets[0] if item.evidence_snippets else www.what
     dek = raw_dek.rstrip('.') + '.'
 
-    # lede (2-3 sentences: who / what / when)
-    parts = [
-        f'{item.startup_name}, based in {loc}, has raised {item.amount} in a '
-        f'{rl.lower()} round' + (f' led by {lead}' if lead else '') + '.'
-    ]
+    # lede (2-3 sentences: Lester Holt newscast open)
     others = [i for i in item.investors if i != item.lead_investor]
+    parts = [
+        f'Good evening. We begin with news out of {loc}, where {item.startup_name} '
+        f'has secured {item.amount} in a {rl.lower()} round'
+        + (f' led by {lead}' if lead else '') + '.'
+    ]
     if others:
-        parts.append(f'{", ".join(others[:3])} also participated.')
+        if len(others) <= 2:
+            oth_str = ' and '.join(others)
+        else:
+            oth_str = ', '.join(others[:2]) + ', and ' + others[2]
+        parts.append(f'{oth_str} also took part in the round.')
     if www.when:
-        parts.append(www.when.rstrip('.') + '.')
+        parts.append(
+            f'The announcement came {www.when.lower().replace("announced ", "").rstrip(".")}.'
+        )
     lede = ' '.join(parts)
 
-    # why it matters
+    # why it matters — "here's what this means" Holt sign-off
     wparts = []
     if www.why:
         wparts.append(www.why.rstrip('.') + '.')
     if www.how and www.how not in (www.why or ''):
         wparts.append(www.how.rstrip('.') + '.')
     why = ' '.join(wparts) or (
-        f'The round signals continued investor interest in '
-        f'{", ".join(item.categories[:2]).lower() if item.categories else "this sector"}.'
+        f'It\'s a signal that investors are watching '
+        f'{", ".join(item.categories[:2]).lower() if item.categories else "this space"} closely.'
     )
 
     # key details (3-6 bullets)
@@ -188,21 +196,21 @@ def funding_to_story(item: FundingItem, tracker: CitationTracker) -> StoryCard:
 
 def event_to_story(item: EventItem, tracker: CitationTracker) -> StoryCard:
     desc_parts = [s.strip() for s in (item.description or '').split('. ') if s.strip()]
-    dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else 'A NYC tech community event.'
+    dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else 'A gathering for the NYC tech community.'
 
     venue = item.venue_or_online or 'TBA'
     city = item.city or 'NYC'
-    lede = f'{item.event_name} takes place {item.date_time} at {venue} in {city}.'
+    lede = f'Turning now to what\'s coming up on the calendar. {item.event_name} is set for {item.date_time} at {venue} in {city}.'
     if item.cost and item.cost.lower() == 'free':
-        lede += ' The event is free to attend.'
+        lede += ' There is no cost to attend.'
     elif item.cost:
-        lede += f' Admission is {item.cost}.'
+        lede += f' Tickets are {item.cost}.'
 
     audience = item.audience or 'tech professionals'
     why = (
         '. '.join(desc_parts[1:]).strip().rstrip('.') + '.'
     ) if len(desc_parts) > 1 else (
-        f'A strong opportunity for {audience} to connect with the NYC tech ecosystem.'
+        f'If you\'re a {audience.lower().rstrip("s")} in this city, this is one worth putting on your calendar.'
     )
 
     details = [f'Date: {item.date_time}', f'Venue: {venue}', f'Cost: {item.cost}']
@@ -223,21 +231,21 @@ def event_to_story(item: EventItem, tracker: CitationTracker) -> StoryCard:
 def accelerator_to_story(item: AcceleratorItem, tracker: CitationTracker) -> StoryCard:
     desc_parts = [s.strip() for s in (item.description or '').split('. ') if s.strip()]
     dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else (
-        f'A program in {item.city_region or "NYC"}.'
+        f'A program based in {item.city_region or "New York"}.'
     )
 
     lede = (
-        f'{item.name} is based in {item.city_region}.'
-        if item.city_region else f'{item.name} is a NYC-based program.'
+        f'We want to tell you about {item.name}, headquartered in {item.city_region}.'
+        if item.city_region else f'We want to tell you about {item.name}, a New York–based program.'
     )
     if item.focus:
-        lede += f' The program focuses on {item.focus.lower()}.'
+        lede += f' Their focus: {item.focus.lower()}.'
     if len(desc_parts) > 1:
         lede += ' ' + desc_parts[1].rstrip('.') + '.'
 
-    why = f'Worth watching for founders in {item.focus.lower() if item.focus else "tech"}.'
+    why = f'For founders working in {item.focus.lower() if item.focus else "tech"}, this is a program to know about.'
     if item.application_url:
-        why += ' Applications are open.'
+        why += ' And applications are currently open.'
 
     details = []
     if item.city_region:
@@ -277,13 +285,14 @@ def build_editors_note(
     cats = list(trend_data.keys())[:3] if trend_data else []
     cat_s = ', '.join(_cat_label(c) for c in cats) or 'tech'
 
-    note = f'This week, {len(funding)} NYC startups raised a combined {total_s}. '
-    note += f'The biggest themes: {cat_s}. '
+    note = f'Good evening, everyone. Tonight we\'re tracking {len(funding)} startup funding deals '
+    note += f'here in New York City, totaling a combined {total_s}. '
+    note += f'The sectors driving the action: {cat_s}. '
     if events:
-        note += f'{len(events)} events are on the calendar, from pitch nights to demo days. '
+        note += f'We\'re also keeping an eye on {len(events)} events on the calendar this month. '
     if accelerators:
-        note += f'{len(accelerators)} accelerator programs are worth your attention. '
-    note += "Here\u2019s what you need to know."
+        note += f'And {len(accelerators)} accelerator programs that deserve your attention. '
+    note += 'Let\'s get to it.'
     return note
 
 
@@ -295,14 +304,14 @@ def build_trend_prose(trend_data: Dict[str, int]) -> str:
     items = list(trend_data.items())
     top_cat, top_n = items[0]
     label = _cat_label(top_cat)
-    verb = 'continues' if top_n > 2 else 'leads'
     prose = (
-        f'{label} {verb} NYC funding activity, with {top_n} '
-        f'deal{"s" if top_n != 1 else ""} touching the space this week.'
+        f'Now, when you step back and look at where the money is going, '
+        f'a clear picture emerges. {label} is leading the way, with {top_n} '
+        f'deal{"s" if top_n != 1 else ""} this week alone.'
     )
     if len(items) > 1:
         rest = [f'{_cat_label(c)} ({n})' for c, n in items[1:]]
-        prose += f' Also active: {", ".join(rest)}.'
+        prose += f' Also seeing activity: {", ".join(rest)}.'
     return prose
 
 
@@ -310,21 +319,23 @@ def build_trend_prose(trend_data: Dict[str, int]) -> str:
 
 _TRANSITIONS = {
     'top_stories': (
-        'The biggest deal this week was not alone. '
-        'Here are the other rounds that caught our attention.'
+        'But that was not the only deal making news tonight. '
+        'Several other rounds also caught our attention this week.'
     ),
     'funding_radar': (
-        'Beyond the top headlines, more NYC startups closed rounds this week.'
+        'Meanwhile, more startups across New York City quietly closed rounds of their own.'
     ),
     'trend_brief': (
-        'Step back from the individual deals and a pattern emerges '
-        'across the funding landscape.'
+        'Now, let\'s take a wider look at what\'s happening across '
+        'the funding landscape.'
     ),
     'events': (
-        'Beyond the funding headlines, the NYC tech calendar is packed this month.'
+        'Turning now to the week ahead. '
+        'The New York City tech calendar has no shortage of places to be.'
     ),
     'accelerators': (
-        'For founders still in the building phase, these programs are worth a serious look.'
+        'And finally tonight, for those of you still building — '
+        'these are the programs worth a serious look.'
     ),
 }
 
