@@ -11,6 +11,7 @@ Public API (unchanged from previous version):
 """
 
 import re
+import json
 from typing import List, Dict
 from datetime import datetime
 
@@ -153,6 +154,195 @@ img { max-width: 100%; }
 
 [data-page-group][hidden] {
     display: none !important;
+}
+
+/* ── Home Newspaper Experience ───────────────────────────── */
+.home-page {
+    margin: 22px 0 34px;
+}
+.home-subview.is-hidden {
+    display: none;
+}
+.home-front-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 16px;
+}
+.home-col-title {
+    font-family: var(--serif);
+    color: var(--accent);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    line-height: 1.1;
+}
+.home-col-link {
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--serif);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+}
+.home-front-lead {
+    border-top: 2px solid var(--border);
+    padding-top: 8px;
+}
+.home-front-lead-headline {
+    font-family: var(--serif);
+    font-size: 2rem;
+    margin: 8px 0;
+    line-height: 1.1;
+}
+.home-front-lead-body {
+    color: var(--text-2);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+.home-teaser {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.home-teaser:hover {
+    border-color: var(--accent);
+}
+.home-teaser-kicker {
+    color: var(--accent);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+.home-teaser-headline {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+.home-teaser-meta {
+    font-size: 0.72rem;
+    color: var(--text-3);
+}
+.home-view-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0 20px;
+}
+.home-back-btn {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.home-back-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.home-list-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--accent);
+}
+.home-list-item {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding: 14px 0;
+    text-align: left;
+    width: 100%;
+    background: transparent;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    cursor: pointer;
+}
+.home-list-thumb {
+    background: linear-gradient(135deg, #ececec, #dcdcdc);
+    border: 1px solid var(--border);
+    min-height: 96px;
+}
+.home-list-headline {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+.home-list-summary {
+    color: var(--text-2);
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
+.home-article-wrap {
+    max-width: 760px;
+}
+.home-article-kicker {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 10px;
+    margin-bottom: 12px;
+}
+.home-article-title {
+    font-family: var(--serif);
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+.home-article-dek {
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.home-article-meta {
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+    color: var(--text-2);
+}
+.home-article-meta .author {
+    color: var(--accent);
+    font-weight: 700;
+}
+.home-article-image {
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, #f3f3f3, #e4e4e4);
+    min-height: 340px;
+    margin-bottom: 14px;
+}
+.home-article-caption {
+    font-size: 0.78rem;
+    color: var(--text-3);
+    margin-bottom: 16px;
+}
+.home-article-body p {
+    font-family: var(--serif);
+    font-size: 1.06rem;
+    line-height: 1.65;
+    margin-bottom: 14px;
+}
+.home-article-linkout {
+    margin-top: 14px;
+    font-size: 0.95rem;
 }
 
 /* ── Editor's Note ────────────────────────────────────────── */
@@ -1083,6 +1273,120 @@ def _vc_people_html() -> str:
         '  <span class="section-label">People</span>\n'
         '  <p class="section-transition">Key VC leaders and principals from your research notes, grouped by firm.</p>\n'
         f'{people_cards}'
+        '</section>'
+    )
+
+
+def _home_articles_payload(
+    lead_card: StoryCard,
+    top_cards: List[StoryCard],
+    radar_cards: List[StoryCard],
+    event_cards: List[StoryCard],
+    accel_cards: List[StoryCard],
+    date_str: str,
+) -> List[Dict[str, str]]:
+    payload = []
+
+    def add_cards(cards: List[StoryCard], section_key: str, section_label: str):
+        for idx, card in enumerate(cards, start=1):
+            if not card:
+                continue
+            body_parts = [card.lede]
+            if card.context:
+                body_parts.append(card.context)
+            if card.why_it_matters:
+                body_parts.append(card.why_it_matters)
+            if card.key_details:
+                body_parts.append('Key details: ' + '; '.join(card.key_details[:4]))
+
+            payload.append({
+                'id': f'{section_key}-{idx}',
+                'sectionKey': section_key,
+                'sectionLabel': section_label,
+                'headline': card.headline,
+                'dek': card.dek or card.lede,
+                'summary': card.lede,
+                'author': 'AI Factory News Desk',
+                'date': card.date or date_str,
+                'sourceUrl': card.citations[0].url if card.citations else '',
+                'body': '\n\n'.join(body_parts),
+            })
+
+    funding_cards = [lead_card] + top_cards + radar_cards if lead_card else top_cards + radar_cards
+    add_cards(funding_cards, 'front-page', 'Front Page')
+    add_cards(event_cards, 'news', 'News')
+    add_cards(accel_cards, 'opinion', 'Opinion')
+    return payload
+
+
+def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
+    groups = {'news': [], 'front-page': [], 'opinion': []}
+    for article in home_articles:
+        groups.setdefault(article['sectionKey'], []).append(article)
+
+    def teaser(article: Dict[str, str]) -> str:
+        return (
+            f'<button type="button" class="home-teaser" data-open-article="{article["id"]}">\n'
+            f'  <div class="home-teaser-kicker">{article["sectionLabel"]}</div>\n'
+            f'  <div class="home-teaser-headline">{article["headline"]}</div>\n'
+            f'  <div class="home-teaser-meta">{article["author"]} • {article["date"]}</div>\n'
+            f'</button>'
+        )
+
+    lead = groups['front-page'][0] if groups['front-page'] else None
+    lead_html = ''
+    if lead:
+        lead_html = (
+            '<div class="home-front-lead">\n'
+            f'  <button type="button" class="home-col-link" data-open-list="front-page">Front Page</button>\n'
+            f'  <button type="button" class="home-teaser" data-open-article="{lead["id"]}">\n'
+            f'    <h2 class="home-front-lead-headline">{lead["headline"]}</h2>\n'
+            f'    <p class="home-front-lead-body">{lead["summary"]}</p>\n'
+            f'    <div class="home-teaser-meta">{lead["author"]} • {lead["date"]}</div>\n'
+            f'  </button>\n'
+            '</div>'
+        )
+
+    news_html = ''.join(teaser(item) for item in groups['news'][:3])
+    opinion_html = ''.join(teaser(item) for item in groups['opinion'][:3])
+
+    return (
+        '<section id="home-page" class="home-page" data-page-group="home">\n'
+        '  <div id="home-subview-front" class="home-subview">\n'
+        '    <div class="home-front-grid">\n'
+        '      <div>\n'
+        '        <button type="button" class="home-col-link" data-open-list="news">News</button>\n'
+        f'{news_html}\n'
+        '      </div>\n'
+        f'      <div>{lead_html}</div>\n'
+        '      <div>\n'
+        '        <button type="button" class="home-col-link" data-open-list="opinion">Opinion</button>\n'
+        f'{opinion_html}\n'
+        '      </div>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '  <section id="home-subview-list" class="home-subview is-hidden">\n'
+        '    <div class="home-view-head">\n'
+        '      <button type="button" class="home-back-btn" data-home-back="front">← Back to Front Page</button>\n'
+        '      <h2 id="home-list-title" class="home-list-title">News</h2>\n'
+        '    </div>\n'
+        '    <div id="home-list-items"></div>\n'
+        '  </section>\n'
+        '  <article id="home-subview-article" class="home-subview is-hidden">\n'
+        '    <div class="home-view-head">\n'
+        '      <button type="button" class="home-back-btn" data-home-back="list">← Back to Newspaper</button>\n'
+        '    </div>\n'
+        '    <div class="home-article-wrap">\n'
+        '      <span id="home-article-kicker" class="home-article-kicker">News</span>\n'
+        '      <h2 id="home-article-title" class="home-article-title"></h2>\n'
+        '      <p id="home-article-dek" class="home-article-dek"></p>\n'
+        '      <p id="home-article-meta" class="home-article-meta"></p>\n'
+        '      <div class="home-article-image"></div>\n'
+        '      <p class="home-article-caption">Photo credit: AI Factory archive</p>\n'
+        '      <div id="home-article-body" class="home-article-body"></div>\n'
+        '      <p id="home-article-linkout" class="home-article-linkout"></p>\n'
+        '    </div>\n'
+        '  </article>\n'
         '</section>'
     )
 
