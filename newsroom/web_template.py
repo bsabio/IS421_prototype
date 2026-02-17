@@ -34,17 +34,17 @@ _CSS = """
     --serif: Georgia, 'Times New Roman', 'Noto Serif', serif;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
             'Helvetica Neue', Arial, sans-serif;
-    --text: #1a1a1a;
-    --text-2: #555;
-    --text-3: #888;
-    --accent: #c0392b;
-    --accent-hover: #a93226;
-    --accent-light: #fef3e8;
+    --text: #111;
+    --text-2: #2a2a2a;
+    --text-3: #666;
+    --accent: #e10600;
+    --accent-hover: #b30400;
+    --accent-light: #fff1f0;
     --bg: #fff;
-    --bg-warm: #faf8f5;
-    --border: #e0dcd4;
-    --max-w: 720px;
-    --lh: 1.72;
+    --bg-warm: #f8f8f8;
+    --border: #d6d6d6;
+    --max-w: 980px;
+    --lh: 1.62;
 }
 
 body {
@@ -56,8 +56,8 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--accent-hover); }
 img { max-width: 100%; }
 
 /* ── Container ────────────────────────────────────────────── */
@@ -66,69 +66,133 @@ img { max-width: 100%; }
 /* ── Masthead ─────────────────────────────────────────────── */
 .masthead {
     border-top: 4px solid var(--accent);
-    padding: 48px 0 0;
-    text-align: center;
+    border-bottom: 2px solid var(--text);
+    padding: 22px 0 12px;
+    text-align: left;
 }
 .masthead-title {
-    font-family: var(--serif);
-    font-size: 2.6rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 6px;
+    font-family: var(--sans);
+    font-size: 3.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 10px;
 }
 .masthead-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.74rem;
     color: var(--text-2);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    text-align: center;
+}
+.masthead-slogan {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin: 0 0 12px;
 }
 .issue-meta {
-    font-size: 0.8rem;
-    color: var(--text-3);
+    font-size: 0.72rem;
+    color: var(--text-2);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
 }
 .issue-meta .sep { margin: 0 6px; color: var(--border); }
 .masthead-rule {
     width: 100%;
     height: 1px;
     background: var(--border);
-    margin-top: 28px;
+    margin-top: 14px;
+}
+
+/* ── Masthead Topic Nav ──────────────────────────────────── */
+.masthead-topics {
+    margin-top: 14px;
+    background: #000;
+}
+.masthead-topics-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+.masthead-topics-list li {
+    margin: 0;
+}
+.masthead-topic-link {
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-bottom: 2px solid transparent;
+}
+.masthead-topic-link:hover,
+.masthead-topic-link:focus-visible {
+    color: #fff;
+    background: #1f1f1f;
+    border-bottom-color: var(--accent);
+    outline: none;
+}
+.masthead-topic-link.is-active {
+    color: #fff;
+    background: #1f1f1f;
+    border-bottom-color: var(--accent);
+}
+
+[data-page-group][hidden] {
+    display: none !important;
 }
 
 /* ── Editor's Note ────────────────────────────────────────── */
 .editors-note {
-    background: var(--bg-warm);
+    background: transparent;
+    border: none;
     border-left: 3px solid var(--accent);
-    padding: 24px 28px;
-    margin: 36px 0;
-    border-radius: 0 4px 4px 0;
+    padding: 0 0 0 20px;
+    margin: 32px 0;
 }
 .editors-note h2 {
-    font-family: var(--serif);
-    font-size: 1.1rem;
+    font-family: var(--sans);
+    font-size: 0.7rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--accent);
+    background: transparent;
+    display: inline-block;
+    padding: 0;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.16em;
 }
 .editors-note p {
-    font-size: 0.98rem;
+    font-size: 1.05rem;
     color: var(--text);
-    line-height: 1.65;
+    line-height: 1.7;
+    font-family: var(--serif);
+    font-style: italic;
 }
 
 /* ── Table of Contents ────────────────────────────────────── */
 .toc {
-    margin: 28px 0 36px;
-    padding: 20px 28px;
+    margin: 22px 0 30px;
+    padding: 16px 18px;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-left: 4px solid var(--accent);
 }
 .toc h3 {
-    font-family: var(--serif);
-    font-size: 0.95rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
     font-weight: 700;
     margin-bottom: 10px;
     text-transform: uppercase;
@@ -164,47 +228,54 @@ img { max-width: 100%; }
 .section-rule {
     border: none;
     border-top: 1px solid var(--border);
-    margin: 40px 0;
+    margin: 48px 0 32px 0;
+    opacity: 0.4;
 }
 
 /* ── Section Label ────────────────────────────────────────── */
 .section-label {
-    display: block;
-    font-size: 0.72rem;
+    display: inline;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
     color: var(--accent);
-    margin-bottom: 10px;
+    background: transparent;
+    margin-bottom: 0;
+    padding: 0;
+    font-family: var(--sans);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 2px;
 }
 
 /* ── Section Transition ───────────────────────────────────── */
 .section-transition {
-    font-size: 0.95rem;
-    font-style: italic;
-    color: var(--text-2);
-    margin-bottom: 28px;
-    line-height: 1.6;
+    font-size: 1.05rem;
+    font-style: normal;
+    color: var(--text);
+    margin: 18px 0 32px 0;
+    line-height: 1.65;
+    font-family: var(--serif);
 }
 
 /* ── Hero / Lead Story ────────────────────────────────────── */
 .lead-story { margin-bottom: 0; }
-.hero-card { padding: 32px 0; }
+.hero-card { padding: 36px 0 48px 0; }
 .hero-headline {
     font-family: var(--serif);
-    font-size: 2rem;
+    font-size: 2.6rem;
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 12px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
 }
 .hero-dek {
     font-family: var(--serif);
     font-size: 1.15rem;
     font-style: italic;
     color: var(--text-2);
-    margin-bottom: 18px;
-    line-height: 1.55;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 /* ── Chips ─────────────────────────────────────────────────── */
@@ -223,60 +294,59 @@ img { max-width: 100%; }
     white-space: nowrap;
 }
 .chip-amount {
-    background: #fef3e8;
-    color: #b7472a;
-    border: 1px solid #f0d4b8;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid #f4bfbc;
 }
 .chip-round {
-    background: #eef4fb;
-    color: #2c5282;
-    border: 1px solid #bdd5ea;
+    background: #f3f3f3;
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 .chip-tag {
-    background: #f0f0ec;
-    color: #555;
-    border: 1px solid #ddddd4;
+    background: #f3f3f3;
+    color: #333;
+    border: 1px solid var(--border);
 }
 
 /* ── Story Card ───────────────────────────────────────────── */
 .story-card {
-    padding: 28px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 36px 0;
+    border-bottom: none;
 }
 .story-card:last-child { border-bottom: none; }
 .story-headline {
     font-family: var(--serif);
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 8px;
+    line-height: 1.3;
+    margin-bottom: 10px;
 }
 .story-dek {
     font-family: var(--serif);
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-style: italic;
     color: var(--text-2);
-    margin-bottom: 14px;
-    line-height: 1.5;
+    margin-bottom: 16px;
+    line-height: 1.55;
 }
 .story-lede {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     line-height: var(--lh);
 }
 .story-context {
-    font-size: 0.92rem;
-    color: var(--text-2);
-    margin-bottom: 14px;
-    line-height: 1.65;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.68;
 }
 
 /* ── Why It Matters ───────────────────────────────────────── */
 .why-it-matters {
-    background: var(--bg-warm);
-    border-left: 3px solid var(--accent);
+    background: #fff;
+    border-left: 4px solid var(--accent);
     padding: 14px 18px;
     margin: 16px 0;
-    border-radius: 0 4px 4px 0;
 }
 .why-it-matters h4 {
     font-size: 0.72rem;
@@ -315,47 +385,49 @@ img { max-width: 100%; }
 
 /* ── Story Sources ────────────────────────────────────────── */
 .story-sources {
-    font-size: 0.8rem;
-    color: var(--text-3);
-    margin-top: 10px;
-}
-.story-sources a { font-size: 0.8rem; }
-.cite-sup {
     font-size: 0.7rem;
+    color: var(--text-3);
+    margin-top: 8px;
+}
+.story-sources a { font-size: 0.7rem; }
+.cite-sup {
+    font-size: 0.6rem;
     vertical-align: super;
     font-weight: 700;
     margin-left: 1px;
 }
 
 /* ── Funding Radar sub-group ──────────────────────────────── */
-.radar-group { margin-bottom: 32px; }
+.radar-group { margin-bottom: 48px; }
+.radar-group:last-child { margin-bottom: 0; }
 .radar-group-title {
-    font-family: var(--serif);
-    font-size: 1.05rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text-2);
+    color: var(--accent);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding-bottom: 6px;
+    letter-spacing: 0.14em;
+    padding-bottom: 4px;
     border-bottom: 2px solid var(--accent);
-    margin-bottom: 0;
+    margin-bottom: 20px;
     display: inline-block;
 }
 .radar-card {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+    border-bottom: none;
 }
 .radar-card:last-child { border-bottom: none; }
 .radar-headline {
     font-family: var(--serif);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 .radar-lede {
-    font-size: 0.92rem;
-    margin-bottom: 10px;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    line-height: 1.65;
 }
 
 /* ── Trend Brief ──────────────────────────────────────────── */
@@ -373,7 +445,6 @@ img { max-width: 100%; }
     text-align: center;
     padding: 18px 8px;
     border: 1px solid var(--border);
-    border-radius: 4px;
     background: var(--bg-warm);
 }
 .trend-chip-count {
@@ -392,21 +463,23 @@ img { max-width: 100%; }
 
 /* ── Event Card ───────────────────────────────────────────── */
 .event-card {
-    padding: 24px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 32px 0;
+    border-bottom: none;
 }
 .event-card:last-child { border-bottom: none; }
 .event-headline {
     font-family: var(--serif);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 .event-dek {
     font-style: italic;
     color: var(--text-2);
-    margin-bottom: 12px;
-    font-size: 0.95rem;
+    margin-bottom: 14px;
+    font-size: 1rem;
+    line-height: 1.55;
 }
 .event-meta {
     display: flex;
@@ -438,17 +511,106 @@ img { max-width: 100%; }
     text-decoration: none;
 }
 
+/* ── Calendar Switcher ───────────────────────────────────── */
+.calendar-toolbar {
+    margin: 24px 0 18px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: #efeeea;
+}
+.calendar-toolbar .section-label {
+    margin: 0;
+}
+.calendar-switcher {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.calendar-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.calendar-filter-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+}
+.calendar-filter-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+.calendar-filter-input-wrap {
+    position: relative;
+}
+.calendar-filter-input {
+    width: 176px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px 36px 10px 12px;
+}
+.calendar-filter-input::-webkit-calendar-picker-indicator {
+    opacity: 0.01;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.calendar-filter-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.calendar-filter-input-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    pointer-events: none;
+    color: var(--text-2);
+}
+.calendar-nav-btn {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.82rem;
+    line-height: 1;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+.calendar-nav-btn:hover {
+    background: var(--accent-hover);
+}
+.calendar-nav-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 /* ── Accelerator Card ─────────────────────────────────────── */
 .accel-card {
-    padding: 24px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+    border-bottom: none;
 }
 .accel-card:last-child { border-bottom: none; }
 .accel-headline {
     font-family: var(--serif);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    line-height: 1.3;
 }
 .accel-focus {
     font-size: 0.8rem;
@@ -459,24 +621,24 @@ img { max-width: 100%; }
 }
 
 /* ── Bibliography ─────────────────────────────────────────── */
-.bibliography { margin-top: 40px; }
+.bibliography { margin-top: 32px; }
 .bib-list { list-style: none; padding: 0; }
 .bib-item {
     display: flex;
-    gap: 12px;
-    padding: 10px 0;
+    gap: 8px;
+    padding: 6px 0;
     border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
+    font-size: 0.72rem;
     align-items: baseline;
 }
 .bib-item:last-child { border-bottom: none; }
 .bib-num {
     background: var(--accent);
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 700;
-    min-width: 26px;
-    height: 20px;
+    min-width: 20px;
+    height: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -487,22 +649,104 @@ img { max-width: 100%; }
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    font-size: 0.78rem;
-    margin-right: 6px;
+    font-size: 0.68rem;
+    margin-right: 4px;
     color: var(--text);
 }
 .bib-link {
     word-break: break-all;
     color: var(--accent);
-    font-size: 0.82rem;
+    font-size: 0.68rem;
+}
+
+/* ── Signup Form ──────────────────────────────────────────── */
+.signup-section {
+    background: var(--bg-warm);
+    border-top: 2px solid var(--text);
+    border-bottom: 2px solid var(--text);
+    padding: 48px 24px;
+    margin-top: 48px;
+    text-align: center;
+}
+.signup-container {
+    max-width: 520px;
+    margin: 0 auto;
+}
+.signup-headline {
+    font-family: var(--sans);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+.signup-subtext {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+.signup-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.signup-input {
+    flex: 1;
+    min-width: 240px;
+    max-width: 320px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    font-family: var(--sans);
+    border: 2px solid var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s;
+}
+.signup-input:focus {
+    border-color: var(--accent);
+}
+.signup-input::placeholder {
+    color: var(--text-3);
+}
+.signup-button {
+    padding: 14px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--accent);
+    color: #fff;
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.signup-button:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+.signup-privacy {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    margin-top: 16px;
+}
+.signup-success {
+    display: none;
+    padding: 16px;
+    background: #f0fff4;
+    border: 2px solid #22c55e;
+    color: #166534;
+    font-weight: 600;
 }
 
 /* ── Footer ───────────────────────────────────────────────── */
 .footer {
     text-align: center;
     padding: 40px 24px;
-    margin-top: 48px;
-    border-top: 1px solid var(--border);
+    margin-top: 0;
+    border-top: none;
     font-size: 0.8rem;
     color: var(--text-3);
 }
@@ -519,13 +763,27 @@ img { max-width: 100%; }
     .event-meta { flex-direction: column; gap: 6px; }
     .trend-grid { grid-template-columns: repeat(2, 1fr); }
     .chips { gap: 6px; }
+    .masthead-topics-list {
+        justify-content: center;
+    }
+    .masthead-topic-link {
+        padding: 10px 12px;
+        font-size: 0.72rem;
+    }
+    .calendar-switcher {
+        align-items: stretch;
+    }
+    .calendar-filter-group {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
 
 /* ── Print ────────────────────────────────────────────────── */
 @media print {
     body { font-size: 11pt; color: #000; }
     .masthead { border-top: 2pt solid #000; }
-    .toc, .event-btn { display: none; }
+    .toc, .event-btn, .calendar-toolbar { display: none; }
     a { color: #000; text-decoration: underline; }
     .why-it-matters, .editors-note {
         background: #f5f5f5;
@@ -554,7 +812,8 @@ def _cite_source_line(citations: List[Citation]) -> str:
     if not citations:
         return ''
     parts = [
-        f'{c.source} <a href="#src-{c.number}" class="cite-sup">[{c.number}]</a>'
+        f'<a href="{c.url}" target="_blank" rel="noopener noreferrer">{c.source}</a> '
+        f'<a href="{c.url}" target="_blank" rel="noopener noreferrer" class="cite-sup">[{c.number}]</a>'
         for c in citations
     ]
     return '<div class="story-sources">Sources: ' + ', '.join(parts) + '</div>'
@@ -600,7 +859,7 @@ def _why_html(text: str, label: str = 'Here\u2019s What This Means') -> str:
 def _hero_html(card: StoryCard) -> str:
     ctx = f'<p class="story-context">{card.context}</p>' if card.context else ''
     return (
-        f'<section id="lead" class="lead-story">\n'
+        f'<section id="lead" class="lead-story" data-page-group="investments">\n'
         f'  <span class="section-label">Lead Story</span>\n'
         f'  <article class="hero-card">\n'
         f'    <h2 class="hero-headline">{card.headline}</h2>\n'
@@ -645,12 +904,17 @@ def _radar_card_html(card: StoryCard) -> str:
 
 
 def _event_html(card: StoryCard) -> str:
+    month_label = _event_month_label(card.date)
+    month_key = _event_month_key(card.date)
+    date_label = _event_date_label(card.date)
+    date_key = _event_date_key(card.date)
+    date_iso = _event_date_iso(card.date)
     reg = (
         f'<a href="{card.registration_url}" class="event-btn" '
         f'target="_blank">Register \u2192</a>'
     ) if card.registration_url else ''
     return (
-        f'<article class="event-card">\n'
+        f'<article class="event-card" data-event-month-key="{month_key}" data-event-month-label="{month_label}" data-event-date-key="{date_key}" data-event-date-label="{date_label}" data-event-date-iso="{date_iso}">\n'
         f'  <h3 class="event-headline">{card.headline}</h3>\n'
         f'  <p class="event-dek">{card.dek}</p>\n'
         f'  <div class="event-meta">\n'
@@ -681,12 +945,398 @@ def _accel_html(card: StoryCard) -> str:
     )
 
 
+def _vc_firms_html(tracker: CitationTracker) -> str:
+    firms = [
+        {
+            'name': 'Andreessen Horowitz (a16z)',
+            'blurb': 'Active AI investor with published analysis on AI application spending and enterprise demand trends.',
+            'people': ['Marc Andreessen', 'Ben Horowitz'],
+            'links': [
+                ('AI Application Spending Report', 'https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/'),
+            ],
+        },
+        {
+            'name': 'ARCH Venture Partners',
+            'blurb': 'Deep-tech focused investor with new-fund momentum and long-running science commercialization track record.',
+            'people': ['Robert Nelsen', 'Keith Crandell', 'Kristina Burow', 'Mark McDonnell', 'Steve Gillis', 'Paul Berns'],
+            'links': [
+                ('Fund XIII Announcement', 'https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/'),
+            ],
+        },
+        {
+            'name': 'General Catalyst',
+            'blurb': 'Backs AI infrastructure and application-layer companies, including Together AI, with a clear AI adoption thesis.',
+            'people': ['Ahmed Alveed'],
+            'links': [
+                ('Investment in Together AI', 'https://www.generalcatalyst.com/stories/our-investment-in-together-ai'),
+                ('AI Adoption in Startups', 'https://www.generalcatalyst.com/stories/ai-adoption-in-startups'),
+            ],
+        },
+        {
+            'name': 'Bessemer Venture Partners',
+            'blurb': 'Publishes extensive AI market frameworks and vertical AI analysis used by operators and founders.',
+            'people': ['Kent Bennett', 'Byron Deeter', 'Mike Droesch', 'Maha Malik', 'Sam Bondy', 'Brian Feinstein', 'Sameer Dholakia', 'Caty Rea', 'Alex Yuditski', 'Aia Sarycheva'],
+            'links': [
+                ('BVP AI Hub', 'https://www.bvp.com/ai'),
+                ('Future of Vertical AI', 'https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical'),
+                ('Everything Everywhere All AI (2024)', 'https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf'),
+            ],
+        },
+        {
+            'name': 'New Enterprise Associates (NEA)',
+            'blurb': 'Large multi-stage platform with notable AI bets including Synthesia and Perplexity.',
+            'people': ['Scott Sandell', 'Tony Florence', 'Mohamad Makhzoumi', 'Ali Behbahani', 'Paul Walker', 'Rick Yang'],
+            'links': [
+                ('Data + AI Revolution (Foresight)', 'https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets'),
+                ('Investment in Synthesia', 'https://www.nea.com/blog/synthesia-ai-video-creation'),
+                ('Investment in Perplexity', 'https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search'),
+            ],
+        },
+        {
+            'name': 'Flagship Pioneering',
+            'blurb': 'Strong AI-in-health and AI-enabled innovation positioning across scientific and consumer applications.',
+            'people': ['Daniel Acker', 'Raffi Afeyan', 'Theonie Anastassiadis', 'Yiqun Bai', 'Simon Brunner'],
+            'links': [
+                ('AI and Medicine Explainer', 'https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine'),
+                ('Extuitive AI Launch', 'https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai'),
+            ],
+        },
+        {
+            'name': 'B Capital',
+            'blurb': 'Highlights AI-driven investment momentum and global operating partnerships across its portfolio.',
+            'people': ['Nick Whitehead', 'Patrick Harmon', 'Priya Banerjee'],
+            'links': [
+                ('AI-Driven Investment Momentum (2025 AGM)', 'https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/'),
+            ],
+        },
+        {
+            'name': 'HSG',
+            'blurb': 'Appears in your research as an AI-active investor with interest in culturally focused AI experiences.',
+            'people': [],
+            'links': [
+                ('HSG Startups and AI', 'https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/'),
+            ],
+        },
+        {
+            'name': 'Kleiner Perkins',
+            'blurb': 'Notable AI investor with positions in Together AI and AI healthcare startup Viz.ai.',
+            'people': [],
+            'links': [
+                ('Together AI Perspective', 'https://www.kleinerperkins.com/perspectives/together-ai/'),
+                ('Viz.ai Investment', 'https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/'),
+            ],
+        },
+    ]
+
+    firm_cards = ''
+    for firm in firms:
+        cites = [tracker.cite(url) for _, url in firm['links']]
+        people_line = ', '.join(firm['people']) if firm['people'] else 'Not specified in this research note.'
+        links_html = ''.join(
+            f'<li><a href="{url}" target="_blank">{label}</a></li>'
+            for label, url in firm['links']
+        )
+        firm_cards += (
+            '<article class="story-card">\n'
+            f'  <h3 class="story-headline">{firm["name"]}</h3>\n'
+            f'  <p class="story-dek">{firm["blurb"]}</p>\n'
+            f'  <aside class="why-it-matters"><h4>Key People</h4><p>{people_line}</p></aside>\n'
+            f'  <ul class="key-details">{links_html}</ul>\n'
+            f'  {_cite_source_line(cites)}\n'
+            '</article>\n'
+        )
+
+    return (
+        '<hr class="section-rule">\n'
+        '<section id="vc-firms" data-page-group="investments">\n'
+        '  <span class="section-label">Top VC Firms</span>\n'
+        '  <p class="section-transition">From your research notes, these firms stand out for fundraising scale, AI thesis development, and recent portfolio activity.</p>\n'
+        f'{firm_cards}'
+        '</section>'
+    )
+
+
+def _vc_people_html() -> str:
+    people_by_firm = [
+        ('Andreessen Horowitz (a16z)', ['Marc Andreessen', 'Ben Horowitz']),
+        ('ARCH Venture Partners', ['Robert Nelsen', 'Keith Crandell', 'Kristina Burow', 'Mark McDonnell', 'Steve Gillis', 'Paul Berns']),
+        ('General Catalyst', ['Ahmed Alveed']),
+        ('Bessemer Venture Partners', ['Kent Bennett', 'Byron Deeter', 'Mike Droesch', 'Maha Malik', 'Sam Bondy', 'Brian Feinstein', 'Sameer Dholakia', 'Caty Rea', 'Alex Yuditski', 'Aia Sarycheva']),
+        ('New Enterprise Associates (NEA)', ['Scott Sandell', 'Tony Florence', 'Mohamad Makhzoumi', 'Ali Behbahani', 'Paul Walker', 'Rick Yang']),
+        ('Flagship Pioneering', ['Daniel Acker', 'Raffi Afeyan', 'Theonie Anastassiadis', 'Yiqun Bai', 'Simon Brunner']),
+        ('B Capital', ['Nick Whitehead', 'Patrick Harmon', 'Priya Banerjee']),
+    ]
+
+    people_cards = ''
+    for firm_name, names in people_by_firm:
+        names_html = ''.join(f'<li>{name}</li>' for name in names)
+        people_cards += (
+            '<article class="story-card">\n'
+            f'  <h3 class="story-headline">{firm_name}</h3>\n'
+            f'  <ul class="key-details">{names_html}</ul>\n'
+            '</article>\n'
+        )
+
+    return (
+        '<hr class="section-rule">\n'
+        '<section id="people" data-page-group="people">\n'
+        '  <span class="section-label">People</span>\n'
+        '  <p class="section-transition">Key VC leaders and principals from your research notes, grouped by firm.</p>\n'
+        f'{people_cards}'
+        '</section>'
+    )
+
+
 # ── event chronological sort ────────────────────────────────────
 
 def _event_sort_key(card: StoryCard):
     """Sort events by extracted day number; recurring events go last."""
-    m = re.search(r'(?:January|February|March|April|May)\s+(\d+)', card.date)
+    m = re.search(r'(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d+)', card.date)
     return (0, int(m.group(1))) if m else (1, 0)
+
+
+def _slugify(text: str) -> str:
+    return re.sub(r'[^a-z0-9]+', '-', (text or '').lower()).strip('-') or 'unscheduled'
+
+
+def _event_calendar_parts(date_text: str):
+    months = 'January|February|March|April|May|June|July|August|September|October|November|December'
+    cleaned = (date_text or '').strip()
+    if not cleaned:
+        return 'Unscheduled', 'unscheduled', 'Unscheduled', 'unscheduled'
+
+    exact_match = re.search(rf'({months})\s+\d{{1,2}}(?:,\s*\d{{4}})?', cleaned)
+    if exact_match:
+        date_label = exact_match.group(0)
+        month_label = re.match(rf'({months})', date_label).group(1)
+        return month_label, _slugify(month_label), date_label, _slugify(date_label)
+
+    month_match = re.search(rf'({months})', cleaned)
+    if month_match:
+        month_label = month_match.group(1)
+        return month_label, _slugify(month_label), cleaned, _slugify(cleaned)
+
+    return 'Unscheduled', 'unscheduled', cleaned, _slugify(cleaned)
+
+
+def _event_month_label(date_text: str) -> str:
+    return _event_calendar_parts(date_text)[0]
+
+
+def _event_month_key(date_text: str) -> str:
+    return _event_calendar_parts(date_text)[1]
+
+
+def _event_date_label(date_text: str) -> str:
+    return _event_calendar_parts(date_text)[2]
+
+
+def _event_date_key(date_text: str) -> str:
+    return _event_calendar_parts(date_text)[3]
+
+
+def _event_date_iso(date_text: str) -> str:
+    label = _event_date_label(date_text)
+    if not label or label == 'Unscheduled':
+        return ''
+
+    for fmt in ('%B %d, %Y', '%B %d'):
+        try:
+            parsed = datetime.strptime(label, fmt)
+            if fmt == '%B %d':
+                parsed = parsed.replace(year=datetime.now().year)
+            return parsed.strftime('%Y-%m-%d')
+        except ValueError:
+            continue
+    return ''
+
+
+def _calendar_switcher_html(event_cards: List[StoryCard]) -> str:
+    """Render top calendar controls for upcoming-window filtering."""
+    date_options = []
+    seen_dates = set()
+
+    for card in event_cards:
+        date_label = _event_date_label(card.date)
+        date_key = _event_date_key(card.date)
+        date_iso = _event_date_iso(card.date)
+
+        if date_key not in seen_dates and date_iso:
+            seen_dates.add(date_key)
+            date_options.append((date_iso, date_label))
+
+    date_options.sort(key=lambda item: item[0])
+    today_iso = datetime.now().strftime('%Y-%m-%d')
+    selected_date = next((iso for iso, _ in date_options if iso >= today_iso), '')
+    if not selected_date:
+        selected_date = date_options[0][0] if date_options else ''
+
+    return (
+        '<section class="calendar-toolbar" id="calendar" data-page-group="events">\n'
+        '  <div class="calendar-switcher" data-calendar-switcher>\n'
+        '    <div class="calendar-filter-group">\n'
+        '      <span class="calendar-filter-icon" aria-hidden="true">🗓️</span>\n'
+        '      <label class="calendar-filter-label" for="calendar-date-filter">Select Start Date:</label>\n'
+        '      <div class="calendar-filter-input-wrap">\n'
+        f'        <input id="calendar-date-filter" class="calendar-filter-input" data-calendar-date type="date" value="{selected_date}">\n'
+        '        <span class="calendar-filter-input-icon" aria-hidden="true">📅</span>\n'
+        '      </div>\n'
+        '      <button type="button" class="calendar-nav-btn" data-calendar-prev>Previous</button>\n'
+        '      <button type="button" class="calendar-nav-btn" data-calendar-next>Next</button>\n'
+        '    </div>\n'
+        '    <div data-calendar-dates hidden>' + ','.join(date_iso for date_iso, _ in date_options) + '</div>\n'
+        '  </div>\n'
+        '</section>'
+    )
+
+
+_CALENDAR_SWITCHER_JS = """
+document.addEventListener('DOMContentLoaded', function () {
+    var switcher = document.querySelector('[data-calendar-switcher]');
+    if (!switcher) return;
+
+    var dateInput = switcher.querySelector('[data-calendar-date]');
+    var prevButton = switcher.querySelector('[data-calendar-prev]');
+    var nextButton = switcher.querySelector('[data-calendar-next]');
+    var cards = document.querySelectorAll('#events .event-card[data-event-date-iso]');
+    if (!dateInput || !prevButton || !nextButton || !cards.length) return;
+
+    var dateListNode = switcher.querySelector('[data-calendar-dates]');
+    var availableDates = dateListNode && dateListNode.textContent
+        ? dateListNode.textContent.split(',').filter(Boolean)
+        : [];
+    if (!availableDates.length) return;
+
+    function firstUpcomingOrFirst() {
+        var todayIso = new Date().toISOString().slice(0, 10);
+        var upcoming = availableDates.find(function (dateIso) { return dateIso >= todayIso; });
+        return upcoming || availableDates[0];
+    }
+
+    function addDays(isoDate, dayCount) {
+        var baseDate = new Date(isoDate + 'T00:00:00');
+        baseDate.setDate(baseDate.getDate() + dayCount);
+        return baseDate.toISOString().slice(0, 10);
+    }
+
+    dateInput.min = availableDates[0];
+    dateInput.max = availableDates[availableDates.length - 1];
+    var defaultDate = firstUpcomingOrFirst();
+    if (!dateInput.value || availableDates.indexOf(dateInput.value) === -1 || dateInput.value < defaultDate) {
+        dateInput.value = defaultDate;
+    }
+
+    function selectedIndex() {
+        return availableDates.indexOf(dateInput.value);
+    }
+
+    function applyFilter() {
+        var startDateIso = dateInput.value;
+        var endDateIso = addDays(startDateIso, 27);
+
+        cards.forEach(function (card) {
+            var cardDateIso = card.getAttribute('data-event-date-iso');
+            card.style.display = cardDateIso >= startDateIso && cardDateIso <= endDateIso ? '' : 'none';
+        });
+
+        var idx = selectedIndex();
+        prevButton.disabled = idx <= 0;
+        nextButton.disabled = idx >= availableDates.length - 1;
+    }
+
+    function moveDate(offset) {
+        var idx = selectedIndex();
+        if (idx < 0) idx = 0;
+        var nextIdx = idx + offset;
+        if (nextIdx < 0 || nextIdx >= availableDates.length) return;
+        dateInput.value = availableDates[nextIdx];
+        applyFilter();
+    }
+
+    prevButton.addEventListener('click', function () { moveDate(-1); });
+    nextButton.addEventListener('click', function () { moveDate(1); });
+
+    dateInput.addEventListener('change', function () {
+        if (availableDates.indexOf(dateInput.value) === -1) {
+            dateInput.value = firstUpcomingOrFirst();
+        }
+        applyFilter();
+    });
+
+    applyFilter();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var topicLinks = document.querySelectorAll('.masthead-topic-link[data-page]');
+    var pageSections = document.querySelectorAll('[data-page-group]');
+    if (!topicLinks.length || !pageSections.length) return;
+
+    function showPage(page) {
+        pageSections.forEach(function (section) {
+            section.hidden = section.getAttribute('data-page-group') !== page;
+        });
+
+        topicLinks.forEach(function (link) {
+            var isActive = link.getAttribute('data-page') === page;
+            link.classList.toggle('is-active', isActive);
+            link.setAttribute('aria-current', isActive ? 'page' : 'false');
+        });
+    }
+
+    function pageFromHash() {
+        var hash = window.location.hash;
+        if (!hash) return '';
+        var target = document.querySelector(hash);
+        if (!target) return '';
+        var parent = target.closest('[data-page-group]');
+        return parent ? parent.getAttribute('data-page-group') : '';
+    }
+
+    var initialPage = pageFromHash() || topicLinks[0].getAttribute('data-page') || 'investments';
+    showPage(initialPage);
+
+    topicLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            var page = link.getAttribute('data-page');
+            var target = link.getAttribute('href');
+            showPage(page);
+            if (target && target.startsWith('#')) {
+                window.location.hash = target;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        var anchor = event.target.closest('a[href^="#"]');
+        if (!anchor) return;
+        var targetId = anchor.getAttribute('href');
+        if (!targetId || targetId.length < 2) return;
+        var targetNode = document.querySelector(targetId);
+        if (!targetNode) return;
+        var parent = targetNode.closest('[data-page-group]');
+        if (!parent) return;
+        showPage(parent.getAttribute('data-page-group'));
+    });
+});
+
+function handleSignup(event) {
+    event.preventDefault();
+    var email = document.getElementById('signupEmail').value;
+    var form = document.getElementById('signupForm');
+    var success = document.getElementById('signupSuccess');
+    
+    // In production, this would POST to a backend API
+    // For now, show success and store in localStorage as demo
+    localStorage.setItem('newsletter_subscriber', email);
+    
+    form.style.display = 'none';
+    success.style.display = 'block';
+    
+    console.log('Newsletter signup:', email);
+}
+"""
 
 
 # ═════════════════════════════════════════════════════════════════
@@ -705,7 +1355,16 @@ def render_html_page(
     tracker = CitationTracker()
 
     # ── convert items to StoryCards ──────────────────────────────
-    funding_cards = [funding_to_story(i, tracker) for i in funding_items]
+    # Convert all funding items first (default position)
+    all_funding_cards = []
+    for idx, item in enumerate(funding_items):
+        if idx == 0:
+            all_funding_cards.append(funding_to_story(item, tracker, position='lead'))
+        elif idx < 4:
+            all_funding_cards.append(funding_to_story(item, tracker, position='top'))
+        else:
+            all_funding_cards.append(funding_to_story(item, tracker, position='radar'))
+    
     event_cards = sorted(
         [event_to_story(i, tracker) for i in event_items],
         key=_event_sort_key,
@@ -713,9 +1372,9 @@ def render_html_page(
     accel_cards = [accelerator_to_story(i, tracker) for i in accelerator_items]
 
     # ── split funding into lead / top / radar ───────────────────
-    lead_card = funding_cards[0] if funding_cards else None
-    top_cards = funding_cards[1:4] if len(funding_cards) > 1 else []
-    radar_cards = funding_cards[4:] if len(funding_cards) > 4 else []
+    lead_card = all_funding_cards[0] if all_funding_cards else None
+    top_cards = all_funding_cards[1:4] if len(all_funding_cards) > 1 else []
+    radar_cards = all_funding_cards[4:] if len(all_funding_cards) > 4 else []
 
     # ── metadata ────────────────────────────────────────────────
     title = config['newsletter']['title']
@@ -736,7 +1395,7 @@ def render_html_page(
     if top_cards:
         top_stories_html = (
             '<hr class="section-rule">\n'
-            '<section id="top-stories">\n'
+            '<section id="top-stories" data-page-group="businesses">\n'
             '  <span class="section-label">Top Stories</span>\n'
             f'  <p class="section-transition">{transition("top_stories")}</p>\n'
             + ''.join(_story_html(c) for c in top_cards) +
@@ -758,7 +1417,7 @@ def render_html_page(
             )
         radar_html = (
             '<hr class="section-rule">\n'
-            '<section id="funding-radar">\n'
+            '<section id="funding-radar" data-page-group="investments">\n'
             '  <span class="section-label">Funding Radar</span>\n'
             f'  <p class="section-transition">{transition("funding_radar")}</p>\n'
             + radar_inner +
@@ -780,7 +1439,7 @@ def render_html_page(
             )
         trends_html = (
             '<hr class="section-rule">\n'
-            '<section id="trends">\n'
+            '<section id="trends" data-page-group="businesses">\n'
             '  <span class="section-label">Trend Brief</span>\n'
             f'  <p class="section-transition">{transition("trend_brief")}</p>\n'
             f'  <p class="trend-prose">{tp}</p>\n'
@@ -790,11 +1449,16 @@ def render_html_page(
     else:
         trends_html = ''
 
+    if event_cards:
+        calendar_switcher_html = _calendar_switcher_html(event_cards)
+    else:
+        calendar_switcher_html = ''
+
     # Events
     if event_cards:
         events_html = (
             '<hr class="section-rule">\n'
-            '<section id="events">\n'
+            '<section id="events" data-page-group="events">\n'
             '  <span class="section-label">Events This Week</span>\n'
             f'  <p class="section-transition">{transition("events")}</p>\n'
             + ''.join(_event_html(c) for c in event_cards)
@@ -807,7 +1471,7 @@ def render_html_page(
     if accel_cards:
         accels_html = (
             '<hr class="section-rule">\n'
-            '<section id="accelerators">\n'
+            '<section id="accelerators" data-page-group="people">\n'
             '  <span class="section-label">Accelerator Watch</span>\n'
             f'  <p class="section-transition">{transition("accelerators")}</p>\n'
             + ''.join(_accel_html(c) for c in accel_cards)
@@ -815,6 +1479,9 @@ def render_html_page(
         )
     else:
         accels_html = ''
+
+    people_html = _vc_people_html()
+    vc_firms_html = _vc_firms_html(tracker)
 
     # Bibliography
     all_cites = tracker.all
@@ -832,7 +1499,7 @@ def render_html_page(
             )
         bib_html = (
             '<hr class="section-rule">\n'
-            '<section id="sources" class="bibliography">\n'
+            '<section id="sources" class="bibliography" data-page-group="businesses">\n'
             '  <span class="section-label">Sources &amp; Bibliography</span>\n'
             f'  <ul class="bib-list">\n{bib_items}</ul>\n'
             '</section>'
@@ -855,12 +1522,32 @@ def render_html_page(
         toc_items.append('<li><a href="#events">Events This Week</a></li>')
     if accel_cards:
         toc_items.append('<li><a href="#accelerators">Accelerator Watch</a></li>')
+    if people_html:
+        toc_items.append('<li><a href="#people">People</a></li>')
+    if vc_firms_html:
+        toc_items.append('<li><a href="#vc-firms">Top VC Firms</a></li>')
     if all_cites:
         toc_items.append('<li><a href="#sources">Sources</a></li>')
     toc_html = (
         '<nav class="toc">\n'
         '  <h3>In This Issue</h3>\n'
         '  <ol>\n    ' + '\n    '.join(toc_items) + '\n  </ol>\n'
+        '</nav>'
+    )
+
+    people_target = '#people' if people_html else ('#accelerators' if accel_cards else ('#top-stories' if top_cards else '#lead'))
+    events_target = '#events' if event_cards else '#calendar'
+    investments_target = '#vc-firms' if vc_firms_html else ('#funding-radar' if radar_cards else '#lead')
+    businesses_target = '#top-stories' if top_cards else ('#trends' if trend_data else '#lead')
+    masthead_topics_html = (
+        '<nav class="masthead-topics" aria-label="Topic sections">\n'
+        '  <ul class="masthead-topics-list">\n'
+        f'    <li><a class="masthead-topic-link" data-page="investments" href="#home">Home</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="people" href="{people_target}">People</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="events" href="{events_target}">Events</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="investments" href="{investments_target}">Investments</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="businesses" href="{businesses_target}">Businesses</a></li>\n'
+        '  </ul>\n'
         '</nav>'
     )
 
@@ -882,21 +1569,18 @@ def render_html_page(
     <div class="container">
         <h1 class="masthead-title">{title}</h1>
         <p class="masthead-subtitle">{subtitle}</p>
-        <div class="issue-meta">
-            <span>Issue #{num}</span>
-            <span class="sep">&middot;</span>
-            <span>{date_str}</span>
-            <span class="sep">&middot;</span>
-            <span>Anchored by Lester Holt \u2014 AI Factory Newsroom</span>
-        </div>
+        <p class="masthead-slogan">Don't stand on the sidelines, get in the game!</p>
+        {masthead_topics_html}
         <div class="masthead-rule"></div>
     </div>
 </header>
 
-<main class="container">
+<main class="container" id="home">
+
+    {calendar_switcher_html}
 
     <section class="editors-note">
-        <h2>From the Anchor Desk</h2>
+        <h2>From the Editorial Desk</h2>
         <p>{en}</p>
     </section>
 
@@ -906,11 +1590,34 @@ def render_html_page(
     {top_stories_html}
     {radar_html}
     {trends_html}
+    {people_html}
+    {vc_firms_html}
     {events_html}
     {accels_html}
-    {bib_html}
 
 </main>
+
+<section class="signup-section">
+    <div class="signup-container">
+        <h2 class="signup-headline">Stay in the Loop</h2>
+        <p class="signup-subtext">
+            Get the AI Factory Newsletter delivered to your inbox every week.
+            The latest funding rounds, events, and accelerator opportunities — curated for NYC's tech community.
+        </p>
+        <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
+            <input type="email" class="signup-input" id="signupEmail" placeholder="Enter your email" required>
+            <button type="submit" class="signup-button">Subscribe</button>
+        </form>
+        <div class="signup-success" id="signupSuccess">
+            You're in! Welcome to the AI Factory community.
+        </div>
+        <p class="signup-privacy">No spam, ever. Unsubscribe anytime.</p>
+    </div>
+</section>
+
+<section class="container">
+    {bib_html}
+</section>
 
 <footer class="footer">
     <div class="container">
@@ -918,6 +1625,8 @@ def render_html_page(
         <div class="footer-line">{title} &bull; Thank you for being here with us tonight</div>
     </div>
 </footer>
+
+<script>{_CALENDAR_SWITCHER_JS}</script>
 
 </body>
 </html>"""

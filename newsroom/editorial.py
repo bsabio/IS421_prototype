@@ -120,7 +120,7 @@ class CitationTracker:
 
 # ── Funding → StoryCard ─────────────────────────────────────────
 
-def funding_to_story(item: FundingItem, tracker: CitationTracker) -> StoryCard:
+def funding_to_story(item: FundingItem, tracker: CitationTracker, position: str = 'radar') -> StoryCard:
     rl = _round(item.round_type)
     loc = item.location or 'New York'
     lead = item.lead_investor or ''
@@ -138,13 +138,63 @@ def funding_to_story(item: FundingItem, tracker: CitationTracker) -> StoryCard:
     raw_dek = item.evidence_snippets[0] if item.evidence_snippets else www.what
     dek = raw_dek.rstrip('.') + '.'
 
-    # lede (2-3 sentences: Lester Holt newscast open)
+    # lede - different styles based on position
     others = [i for i in item.investors if i != item.lead_investor]
-    parts = [
-        f'Good evening. We begin with news out of {loc}, where {item.startup_name} '
-        f'has secured {item.amount} in a {rl.lower()} round'
-        + (f' led by {lead}' if lead else '') + '.'
-    ]
+    
+    if position == 'lead':
+        # Lead story: traditional "Good evening" opener
+        parts = [
+            f'Good evening. We begin with news out of {loc}, where {item.startup_name} '
+            f'has secured {item.amount} in a {rl.lower()} round'
+            + (f' led by {lead}' if lead else '') + '.'
+        ]
+    elif position == 'top':
+        # Top stories: more dynamic, urgent openers without "Good evening"
+        openers = [
+            f'Breaking in {loc} tonight: {item.startup_name} just closed {item.amount} in a {rl.lower()} round'
+            + (f', with {lead} leading the charge' if lead else '') + '.',
+            
+            f'This just in from {loc}. {item.startup_name} has landed {item.amount}'
+            + (f', backed by {lead}' if lead else f' in fresh {rl.lower()} funding') + '.',
+            
+            f'Major news tonight out of {loc}. {item.startup_name} secured {item.amount}'
+            + (f' with {lead} at the helm' if lead else f' in a {rl.lower()} round') + '.',
+            
+            f'Another significant deal to report. {item.startup_name} in {loc} has raised {item.amount}'
+            + (f', led by {lead}' if lead else '') + '.',
+        ]
+        opener_idx = sum(ord(c) for c in item.startup_name) % len(openers)
+        parts = [openers[opener_idx]]
+    else:
+        # Radar stories: more engaging variations
+        radar_openers = [
+            f'On our radar tonight: {item.startup_name} in {loc} just raised {item.amount}'
+            + (f', with {lead} backing them' if lead else f' in {rl.lower()} funding') + '.',
+            
+            f'Also catching attention: {item.startup_name} closed {item.amount}'
+            + (f' led by {lead}' if lead else f' in a {rl.lower()} round') + ' in {loc}.',
+            
+            f'Worth noting: {loc}-based {item.startup_name} secured {item.amount}'
+            + (f' from {lead}' if lead else '') + '.',
+            
+            f'Another deal closing tonight — {item.startup_name} landed {item.amount}'
+            + (f', backed by {lead}' if lead else f' in {rl.lower()} capital') + ' out of {loc}.',
+            
+            f'Don\'t sleep on this one: {item.startup_name} just pulled in {item.amount}'
+            + (f' with {lead} leading' if lead else '') + ' in {loc}.',
+            
+            f'One more to watch: {item.startup_name} raised {item.amount} in a {rl.lower()} round'
+            + (f' led by {lead}' if lead else '') + ', operating out of {loc}.',
+            
+            f'Flying under the radar: {item.startup_name} in {loc} closed {item.amount}'
+            + (f' from {lead}' if lead else f' in {rl.lower()} funding') + '.',
+            
+            f'Making moves quietly: {item.startup_name} secured {item.amount}'
+            + (f', with {lead} investing' if lead else f' in a {rl.lower()} round') + ' from their {loc} base.',
+        ]
+        radar_idx = sum(ord(c) for c in item.startup_name) % len(radar_openers)
+        parts = [radar_openers[radar_idx]]
+    
     if others:
         if len(others) <= 2:
             oth_str = ' and '.join(others)
@@ -196,22 +246,106 @@ def funding_to_story(item: FundingItem, tracker: CitationTracker) -> StoryCard:
 
 def event_to_story(item: EventItem, tracker: CitationTracker) -> StoryCard:
     desc_parts = [s.strip() for s in (item.description or '').split('. ') if s.strip()]
-    dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else 'A gathering for the NYC tech community.'
+    dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else 'An opportunity to connect with the NYC tech community.'
 
     venue = item.venue_or_online or 'TBA'
     city = item.city or 'NYC'
-    lede = f'Turning now to what\'s coming up on the calendar. {item.event_name} is set for {item.date_time} at {venue} in {city}.'
+    
+    # More engaging opening hooks
+    lead_intros = [
+        f'Here\'s an event you don\'t want to miss. {item.event_name} is happening',
+        f'Mark your calendar for this one. {item.event_name} takes place',
+        f'This is the event everyone\'s talking about. {item.event_name} is coming up',
+        f'Get ready for {item.event_name}. It\'s scheduled',
+        f'You need to know about {item.event_name}. The event is set',
+    ]
+    # Use event name hash for consistent intro
+    intro_idx = sum(ord(c) for c in item.event_name) % len(lead_intros)
+    lede = lead_intros[intro_idx]
+    
+    lede += f' on {item.date_time} at {venue} in {city}. '
+    
+    # Make cost more exciting
     if item.cost and item.cost.lower() == 'free':
-        lede += ' There is no cost to attend.'
+        lede += 'And here\'s the best part — it\'s completely free. '
     elif item.cost:
-        lede += f' Tickets are {item.cost}.'
+        lede += f'Tickets are {item.cost}. '
+    
+    # Add more context from description
+    if len(desc_parts) > 1:
+        lede += desc_parts[1].rstrip('.') + '. '
 
     audience = item.audience or 'tech professionals'
-    why = (
-        '. '.join(desc_parts[1:]).strip().rstrip('.') + '.'
-    ) if len(desc_parts) > 1 else (
-        f'If you\'re a {audience.lower().rstrip("s")} in this city, this is one worth putting on your calendar.'
-    )
+    
+    # More compelling "why it matters"
+    if len(desc_parts) > 1:
+        why = '. '.join(desc_parts[1:]).strip().rstrip('.') + '.'
+    else:
+        # Extract key descriptors to make more specific variations
+        is_free = item.cost and item.cost.lower() == 'free'
+        has_founders = 'founder' in audience.lower()
+        has_investors = 'investor' in audience.lower() or 'vc' in audience.lower() or 'angel' in audience.lower()
+        has_engineers = 'engineer' in audience.lower() or 'developer' in audience.lower()
+        audience_lower = audience.lower()
+        
+        # Create highly specific and compelling variations
+        why_variations = [
+            # Variation 1: Networking value
+            (f'This is where real connections happen. Last time, attendees walked away with new co-founders, '
+             f'first customers, and job offers. The {audience_lower} in the room are actively looking to build — '
+             f'and you should be there when they do.'),
+            
+            # Variation 2: FOMO + opportunity cost
+            (f'Here\'s what happens if you don\'t show up: someone else meets your future co-founder, '
+             f'someone else gets the intro you needed, someone else lands that opportunity. '
+             f'The {audience_lower} who consistently show up to events like this are the ones winning. '
+             f'Be one of them.'),
+            
+            # Variation 3: Specific outcomes
+            (f'This is more than drinks and small talk. This is where {audience_lower} are closing deals, '
+             f'forming partnerships, and hiring their founding teams. Come ready with business cards, '
+             f'a clear pitch, and the willingness to follow up. The people you meet here could change everything.'),
+            
+            # Variation 4: Insider access
+            (f'The smartest {audience_lower} in NYC know this is where you need to be. Not just for the content, '
+             f'but for who you\'ll meet in the hallways, at the bar, waiting in line for coffee. '
+             f'These informal conversations are where the real magic happens.'),
+            
+            # Variation 5: Career acceleration
+            (f'Think about where you want to be six months from now. The path there probably involves meeting '
+             f'someone who can open that door. This event puts you in a room with exactly those people — '
+             f'the {audience_lower} who are building, investing, and connecting the dots across the ecosystem.'),
+            
+            # Variation 6: Timing urgency
+            (f'Every month you wait is another month someone else is building relationships, making moves, '
+             f'and getting ahead. The {audience_lower} who make it to events like this aren\'t smarter — '
+             f'they just show up. Stop waiting for the perfect time. This is it.'),
+        ]
+        
+        # Add specific variations based on event characteristics
+        if is_free and has_founders:
+            why_variations.append(
+                f'It\'s free, it\'s full of founders who are actually building, and it\'s one of the best '
+                f'uses of a weeknight in NYC. If you\'re looking for a co-founder, first customers, or just '
+                f'people who get what you\'re going through — this is your crowd.'
+            )
+        
+        if has_investors:
+            why_variations.append(
+                f'Investors will be in the room. Not on a panel — actually walking around, having conversations, '
+                f'getting pitched in real time. If your company is ready for funding, this is one of the most '
+                f'efficient ways to get in front of VCs who are actively writing checks.'
+            )
+        
+        if has_engineers:
+            why_variations.append(
+                f'The technical talent in this room is exceptional. If you\'re hiring, scouting for a co-founder, '
+                f'or just want to talk shop with people who actually know what they\'re doing, this is it. '
+                f'Plus, the conversations here often lead to open-source collaborations and side projects that go somewhere.'
+            )
+        
+        why_idx = sum(ord(c) for c in item.event_name) % len(why_variations)
+        why = why_variations[why_idx]
 
     details = [f'Date: {item.date_time}', f'Venue: {venue}', f'Cost: {item.cost}']
     if item.audience:
@@ -230,22 +364,55 @@ def event_to_story(item: EventItem, tracker: CitationTracker) -> StoryCard:
 
 def accelerator_to_story(item: AcceleratorItem, tracker: CitationTracker) -> StoryCard:
     desc_parts = [s.strip() for s in (item.description or '').split('. ') if s.strip()]
-    dek = (desc_parts[0].rstrip('.') + '.') if desc_parts else (
-        f'A program based in {item.city_region or "New York"}.'
-    )
-
-    lede = (
-        f'We want to tell you about {item.name}, headquartered in {item.city_region}.'
-        if item.city_region else f'We want to tell you about {item.name}, a New York–based program.'
-    )
+    
+    # More engaging dek
+    if desc_parts:
+        dek = desc_parts[0].rstrip('.') + '.'
+    else:
+        dek = f'An accelerator program reshaping the {item.focus.lower() if item.focus else "startup"} landscape in {item.city_region or "New York"}.'
+    
+    # More compelling lede with variety
+    lead_intros = [
+        f"Here's what makes {item.name} worth your attention",
+        f"This is the moment to learn about {item.name}",
+        f"{item.name} is building the next generation of startups",
+        f"Here's why {item.name} is on every founder's radar",
+    ]
+    # Use item name hash to pick consistent intro (deterministic)
+    intro_idx = sum(ord(c) for c in item.name) % len(lead_intros)
+    lede = lead_intros[intro_idx]
+    
+    if item.city_region:
+        lede += f' in {item.city_region}. '
+    else:
+        lede += ' right here in New York. '
+    
+    # Add focus area with more excitement
     if item.focus:
-        lede += f' Their focus: {item.focus.lower()}.'
+        lede += f"They're laser-focused on {item.focus.lower()}, "
+        lede += "working with founders who are tackling some of the biggest challenges in this space. "
+    
+    # Add additional description with impact language
     if len(desc_parts) > 1:
-        lede += ' ' + desc_parts[1].rstrip('.') + '.'
-
-    why = f'For founders working in {item.focus.lower() if item.focus else "tech"}, this is a program to know about.'
+        lede += desc_parts[1].rstrip('.') + '. '
+    
+    # Add urgency if still space
     if item.application_url:
-        why += ' And applications are currently open.'
+        lede += "And here's the opportunity: applications are open right now."
+
+    # More actionable "why it matters"
+    if item.application_url:
+        why = (
+            f"If you're building in {item.focus.lower() if item.focus else 'tech'}, "
+            f"this is your chance to get into a proven program. "
+            f"Applications are open, and these cohorts fill up fast."
+        )
+    else:
+        why = (
+            f"For founders in {item.focus.lower() if item.focus else 'tech'}, "
+            f"this is the kind of program that can change the trajectory of your company. "
+            f"Keep an eye on when the next cohort opens."
+        )
 
     details = []
     if item.city_region:
@@ -331,11 +498,14 @@ _TRANSITIONS = {
     ),
     'events': (
         'Turning now to the week ahead. '
-        'The New York City tech calendar has no shortage of places to be.'
+        'New York City\'s tech scene is alive with opportunities to connect, learn, and grow. '
+        'These are the events where deals get done, partnerships form, and careers change direction. '
+        'Here\'s where you need to be.'
     ),
     'accelerators': (
-        'And finally tonight, for those of you still building — '
-        'these are the programs worth a serious look.'
+        'And finally tonight, for those of you ready to take your startup to the next level — '
+        'these are the programs that could change everything. '
+        'The right accelerator at the right time can be the difference between struggling alone and building with momentum.'
     ),
 }
 
