@@ -69,7 +69,7 @@ img { max-width: 100%; }
     border-top: 4px solid var(--accent);
     border-bottom: 2px solid var(--text);
     padding: 22px 0 12px;
-    text-align: left;
+    text-align: center;
 }
 .masthead-title {
     font-family: var(--sans);
@@ -343,6 +343,104 @@ img { max-width: 100%; }
 .home-article-linkout {
     margin-top: 14px;
     font-size: 0.95rem;
+}
+
+/* ── Story Focus View ─────────────────────────────────────── */
+.hero-card,
+.story-card,
+.radar-card,
+.accel-card,
+.event-card {
+    cursor: pointer;
+}
+.story-focus-view {
+    margin: 18px 0 26px;
+    background: var(--bg-warm);
+    padding: 26px 0 30px;
+}
+.story-focus-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 760px;
+    margin: 0 auto 18px;
+}
+.story-focus-back {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.story-focus-back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.story-focus-title {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--accent);
+}
+.story-focus-article {
+    max-width: 760px;
+    margin: 0 auto;
+}
+.story-focus-kicker {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    margin-bottom: 18px;
+}
+.story-focus-headline {
+    font-family: var(--serif);
+    font-size: 2.9rem;
+    line-height: 1.08;
+    margin-bottom: 14px;
+}
+.story-focus-dek {
+    font-size: 1.05rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+.story-focus-meta {
+    font-size: 1rem;
+    color: var(--text-2);
+    margin-bottom: 18px;
+}
+.story-focus-meta .author {
+    color: var(--accent);
+    font-weight: 700;
+}
+.story-focus-image {
+    width: 100%;
+    min-height: 420px;
+    background: linear-gradient(135deg, var(--bg-warm), var(--border));
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+}
+.story-focus-caption {
+    font-size: 0.9rem;
+    color: var(--text-2);
+    margin-bottom: 18px;
+}
+.story-focus-body p {
+    font-family: var(--serif);
+    font-size: 1.06rem;
+    line-height: 1.65;
+    margin-bottom: 14px;
+}
+.story-focus-link {
+    margin-top: 16px;
+    font-size: 1rem;
 }
 
 /* ── Editor's Note ────────────────────────────────────────── */
@@ -1349,9 +1447,10 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
 
     news_html = ''.join(teaser(item) for item in groups['news'][:3])
     opinion_html = ''.join(teaser(item) for item in groups['opinion'][:3])
+    articles_json = json.dumps(home_articles).replace("'", "\\'")
 
     return (
-        '<section id="home-page" class="home-page" data-page-group="home">\n'
+        '<section id="home-page" class="home-page" data-page-group="home" data-articles=\'' + articles_json + '\'>\n'
         '  <div id="home-subview-front" class="home-subview">\n'
         '    <div class="home-front-grid">\n'
         '      <div>\n'
@@ -1575,9 +1674,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var pageSections = document.querySelectorAll('[data-page-group]');
     if (!topicLinks.length || !pageSections.length) return;
 
+    function pageGroupFor(page) {
+        return page === 'news' ? 'businesses' : page;
+    }
+
     function showPage(page) {
+        var pageGroup = pageGroupFor(page);
         pageSections.forEach(function (section) {
-            section.hidden = section.getAttribute('data-page-group') !== page;
+            section.hidden = section.getAttribute('data-page-group') !== pageGroup;
         });
 
         topicLinks.forEach(function (link) {
@@ -1606,7 +1710,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var target = link.getAttribute('href');
             showPage(page);
             if (target && target.startsWith('#')) {
+                var targetNode = document.querySelector(target);
                 window.location.hash = target;
+                if (targetNode) {
+                    targetNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1622,6 +1731,225 @@ document.addEventListener('DOMContentLoaded', function () {
         var parent = targetNode.closest('[data-page-group]');
         if (!parent) return;
         showPage(parent.getAttribute('data-page-group'));
+    });
+});
+
+// Home newspaper experience navigation controller
+document.addEventListener('DOMContentLoaded', function() {
+    var homePageEl = document.getElementById('home-page');
+    if (!homePageEl) return;
+
+    var frontView = document.getElementById('home-subview-front');
+    var listView = document.getElementById('home-subview-list');
+    var articleView = document.getElementById('home-subview-article');
+    var homeArticlesAttr = homePageEl.getAttribute('data-articles');
+    var articles = homeArticlesAttr ? JSON.parse(homeArticlesAttr) : [];
+
+    function showView(view) {
+        [frontView, listView, articleView].forEach(function(v) {
+            v.classList.toggle('is-hidden', v !== view);
+        });
+    }
+
+    document.addEventListener('click', function(event) {
+        // Handle section list button clicks (News, Opinion, etc.)
+        var openList = event.target.closest('[data-open-list]');
+        if (openList) {
+            var sectionKey = openList.getAttribute('data-open-list');
+            var items = articles.filter(function(a) { return a.sectionKey === sectionKey; });
+            var listTitle = document.getElementById('home-list-title');
+            if (items.length > 0) {
+                listTitle.textContent = items[0].sectionLabel;
+            }
+            var listItemsContainer = document.getElementById('home-list-items');
+            listItemsContainer.innerHTML = items.map(function(article) {
+                return (
+                    '<button type="button" class="home-list-item" data-open-article="' + article.id + '">' +
+                    '  <div class="home-list-thumb"></div>' +
+                    '  <div>' +
+                    '    <h3 class="home-list-headline">' + article.headline + '</h3>' +
+                    '    <p class="home-list-summary">' + article.summary + '</p>' +
+                    '  </div>' +
+                    '</button>'
+                );
+            }).join('');
+            showView(listView);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Handle article card clicks (from front page or list view)
+        var openArticle = event.target.closest('[data-open-article]');
+        if (openArticle) {
+            var articleId = openArticle.getAttribute('data-open-article');
+            var article = articles.find(function(a) { return a.id === articleId; });
+            if (!article) return;
+            
+            document.getElementById('home-article-kicker').textContent = article.sectionLabel;
+            document.getElementById('home-article-title').textContent = article.headline;
+            document.getElementById('home-article-dek').textContent = article.dek;
+            document.getElementById('home-article-meta').innerHTML = 
+                '<span class="author">' + article.author + '</span> • ' + article.date;
+            
+            var bodyHtml = (article.body || '').split('\\n\\n').map(function(para) {
+                return '<p>' + para + '</p>';
+            }).join('');
+            document.getElementById('home-article-body').innerHTML = bodyHtml;
+            
+            var linkoutHtml = '';
+            if (article.sourceUrl) {
+                linkoutHtml = '<a href="' + article.sourceUrl + '" target="_blank">Read original article →</a>';
+            }
+            document.getElementById('home-article-linkout').innerHTML = linkoutHtml;
+            
+            showView(articleView);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Handle back button clicks
+        var homeBack = event.target.closest('[data-home-back]');
+        if (homeBack) {
+            var target = homeBack.getAttribute('data-home-back');
+            showView(target === 'front' ? frontView : listView);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+});
+
+// Main newsletter story focus controller
+document.addEventListener('DOMContentLoaded', function () {
+    var focusView = document.getElementById('story-focus-view');
+    var focusBack = document.getElementById('story-focus-back');
+    var focusContent = document.getElementById('story-focus-content');
+    var pageSections = document.querySelectorAll('[data-page-group]');
+    if (!focusView || !focusBack || !focusContent || !pageSections.length) return;
+
+    var lastPage = '';
+    var lastStory = null;
+
+    function currentPage() {
+        var active = document.querySelector('.masthead-topic-link.is-active[data-page]');
+        return active ? active.getAttribute('data-page') : '';
+    }
+
+    function setFocusMode(isFocused) {
+        var editorsNote = document.querySelector('.editors-note');
+        var toc = document.querySelector('.toc');
+        if (editorsNote) editorsNote.hidden = isFocused;
+        if (toc) toc.hidden = isFocused;
+        focusView.hidden = !isFocused;
+    }
+
+    function openStory(cardNode) {
+        lastPage = currentPage();
+        lastStory = cardNode;
+        setFocusMode(true);
+
+        pageSections.forEach(function (section) {
+            section.hidden = true;
+        });
+
+        function textFrom(selector) {
+            var node = cardNode.querySelector(selector);
+            return node ? node.textContent.trim() : '';
+        }
+
+        function esc(value) {
+            return (value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        var section = cardNode.closest('section');
+        var sectionLabel = section ? section.querySelector('.section-label') : null;
+        var kicker = sectionLabel ? sectionLabel.textContent.trim() : 'News';
+
+        var headline = textFrom('.hero-headline, .story-headline, .radar-headline, .accel-headline, .event-headline') || 'Story';
+        var dek = textFrom('.hero-dek, .story-dek, .radar-lede, .accel-dek, .event-dek') || textFrom('.story-lede');
+
+        var announced = '';
+        cardNode.querySelectorAll('.key-details li').forEach(function (item) {
+            var value = item.textContent.trim();
+            if (!announced && value.toLowerCase().indexOf('announced:') === 0) {
+                announced = value.split(':').slice(1).join(':').trim();
+            }
+        });
+
+        var bodyParts = [];
+        var storyLede = textFrom('.story-lede');
+        var storyContext = textFrom('.story-context');
+        var whyMatters = textFrom('.why-it-matters p');
+        if (storyLede) bodyParts.push(storyLede);
+        if (storyContext) bodyParts.push(storyContext);
+        if (whyMatters) bodyParts.push(whyMatters);
+        cardNode.querySelectorAll('.key-details li').forEach(function (item) {
+            bodyParts.push(item.textContent.trim());
+        });
+
+        if (!bodyParts.length && dek) {
+            bodyParts.push(dek);
+        }
+
+        var sourceAnchor = cardNode.querySelector('.story-sources a:not(.cite-sup)');
+        var sourceHtml = '';
+        if (sourceAnchor) {
+            var href = sourceAnchor.getAttribute('href') || '#';
+            sourceHtml = '<p class="story-focus-link"><a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">Read source article →</a></p>';
+        }
+
+        var bodyHtml = bodyParts.map(function (part) {
+            return '<p>' + esc(part) + '</p>';
+        }).join('');
+
+        focusContent.innerHTML = (
+            '<article class="story-focus-article">' +
+            '  <span class="story-focus-kicker">' + esc(kicker) + '</span>' +
+            '  <h2 class="story-focus-headline">' + esc(headline) + '</h2>' +
+            (dek ? '  <p class="story-focus-dek">' + esc(dek) + '</p>' : '') +
+            '  <p class="story-focus-meta"><span class="author">AI Factory News Desk</span>' +
+            (announced ? ' • ' + esc(announced) : '') +
+            '</p>' +
+            '  <div class="story-focus-image"></div>' +
+            '  <p class="story-focus-caption">Photo by AI Factory archive</p>' +
+            '  <div class="story-focus-body">' + bodyHtml + '</div>' +
+            sourceHtml +
+            '</article>'
+        );
+        focusView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function restorePage(page) {
+        pageSections.forEach(function (section) {
+            section.hidden = section.getAttribute('data-page-group') !== page;
+        });
+
+        document.querySelectorAll('.masthead-topic-link[data-page]').forEach(function (link) {
+            var isActive = link.getAttribute('data-page') === page;
+            link.classList.toggle('is-active', isActive);
+            link.setAttribute('aria-current', isActive ? 'page' : 'false');
+        });
+    }
+
+    focusBack.addEventListener('click', function () {
+        var page = lastPage || currentPage() || 'home';
+        setFocusMode(false);
+        focusContent.innerHTML = '';
+        restorePage(page);
+        if (lastStory) {
+            lastStory.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('a')) return;
+        var cardNode = event.target.closest('.hero-card, .story-card, .radar-card, .accel-card, .event-card');
+        if (!cardNode) return;
+        if (focusView.contains(cardNode)) return;
+        openStory(cardNode);
     });
 });
 
@@ -1691,6 +2019,11 @@ def render_html_page(
     tp = build_trend_prose(trend_data)
 
     # ── build HTML sections ─────────────────────────────────────
+    
+    # Home newspaper experience (front page → list → article)
+    home_articles = _home_articles_payload(lead_card, top_cards, radar_cards, event_cards, accel_cards, date_str)
+    home_page_html = _home_front_page_html(home_articles)
+    home_articles_json = json.dumps(home_articles)
 
     # Lead story
     lead_html = _hero_html(lead_card) if lead_card else ''
@@ -1841,12 +2174,14 @@ def render_html_page(
 
     people_target = '#people' if people_html else ('#accelerators' if accel_cards else ('#top-stories' if top_cards else '#lead'))
     events_target = '#events' if event_cards else '#calendar'
-    investments_target = '#vc-firms' if vc_firms_html else ('#funding-radar' if radar_cards else '#lead')
+    news_target = '#top-stories' if top_cards else '#lead'
+    investments_target = '#lead'
     businesses_target = '#top-stories' if top_cards else ('#trends' if trend_data else '#lead')
     masthead_topics_html = (
         '<nav class="masthead-topics" aria-label="Topic sections">\n'
         '  <ul class="masthead-topics-list">\n'
-        f'    <li><a class="masthead-topic-link" data-page="investments" href="#home">Home</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="home" href="#home">Home</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="news" href="{news_target}">News</a></li>\n'
         f'    <li><a class="masthead-topic-link" data-page="people" href="{people_target}">People</a></li>\n'
         f'    <li><a class="masthead-topic-link" data-page="events" href="{events_target}">Events</a></li>\n'
         f'    <li><a class="masthead-topic-link" data-page="investments" href="{investments_target}">Investments</a></li>\n'
@@ -1881,6 +2216,11 @@ def render_html_page(
 
 <main class="container" id="home">
 
+    {home_page_html.replace('"', '&quot;')}
+    <script id="home-articles-data">
+    window.homeArticles = {home_articles_json};
+    </script>
+
     {calendar_switcher_html}
 
     <section class="editors-note">
@@ -1889,6 +2229,14 @@ def render_html_page(
     </section>
 
     {toc_html}
+
+    <section id="story-focus-view" class="story-focus-view" hidden>
+        <div class="story-focus-head">
+            <button type="button" id="story-focus-back" class="story-focus-back">← Back to Topic</button>
+            <h2 class="story-focus-title">Story View</h2>
+        </div>
+        <div id="story-focus-content"></div>
+    </section>
 
     {lead_html}
     {top_stories_html}
