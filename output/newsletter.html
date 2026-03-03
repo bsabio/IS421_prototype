@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrdoAI — Issue #10</title>
+    <title>Oracle of Ordo Times — Issue #10</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        corePlugins: { preflight: false },
+        prefix: 'tw-',
+      }
+    </script>
     <style>
 /* ── Reset + Base ─────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1223,9 +1230,50 @@ img { max-width: 100%; }
 
 <header class="masthead">
     <div class="container">
-        <h1 class="masthead-title">OrdoAI</h1>
+        <h1 class="masthead-title">Oracle of Ordo Times</h1>
         <p class="masthead-subtitle">Weekly startup funding, events, and accelerators</p>
         <p class="masthead-slogan">Don't stand on the sidelines, get in the game!</p>
+        <!-- SVG Section Icons -->
+        <div class="tw-flex tw-justify-center tw-gap-8 tw-my-4">
+          <!-- Money & Models Icon -->
+          <div class="tw-text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="20" cy="24" r="14"/>
+              <path d="M20 17v14"/>
+              <path d="M15 21h10c1.5 0 3 1 3 3s-1.5 3-3 3h-10"/>
+              <path d="M30 12l4-4m0 0l4 4m-4-4v10"/>
+              <path d="M38 20l-4 4"/>
+            </svg>
+            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">Money &amp; Models</span>
+          </div>
+          <!-- People & Events Icon -->
+          <div class="tw-text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="6"/>
+              <circle cx="32" cy="16" r="6"/>
+              <path d="M4 38c0-7 5-12 12-12 3 0 5.5 1 7.5 3"/>
+              <path d="M44 38c0-7-5-12-12-12-3 0-5.5 1-7.5 3"/>
+              <path d="M24 30v10"/>
+              <path d="M20 36h8"/>
+            </svg>
+            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">People &amp; Events</span>
+          </div>
+          <!-- API Status Icon -->
+          <div class="tw-text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="8" width="16" height="12" rx="2"/>
+              <rect x="28" y="8" width="16" height="12" rx="2"/>
+              <rect x="16" y="28" width="16" height="12" rx="2"/>
+              <path d="M12 20v4h12"/>
+              <path d="M36 20v4h-12"/>
+              <path d="M24 24v4"/>
+              <circle cx="12" cy="14" r="2" fill="#e10600"/>
+              <circle cx="36" cy="14" r="2" fill="#e10600"/>
+              <circle cx="24" cy="34" r="2" fill="#e10600"/>
+            </svg>
+            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">API Status</span>
+          </div>
+        </div>
         <nav class="masthead-topics" aria-label="Topic sections">
   <ul class="masthead-topics-list">
     <li><a class="masthead-topic-link" data-page="home" href="#home">Home</a></li>
@@ -1249,15 +1297,15 @@ img { max-width: 100%; }
 <a class="home-teaser" href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
   <div class="home-teaser-kicker">Events</div>
   <div class="home-teaser-headline">Workshop: Pitch &amp; Positioning with AI</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • Mar 9</div>
+  <div class="home-teaser-meta">Ordo Times Desk • Mar 9</div>
 </a><a class="home-teaser" href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
   <div class="home-teaser-kicker">Events</div>
   <div class="home-teaser-headline">Waitlist The AI Briefing by Startup Grind</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • Mar 13</div>
+  <div class="home-teaser-meta">Ordo Times Desk • Mar 13</div>
 </a><a class="home-teaser" href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
   <div class="home-teaser-kicker">Events</div>
   <div class="home-teaser-headline">Startups, Investors and Professionals Pitch and Networking Event NYC</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • Mar 10</div>
+  <div class="home-teaser-meta">Ordo Times Desk • Mar 10</div>
 </a>
       </div>
       <div><div class="home-front-lead">
@@ -1265,7 +1313,7 @@ img { max-width: 100%; }
   <a class="home-teaser" href="articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html">
     <h2 class="home-front-lead-headline">MediCare Secures $20M Series B Backed by Health Ventures</h2>
     <p class="home-front-lead-body">Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.</p>
-    <div class="home-teaser-meta">OrdoAI News Desk • 2026-02-03</div>
+    <div class="home-teaser-meta">Ordo Times Desk • 2026-02-03</div>
   </a>
 </div></div>
       <div>
@@ -1273,15 +1321,15 @@ img { max-width: 100%; }
 <a class="home-teaser" href="articles/opinion-1-techstars-nyc.html">
   <div class="home-teaser-kicker">Accelerators</div>
   <div class="home-teaser-headline">TechStars NYC</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • March 03, 2026</div>
+  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
 </a><a class="home-teaser" href="articles/opinion-2-era-entrepreneur-roundtable-accelerator.html">
   <div class="home-teaser-kicker">Accelerators</div>
   <div class="home-teaser-headline">ERA (Entrepreneur Roundtable Accelerator)</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • March 03, 2026</div>
+  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
 </a><a class="home-teaser" href="articles/opinion-3-entrepreneur-first-nyc.html">
   <div class="home-teaser-kicker">Accelerators</div>
   <div class="home-teaser-headline">Entrepreneur First NYC</div>
-  <div class="home-teaser-meta">OrdoAI News Desk • March 03, 2026</div>
+  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
 </a>
       </div>
     </div>
@@ -1303,14 +1351,14 @@ img { max-width: 100%; }
       <p id="home-article-dek" class="home-article-dek"></p>
       <p id="home-article-meta" class="home-article-meta"></p>
       <div class="home-article-image"></div>
-      <p id="home-article-caption" class="home-article-caption">Placeholder graphic: OrdoAI archive</p>
+      <p id="home-article-caption" class="home-article-caption">Placeholder graphic: Oracle of Ordo Times archive</p>
       <div id="home-article-body" class="home-article-body"></div>
       <p id="home-article-linkout" class="home-article-linkout"></p>
     </div>
   </article>
 </section>
     <script id="home-articles-data">
-    window.homeArticles = [{"id": "front-page-1", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "MediCare Secures $20M Series B Backed by Health Ventures", "dek": "MediCare announced $20 million Series B round.", "summary": "Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.", "author": "OrdoAI News Desk", "date": "2026-02-03", "sourceUrl": "https://techcrunch.com/2026/02/03/medicare-series-b-20m", "imageUrl": "images/front-page-1.png", "articleUrl": "articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html"}, {"id": "front-page-2", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "Acme AI Secures $15M Series A Backed by Venture Partners", "dek": "Acme AI announced today it has raised $15 million in Series A funding.", "summary": "Breaking in New York tonight: Acme AI just closed $15M in a series a round, with Venture Partners leading the charge. Tech Fund and Angel Investors also took part in the round. The announcement came 2026-02-05.", "author": "OrdoAI News Desk", "date": "2026-02-05", "sourceUrl": "https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a", "imageUrl": "images/front-page-2.png", "articleUrl": "articles/front-page-2-acme-ai-secures-15m-series-a-backed-by-venture-partners.html"}, {"id": "front-page-3", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "CyberShield Secures $12M Series A Backed by Security Ventures", "dek": "CyberShield announced $12M Series A for next-gen security.", "summary": "Major news tonight out of New York. CyberShield secured $12M with Security Ventures at the helm. Tech Capital and Industry Investors also took part in the round. The announcement came 2026-02-01.", "author": "OrdoAI News Desk", "date": "2026-02-01", "sourceUrl": "https://techcrunch.com/2026/02/01/cybershield-series-a", "imageUrl": "images/front-page-3.png", "articleUrl": "articles/front-page-3-cybershield-secures-12m-series-a-backed-by-security-ventures.html"}, {"id": "front-page-4", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "PayFlow Secures $8M Seed Backed by NYC Ventures", "dek": "Brooklyn-based PayFlow raised $8 million in seed funding.", "summary": "Major news tonight out of Brooklyn. PayFlow secured $8M with NYC Ventures at the helm. Fintech Capital also took part in the round. The announcement came 2026-02-04.", "author": "OrdoAI News Desk", "date": "2026-02-04", "sourceUrl": "https://alleywatch.com/2026/02/04/payflow-seed-funding", "imageUrl": "images/front-page-4.png", "articleUrl": "articles/front-page-4-payflow-secures-8m-seed-backed-by-nyc-ventures.html"}, {"id": "front-page-5", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "LearnNow Secures $5M Seed Backed by Education Fund", "dek": "LearnNow raised $5 million seed round to transform education.", "summary": "Flying under the radar: LearnNow in New York closed $5M from Education Fund. Angel Network also took part in the round. The announcement came 2026-02-02.", "author": "OrdoAI News Desk", "date": "2026-02-02", "sourceUrl": "https://techcrunch.com/2026/02/02/learnnow-seed-round", "imageUrl": "images/front-page-5.png", "articleUrl": "articles/front-page-5-learnnow-secures-5m-seed-backed-by-education-fund.html"}, {"id": "news-1", "sectionKey": "news", "sectionLabel": "Events", "headline": "Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee is coming up on Mar 9 at Meetup listing in NYC. Tickets are See listing. ", "author": "OrdoAI News Desk", "date": "Mar 9", "sourceUrl": "https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-1.png", "articleUrl": "articles/news-1-workshop-pitch-positioning-with-ai-mon-mar-9-5-30-pm-edt-by-ai-integration-and-empowerment-1-attendee.html"}, {"id": "news-2", "sectionKey": "news", "sectionLabel": "Events", "headline": "Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees is coming up on Mar 13 at Meetup listing in NYC. Tickets are See listing. ", "author": "OrdoAI News Desk", "date": "Mar 13", "sourceUrl": "https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-2.png", "articleUrl": "articles/news-2-waitlist-the-ai-briefing-by-startup-grind-fri-mar-13-10-00-am-edt-by-startup-grind-nyc-4-7-2-attendees.html"}, {"id": "news-3", "sectionKey": "news", "sectionLabel": "Events", "headline": "Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees", "dek": "Curated from Meetup event search.", "summary": "You need to know about Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees. The event is set on Mar 10 at Meetup listing in NYC. Tickets are See listing. ", "author": "OrdoAI News Desk", "date": "Mar 10", "sourceUrl": "https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-3.png", "articleUrl": "articles/news-3-startups-investors-and-professionals-pitch-and-networking-event-nyc-tue-mar-10-7-00-pm-edt-by-startup-pitch-networking-nyc-4-5-6-attendees.html"}, {"id": "opinion-1", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "TechStars NYC", "dek": "World's most active pre-seed investor.", "summary": "Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/techstars-nyc", "imageUrl": "images/opinion-1.png", "articleUrl": "articles/opinion-1-techstars-nyc.html"}, {"id": "opinion-2", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "ERA (Entrepreneur Roundtable Accelerator)", "dek": "$100K investment for 6% equity.", "summary": "This is the moment to learn about ERA (Entrepreneur Roundtable Accelerator) in New York, NY. They're laser-focused on b2b, saas, marketplaces, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/era", "imageUrl": "images/opinion-2.png", "articleUrl": "articles/opinion-2-era-entrepreneur-roundtable-accelerator.html"}, {"id": "opinion-3", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Entrepreneur First NYC", "dek": "Pre-team accelerator for exceptional individuals building deep tech companies.", "summary": "This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/ef-nyc", "imageUrl": "images/opinion-3.png", "articleUrl": "articles/opinion-3-entrepreneur-first-nyc.html"}, {"id": "opinion-4", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Columbia Startup Lab", "dek": "Free office space and mentorship for Columbia founders.", "summary": "Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/columbia", "imageUrl": "images/opinion-4.png", "articleUrl": "articles/opinion-4-columbia-startup-lab.html"}, {"id": "opinion-5", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Blueprint Health", "dek": "Healthcare-focused accelerator with $20K investment and extensive mentor network.", "summary": "Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/blueprint", "imageUrl": "images/opinion-5.png", "articleUrl": "articles/opinion-5-blueprint-health.html"}, {"id": "opinion-6", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Y Combinator", "dek": "$500K for 7% equity.", "summary": "Here's why Y Combinator is on every founder's radar in Mountain View, CA (accepts NYC startups). They're laser-focused on all sectors, working with founders who are tackling some of the biggest challenges in this space. 3-month program ending in Demo Day. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/yc", "imageUrl": "images/opinion-6.png", "articleUrl": "articles/opinion-6-y-combinator.html"}];
+    window.homeArticles = [{"id": "front-page-1", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "MediCare Secures $20M Series B Backed by Health Ventures", "dek": "MediCare announced $20 million Series B round.", "summary": "Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.", "author": "Ordo Times Desk", "date": "2026-02-03", "sourceUrl": "https://techcrunch.com/2026/02/03/medicare-series-b-20m", "imageUrl": "images/front-page-1.png", "articleUrl": "articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html"}, {"id": "front-page-2", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "Acme AI Secures $15M Series A Backed by Venture Partners", "dek": "Acme AI announced today it has raised $15 million in Series A funding.", "summary": "Breaking in New York tonight: Acme AI just closed $15M in a series a round, with Venture Partners leading the charge. Tech Fund and Angel Investors also took part in the round. The announcement came 2026-02-05.", "author": "Ordo Times Desk", "date": "2026-02-05", "sourceUrl": "https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a", "imageUrl": "images/front-page-2.png", "articleUrl": "articles/front-page-2-acme-ai-secures-15m-series-a-backed-by-venture-partners.html"}, {"id": "front-page-3", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "CyberShield Secures $12M Series A Backed by Security Ventures", "dek": "CyberShield announced $12M Series A for next-gen security.", "summary": "Major news tonight out of New York. CyberShield secured $12M with Security Ventures at the helm. Tech Capital and Industry Investors also took part in the round. The announcement came 2026-02-01.", "author": "Ordo Times Desk", "date": "2026-02-01", "sourceUrl": "https://techcrunch.com/2026/02/01/cybershield-series-a", "imageUrl": "images/front-page-3.png", "articleUrl": "articles/front-page-3-cybershield-secures-12m-series-a-backed-by-security-ventures.html"}, {"id": "front-page-4", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "PayFlow Secures $8M Seed Backed by NYC Ventures", "dek": "Brooklyn-based PayFlow raised $8 million in seed funding.", "summary": "Major news tonight out of Brooklyn. PayFlow secured $8M with NYC Ventures at the helm. Fintech Capital also took part in the round. The announcement came 2026-02-04.", "author": "Ordo Times Desk", "date": "2026-02-04", "sourceUrl": "https://alleywatch.com/2026/02/04/payflow-seed-funding", "imageUrl": "images/front-page-4.png", "articleUrl": "articles/front-page-4-payflow-secures-8m-seed-backed-by-nyc-ventures.html"}, {"id": "front-page-5", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "LearnNow Secures $5M Seed Backed by Education Fund", "dek": "LearnNow raised $5 million seed round to transform education.", "summary": "Flying under the radar: LearnNow in New York closed $5M from Education Fund. Angel Network also took part in the round. The announcement came 2026-02-02.", "author": "Ordo Times Desk", "date": "2026-02-02", "sourceUrl": "https://techcrunch.com/2026/02/02/learnnow-seed-round", "imageUrl": "images/front-page-5.png", "articleUrl": "articles/front-page-5-learnnow-secures-5m-seed-backed-by-education-fund.html"}, {"id": "news-1", "sectionKey": "news", "sectionLabel": "Events", "headline": "Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee is coming up on Mar 9 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 9", "sourceUrl": "https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-1.png", "articleUrl": "articles/news-1-workshop-pitch-positioning-with-ai-mon-mar-9-5-30-pm-edt-by-ai-integration-and-empowerment-1-attendee.html"}, {"id": "news-2", "sectionKey": "news", "sectionLabel": "Events", "headline": "Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees is coming up on Mar 13 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 13", "sourceUrl": "https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-2.png", "articleUrl": "articles/news-2-waitlist-the-ai-briefing-by-startup-grind-fri-mar-13-10-00-am-edt-by-startup-grind-nyc-4-7-2-attendees.html"}, {"id": "news-3", "sectionKey": "news", "sectionLabel": "Events", "headline": "Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees", "dek": "Curated from Meetup event search.", "summary": "You need to know about Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees. The event is set on Mar 10 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 10", "sourceUrl": "https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-3.png", "articleUrl": "articles/news-3-startups-investors-and-professionals-pitch-and-networking-event-nyc-tue-mar-10-7-00-pm-edt-by-startup-pitch-networking-nyc-4-5-6-attendees.html"}, {"id": "opinion-1", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "TechStars NYC", "dek": "World's most active pre-seed investor.", "summary": "Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/techstars-nyc", "imageUrl": "images/opinion-1.png", "articleUrl": "articles/opinion-1-techstars-nyc.html"}, {"id": "opinion-2", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "ERA (Entrepreneur Roundtable Accelerator)", "dek": "$100K investment for 6% equity.", "summary": "This is the moment to learn about ERA (Entrepreneur Roundtable Accelerator) in New York, NY. They're laser-focused on b2b, saas, marketplaces, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/era", "imageUrl": "images/opinion-2.png", "articleUrl": "articles/opinion-2-era-entrepreneur-roundtable-accelerator.html"}, {"id": "opinion-3", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Entrepreneur First NYC", "dek": "Pre-team accelerator for exceptional individuals building deep tech companies.", "summary": "This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/ef-nyc", "imageUrl": "images/opinion-3.png", "articleUrl": "articles/opinion-3-entrepreneur-first-nyc.html"}, {"id": "opinion-4", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Columbia Startup Lab", "dek": "Free office space and mentorship for Columbia founders.", "summary": "Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/columbia", "imageUrl": "images/opinion-4.png", "articleUrl": "articles/opinion-4-columbia-startup-lab.html"}, {"id": "opinion-5", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Blueprint Health", "dek": "Healthcare-focused accelerator with $20K investment and extensive mentor network.", "summary": "Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/blueprint", "imageUrl": "images/opinion-5.png", "articleUrl": "articles/opinion-5-blueprint-health.html"}, {"id": "opinion-6", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Y Combinator", "dek": "$500K for 7% equity.", "summary": "Here's why Y Combinator is on every founder's radar in Mountain View, CA (accepts NYC startups). They're laser-focused on all sectors, working with founders who are tackling some of the biggest challenges in this space. 3-month program ending in Demo Day. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/yc", "imageUrl": "images/opinion-6.png", "articleUrl": "articles/opinion-6-y-combinator.html"}];
     </script>
 
     <section class="calendar-toolbar" id="calendar" data-page-group="events">
@@ -1512,23 +1560,87 @@ img { max-width: 100%; }
 </section>
     <hr class="section-rule">
 <section id="model-benchmarks" data-page-group="businesses">
-  <span class="section-label">Model Benchmarks</span>
+  <span class="section-label">LLM Arena Leaderboard</span>
   <p class="section-transition">Performance snapshot for current frontier and open-weight models, including LLM Arena ranking context and core capability tests.</p>
-  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live context: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>
-  <div class="model-highlights"><article class="model-highlight-card"><span class="model-highlight-label">Top Overall</span><div class="model-highlight-value">GPT-4.1</div></article><article class="model-highlight-card"><span class="model-highlight-label">Best Reasoning (GSM8K)</span><div class="model-highlight-value">GPT-4.1 (95.1%)</div></article><article class="model-highlight-card"><span class="model-highlight-label">Best Coding (HumanEval)</span><div class="model-highlight-value">GPT-4.1 (92.2%)</div></article></div>
-  <p class="model-benchmark-note">Composite score formula: 40% Arena Elo (normalized), 20% MMLU, 20% GSM8K, 20% HumanEval.</p>
+  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live rankings: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>
+  <div class="model-highlights">
+    <article class="model-highlight-card"><span class="model-highlight-label">Top Overall</span><div class="model-highlight-value">Claude 3.5 Sonnet</div></article>
+    <article class="model-highlight-card"><span class="model-highlight-label">Best Reasoning (GPQA)</span><div class="model-highlight-value">Claude 3.5 Sonnet (65.0%)</div></article>
+    <article class="model-highlight-card"><span class="model-highlight-label">Best Coding (HumanEval)</span><div class="model-highlight-value">GPT-4o (92.0%)</div></article>
+  </div>
+  <p class="model-benchmark-note">Composite score formula: 40% Arena Elo (normalized), 20% MMLU, 20% GPQA, 20% HumanEval.</p>
   <table class="benchmark-table">
-    <thead><tr><th>Rank</th><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GSM8K</th><th>HumanEval</th><th>Composite</th><th>Best For</th></tr></thead>
-    <tbody><tr class="benchmark-row-top"><td>1</td><td><strong>GPT-4.1</strong></td><td><span class="benchmark-score">1387</span><div class="benchmark-bar"><span style="width:82%"></span></div></td><td class="benchmark-score">89.4%</td><td class="benchmark-score">95.1%</td><td class="benchmark-score">92.2%</td><td><span class="benchmark-composite">95.3</span></td><td>High-stakes general use</td></tr><tr><td>2</td><td><strong>Claude 3.7 Sonnet</strong></td><td><span class="benchmark-score">1331</span><div class="benchmark-bar"><span style="width:66%"></span></div></td><td class="benchmark-score">86.2%</td><td class="benchmark-score">92.8%</td><td class="benchmark-score">90.6%</td><td><span class="benchmark-composite">78.6</span></td><td>Long-form writing + coding</td></tr><tr><td>3</td><td><strong>Gemini 2.0 Pro</strong></td><td><span class="benchmark-score">1309</span><div class="benchmark-bar"><span style="width:59%"></span></div></td><td class="benchmark-score">84.7%</td><td class="benchmark-score">90.3%</td><td class="benchmark-score">89.1%</td><td><span class="benchmark-composite">71.5</span></td><td>Multimodal workflows</td></tr><tr><td>4</td><td><strong>Llama 3.1 405B</strong></td><td><span class="benchmark-score">1264</span><div class="benchmark-bar"><span style="width:46%"></span></div></td><td class="benchmark-score">81.2%</td><td class="benchmark-score">88.0%</td><td class="benchmark-score">85.4%</td><td><span class="benchmark-composite">57.2</span></td><td>Open-weight enterprise control</td></tr><tr><td>5</td><td><strong>DeepSeek-V3</strong></td><td><span class="benchmark-score">1241</span><div class="benchmark-bar"><span style="width:40%"></span></div></td><td class="benchmark-score">79.5%</td><td class="benchmark-score">86.1%</td><td class="benchmark-score">83.7%</td><td><span class="benchmark-composite">49.9</span></td><td>Cost-efficient deployment</td></tr></tbody>
+    <thead><tr><th>Rank</th><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GPQA</th><th>HumanEval</th><th>Composite</th><th>Best For</th></tr></thead>
+    <tbody>
+      <tr class="benchmark-row-top">
+        <td>1</td><td><strong>Claude 3.5 Sonnet</strong></td>
+        <td><span class="benchmark-score">1268</span><div class="benchmark-bar"><span style="width:88%"></span></div></td>
+        <td class="benchmark-score">88.7%</td><td class="benchmark-score">65.0%</td><td class="benchmark-score">90.0%</td>
+        <td><span class="benchmark-composite">96.1</span></td><td>Long-form writing + coding</td>
+      </tr>
+      <tr>
+        <td>2</td><td><strong>GPT-4o</strong></td>
+        <td><span class="benchmark-score">1257</span><div class="benchmark-bar"><span style="width:82%"></span></div></td>
+        <td class="benchmark-score">88.7%</td><td class="benchmark-score">53.6%</td><td class="benchmark-score">92.0%</td>
+        <td><span class="benchmark-composite">92.8</span></td><td>High-stakes general use</td>
+      </tr>
+      <tr>
+        <td>3</td><td><strong>Gemini 1.5 Pro</strong></td>
+        <td><span class="benchmark-score">1248</span><div class="benchmark-bar"><span style="width:76%"></span></div></td>
+        <td class="benchmark-score">85.9%</td><td class="benchmark-score">51.4%</td><td class="benchmark-score">84.1%</td>
+        <td><span class="benchmark-composite">84.5</span></td><td>Multimodal + long-context</td>
+      </tr>
+      <tr>
+        <td>4</td><td><strong>Llama 3.1 405B</strong></td>
+        <td><span class="benchmark-score">1220</span><div class="benchmark-bar"><span style="width:60%"></span></div></td>
+        <td class="benchmark-score">85.2%</td><td class="benchmark-score">46.8%</td><td class="benchmark-score">85.4%</td>
+        <td><span class="benchmark-composite">72.0</span></td><td>Open-weight enterprise control</td>
+      </tr>
+      <tr>
+        <td>5</td><td><strong>DeepSeek-V3</strong></td>
+        <td><span class="benchmark-score">1195</span><div class="benchmark-bar"><span style="width:48%"></span></div></td>
+        <td class="benchmark-score">82.6%</td><td class="benchmark-score">44.0%</td><td class="benchmark-score">83.7%</td>
+        <td><span class="benchmark-composite">62.4</span></td><td>Cost-efficient deployment</td>
+      </tr>
+    </tbody>
   </table>
-  <h3 class="story-headline">Models Releasing Soon</h3>
-  <ul class="benchmark-defs"><li><strong>GPT-5:</strong> Expected to expand multimodal planning and stronger tool-use reliability.</li><li><strong>Claude 4:</strong> Likely focused on long-context consistency and enterprise governance controls.</li><li><strong>Gemini 2.5:</strong> Expected to improve reasoning depth and native video/document workflows.</li><li><strong>Llama 4:</strong> Open-weight trajectory with stronger coding and agentic orchestration benchmarks.</li></ul>
-  <h3 class="story-headline">Latest Model Updates & Comparisons</h3>
-  <ul class="benchmark-defs"><li><strong>Reasoning:</strong> Frontier closed models still lead in chain-of-thought stability under complex prompts.</li><li><strong>Coding:</strong> Claude and GPT families remain strongest on code quality; open models continue to narrow the gap.</li><li><strong>Cost/Speed:</strong> Open-weight models often win on cost control and deployment flexibility for internal workloads.</li></ul>
+
+  <!-- Benchmarking Guide Sidebar -->
+  <div class="tw-bg-gray-50 tw-border tw-border-gray-200 tw-rounded-lg tw-p-5 tw-my-6">
+    <h3 class="tw-text-sm tw-font-bold tw-uppercase tw-tracking-widest tw-text-gray-500 tw-mb-3">Benchmarking Guide</h3>
+    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-4">
+      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
+        <strong class="tw-block tw-text-sm">MMLU</strong>
+        <span class="tw-text-xs tw-text-gray-600">Massive Multitask Language Understanding — tests broad academic &amp; professional knowledge across 57 subjects from STEM to humanities.</span>
+      </div>
+      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
+        <strong class="tw-block tw-text-sm">GPQA</strong>
+        <span class="tw-text-xs tw-text-gray-600">Graduate-level Google-Proof Q&amp;A — expert-level science questions that cannot be easily answered via search. Measures deep reasoning.</span>
+      </div>
+      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
+        <strong class="tw-block tw-text-sm">HumanEval</strong>
+        <span class="tw-text-xs tw-text-gray-600">OpenAI code generation benchmark — measures the ability to write correct Python functions from docstrings. Pass@1 metric.</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="story-headline">Latest Releases — Update Feed</h3>
   <ul class="benchmark-defs">
-    <li><strong>Arena Elo:</strong> preference-style ranking from head-to-head model comparisons.</li>
-    <li><strong>MMLU:</strong> broad academic and professional knowledge test across many subjects.</li>
-    <li><strong>GSM8K:</strong> grade-school math reasoning benchmark.</li>
+    <li><strong>GPT-5:</strong> Expected to expand multimodal planning and stronger tool-use reliability. Compared to GPT-4o, expected to improve GPQA by 10+ points.</li>
+    <li><strong>Claude 4 (Opus):</strong> Likely focused on long-context consistency and enterprise governance controls. Industry leaders see it challenging GPT-4o's coding edge.</li>
+    <li><strong>Gemini 2.0:</strong> Expected to improve reasoning depth and native video/document workflows, building on Gemini 1.5 Pro's long-context lead.</li>
+    <li><strong>Llama 4:</strong> Open-weight trajectory with stronger coding and agentic orchestration benchmarks — could close the gap with closed-source leaders.</li>
+  </ul>
+  <h3 class="story-headline">Latest Model Updates &amp; Comparisons</h3>
+  <ul class="benchmark-defs">
+    <li><strong>Reasoning:</strong> Frontier closed models still lead in chain-of-thought stability under complex prompts.</li>
+    <li><strong>Coding:</strong> Claude and GPT families remain strongest on code quality; open models continue to narrow the gap.</li>
+    <li><strong>Cost/Speed:</strong> Open-weight models often win on cost control and deployment flexibility for internal workloads.</li>
+  </ul>
+  <ul class="benchmark-defs">
+    <li><strong>Arena Elo:</strong> preference-style ranking from head-to-head model comparisons on <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>.</li>
+    <li><strong>MMLU:</strong> broad academic and professional knowledge test across 57 subjects.</li>
+    <li><strong>GPQA:</strong> graduate-level science questions requiring deep reasoning, not solvable by search.</li>
     <li><strong>HumanEval:</strong> code generation pass-rate benchmark for programming tasks.</li>
   </ul>
 </section>
@@ -2096,10 +2208,49 @@ img { max-width: 100%; }
 </section>
 </section>
 
+<!-- ── Next Tuesday Preview: Developer Demo ──────────────── -->
+<section id="dev-demo" data-page-group="home" class="tw-my-10 tw-px-4" style="max-width:var(--max-w);margin:0 auto;">
+  <span class="section-label">Next Tuesday Preview</span>
+  <p class="section-transition">Live developer demo — real JSON API response from our data pipeline, refreshed every issue.</p>
+  <div class="tw-bg-gray-900 tw-text-green-400 tw-rounded-lg tw-p-5 tw-overflow-x-auto tw-font-mono tw-text-sm tw-leading-relaxed tw-my-4" style="font-family:'Fira Code','Courier New',monospace;">
+    <div class="tw-text-gray-500 tw-text-xs tw-mb-3">GET /api/v1/newsletter/latest — 200 OK</div>
+<pre style="margin:0;white-space:pre-wrap;word-break:break-word;">{
+  "issue": 10,
+  "title": "Oracle of Ordo Times",
+  "date": "2026-03-03",
+  "sections": {
+    "front_page": {
+      "count": 5,
+      "top_story": "MediCare Secures $20M Series B"
+    },
+    "model_leaderboard": {
+      "top_model": "Claude 3.5 Sonnet",
+      "arena_elo": 1268,
+      "benchmarks": ["MMLU", "GPQA", "HumanEval"]
+    },
+    "events": {
+      "count": 6,
+      "next": "Workshop: Pitch &amp; Positioning with AI — Mar 9"
+    },
+    "accelerators": {
+      "featured": ["TechStars NYC", "ERA", "Entrepreneur First"]
+    }
+  },
+  "api_status": {
+    "pipeline": "healthy",
+    "sources_fetched": 12,
+    "last_refresh": "2026-03-03T11:26:00Z",
+    "latency_ms": 340
+  }
+}</pre>
+  </div>
+  <p class="model-benchmark-note">This endpoint powers the newsletter data layer. Schema documented in <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:0.85em;">newsroom/newsletter_schema.json</code>.</p>
+</section>
+
 <footer class="footer">
     <div class="container">
         <div class="footer-line">Generated on March 03, 2026 at 11:26 AM</div>
-        <div class="footer-line">OrdoAI &bull; Thank you for being here with us tonight</div>
+        <div class="footer-line">Oracle of Ordo Times &bull; Thank you for being here with us tonight</div>
     </div>
 </footer>
 
@@ -2355,7 +2506,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     homeImage.innerHTML = '';
                     if (captionNode) {
-                        captionNode.textContent = 'Placeholder graphic: OrdoAI archive';
+                        captionNode.textContent = 'Placeholder graphic: Oracle of Ordo Times archive';
                     }
                 }
             }
@@ -2470,9 +2621,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }) || null;
         }
         if (articleMatch && articleMatch.body) {
-            bodyParts = articleMatch.body.split(/
-
-+/).filter(Boolean);
+            bodyParts = articleMatch.body.split(/\n\n+/).filter(Boolean);
         }
 
         if (articleMatch && articleMatch.articleUrl) {
@@ -2492,7 +2641,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
 
         var focusImageHtml = '  <div class="story-focus-image"></div>';
-        var focusCaption = '  <p class="story-focus-caption">Placeholder graphic by OrdoAI archive</p>';
+        var focusCaption = '  <p class="story-focus-caption">Placeholder graphic by Oracle of Ordo Times archive</p>';
         if (articleMatch && articleMatch.imageUrl) {
             focusImageHtml = '  <div class="story-focus-image"><img src="' + esc(articleMatch.imageUrl) + '" alt="' + esc(headline) + '" loading="lazy"></div>';
             focusCaption = '  <p class="story-focus-caption">AI-generated illustration based on newsletter content</p>';
@@ -2503,7 +2652,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '  <span class="story-focus-kicker">' + esc(kicker) + '</span>' +
             '  <h2 class="story-focus-headline">' + esc(headline) + '</h2>' +
             (dek ? '  <p class="story-focus-dek">' + esc(dek) + '</p>' : '') +
-            '  <p class="story-focus-meta"><span class="author">OrdoAI News Desk</span>' +
+            '  <p class="story-focus-meta"><span class="author">Ordo Times Desk</span>' +
             (announced ? ' • ' + esc(announced) : '') +
             '</p>' +
             focusImageHtml +
