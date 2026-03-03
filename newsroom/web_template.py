@@ -12,8 +12,16 @@ Public API (unchanged from previous version):
 
 import re
 import json
+import urllib.parse
+from html import escape
+from pathlib import Path
 from typing import List, Dict
 from datetime import datetime
+
+try:
+    from dateutil.parser import parse as _parse_datetime
+except Exception:
+    _parse_datetime = None
 
 from .models import FundingItem, EventItem, AcceleratorItem
 from .editorial import (
@@ -290,55 +298,74 @@ img { max-width: 100%; }
     line-height: 1.6;
 }
 .home-article-wrap {
-    max-width: 760px;
+    max-width: 860px;
+    margin: 0 auto;
 }
 .home-article-kicker {
     display: inline-block;
     background: var(--accent);
     color: #fff;
     font-weight: 700;
-    font-size: 0.74rem;
+    font-size: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 6px 10px;
-    margin-bottom: 12px;
+    letter-spacing: 0.03em;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    border-radius: 3px;
 }
 .home-article-title {
     font-family: var(--serif);
-    font-size: 3rem;
-    line-height: 1.1;
-    margin-bottom: 12px;
+    font-size: 3.2rem;
+    line-height: 1.08;
+    margin-bottom: 16px;
 }
 .home-article-dek {
-    font-size: 1.9rem;
-    line-height: 1.2;
-    margin-bottom: 14px;
+    font-family: var(--sans);
+    font-size: 1.15rem;
+    line-height: 1.45;
+    margin-bottom: 20px;
+    color: var(--text-2);
 }
 .home-article-meta {
-    font-size: 0.95rem;
-    margin-bottom: 14px;
-    color: var(--text-2);
+    font-size: 1rem;
+    margin-bottom: 18px;
+    color: var(--text);
 }
 .home-article-meta .author {
     color: var(--accent);
     font-weight: 700;
 }
+.home-article-meta .role {
+    color: var(--text);
+}
 .home-article-image {
     border: 1px solid var(--border);
     background: linear-gradient(135deg, #f3f3f3, #e4e4e4);
-    min-height: 340px;
-    margin-bottom: 14px;
+    min-height: 520px;
+    margin-bottom: 0;
+}
+.home-article-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    object-fit: cover;
 }
 .home-article-caption {
-    font-size: 0.78rem;
-    color: var(--text-3);
-    margin-bottom: 16px;
+    font-size: 0.88rem;
+    color: var(--text-2);
+    margin-bottom: 22px;
+    padding: 8px 12px;
+    background: #efefef;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 }
 .home-article-body p {
     font-family: var(--serif);
-    font-size: 1.06rem;
-    line-height: 1.65;
-    margin-bottom: 14px;
+    font-size: 1.18rem;
+    line-height: 1.6;
+    margin-bottom: 18px;
 }
 .home-article-linkout {
     margin-top: 14px;
@@ -426,6 +453,13 @@ img { max-width: 100%; }
     background: linear-gradient(135deg, var(--bg-warm), var(--border));
     border: 1px solid var(--border);
     margin-bottom: 8px;
+}
+.story-focus-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    object-fit: cover;
 }
 .story-focus-caption {
     font-size: 0.9rem;
@@ -747,6 +781,59 @@ img { max-width: 100%; }
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-2);
+}
+
+/* ── Models Benchmark ─────────────────────────────────────── */
+.model-benchmark-note {
+    margin: 14px 0 18px;
+    color: var(--text-2);
+    font-size: 0.96rem;
+}
+.benchmark-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 16px;
+    font-size: 0.92rem;
+}
+.benchmark-table th,
+.benchmark-table td {
+    border: 1px solid var(--border);
+    padding: 10px 8px;
+    text-align: left;
+}
+.benchmark-table th {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+    background: var(--bg-warm);
+}
+.benchmark-score {
+    font-weight: 700;
+    color: var(--text);
+}
+.benchmark-bar {
+    width: 180px;
+    height: 8px;
+    border: 1px solid var(--border);
+    background: #f2f2f2;
+}
+.benchmark-bar span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+}
+.benchmark-defs {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+}
+.benchmark-defs li {
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+}
+.benchmark-defs strong {
+    color: var(--text);
 }
 
 /* ── Event Card ───────────────────────────────────────────── */
@@ -1233,6 +1320,95 @@ def _accel_html(card: StoryCard) -> str:
     )
 
 
+def _model_benchmarks_html() -> str:
+    rows = [
+        ("GPT-4.1", 1387, 89.4, 95.1, 92.2),
+        ("Claude 3.7 Sonnet", 1331, 86.2, 92.8, 90.6),
+        ("Gemini 2.0 Pro", 1309, 84.7, 90.3, 89.1),
+        ("Llama 3.1 405B", 1264, 81.2, 88.0, 85.4),
+        ("DeepSeek-V3", 1241, 79.5, 86.1, 83.7),
+    ]
+
+    row_html = ''
+    for model, arena_elo, mmlu, gsm8k, humaneval in rows:
+        elo_width = max(5, min(100, int((arena_elo - 1100) / 3.5)))
+        row_html += (
+            '<tr>'
+            f'<td><strong>{model}</strong></td>'
+            f'<td><span class="benchmark-score">{arena_elo}</span><div class="benchmark-bar"><span style="width:{elo_width}%"></span></div></td>'
+            f'<td class="benchmark-score">{mmlu:.1f}%</td>'
+            f'<td class="benchmark-score">{gsm8k:.1f}%</td>'
+            f'<td class="benchmark-score">{humaneval:.1f}%</td>'
+            '</tr>'
+        )
+
+    upcoming_releases = [
+        ("GPT-5", "Expected to expand multimodal planning and stronger tool-use reliability."),
+        ("Claude 4", "Likely focused on long-context consistency and enterprise governance controls."),
+        ("Gemini 2.5", "Expected to improve reasoning depth and native video/document workflows."),
+        ("Llama 4", "Open-weight trajectory with stronger coding and agentic orchestration benchmarks."),
+    ]
+
+    upcoming_html = ''.join(
+        f'<li><strong>{model}:</strong> {note}</li>' for model, note in upcoming_releases
+    )
+
+    latest_updates = [
+        ("Reasoning", "Frontier closed models still lead in chain-of-thought stability under complex prompts."),
+        ("Coding", "Claude and GPT families remain strongest on code quality; open models continue to narrow the gap."),
+        ("Cost/Speed", "Open-weight models often win on cost control and deployment flexibility for internal workloads."),
+    ]
+
+    updates_html = ''.join(
+        f'<li><strong>{topic}:</strong> {note}</li>' for topic, note in latest_updates
+    )
+
+    return (
+        '<hr class="section-rule">\n'
+        '<section id="model-benchmarks" data-page-group="businesses">\n'
+        '  <span class="section-label">Model Benchmarks</span>\n'
+        '  <p class="section-transition">Performance snapshot for current frontier and open-weight models, including LLM Arena ranking context and core capability tests.</p>\n'
+        '  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live context: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>\n'
+        '  <table class="benchmark-table">\n'
+        '    <thead><tr><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GSM8K</th><th>HumanEval</th></tr></thead>\n'
+        f'    <tbody>{row_html}</tbody>\n'
+        '  </table>\n'
+        '  <h3 class="story-headline">Models Releasing Soon</h3>\n'
+        f'  <ul class="benchmark-defs">{upcoming_html}</ul>\n'
+        '  <h3 class="story-headline">Latest Model Updates & Comparisons</h3>\n'
+        f'  <ul class="benchmark-defs">{updates_html}</ul>\n'
+        '  <ul class="benchmark-defs">\n'
+        '    <li><strong>Arena Elo:</strong> preference-style ranking from head-to-head model comparisons.</li>\n'
+        '    <li><strong>MMLU:</strong> broad academic and professional knowledge test across many subjects.</li>\n'
+        '    <li><strong>GSM8K:</strong> grade-school math reasoning benchmark.</li>\n'
+        '    <li><strong>HumanEval:</strong> code generation pass-rate benchmark for programming tasks.</li>\n'
+        '  </ul>\n'
+        '</section>'
+    )
+
+
+def _svg_placeholder_data_uri(headline: str, section_label: str) -> str:
+    safe_headline = escape((headline or 'Newsletter Story').strip())[:72]
+    safe_section = escape((section_label or 'OrdoAI').strip())[:28]
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Placeholder graphic">'
+        '<defs>'
+        '<linearGradient id="g" x1="0" x2="1" y1="0" y2="1">'
+        '<stop offset="0%" stop-color="#f5f6ff"/>'
+        '<stop offset="100%" stop-color="#e8edff"/>'
+        '</linearGradient>'
+        '</defs>'
+        '<rect width="1200" height="675" fill="url(#g)"/>'
+        '<rect x="70" y="70" width="1060" height="535" rx="24" fill="#ffffff" stroke="#d7def7"/>'
+        f'<text x="110" y="170" font-size="40" font-family="Georgia, serif" fill="#23315d">{safe_section}</text>'
+        f'<text x="110" y="250" font-size="52" font-family="Georgia, serif" fill="#1b1f30">{safe_headline}</text>'
+        '<text x="110" y="330" font-size="28" font-family="Georgia, serif" fill="#4a567f">Placeholder SVG graphic for newsletter production preview.</text>'
+        '</svg>'
+    )
+    encoded = urllib.parse.quote(svg, safe=':/%#[]@!$&\'()*+,;=?')
+    return f'data:image/svg+xml;utf8,{encoded}'
+
+
 def _vc_firms_html(tracker: CitationTracker) -> str:
     firms = [
         {
@@ -1382,8 +1558,55 @@ def _home_articles_payload(
     event_cards: List[StoryCard],
     accel_cards: List[StoryCard],
     date_str: str,
+    ai_assets: Dict[str, Dict[str, str]] | None = None,
 ) -> List[Dict[str, str]]:
     payload = []
+    ai_assets = ai_assets or {}
+
+    def _word_count(text: str) -> int:
+        return len([part for part in (text or '').split() if part.strip()])
+
+    def _offline_longform(card: StoryCard, section_label: str, source_url: str) -> str:
+        details = '; '.join(card.key_details[:5]) if card.key_details else ''
+        body_parts = [
+            (
+                f"{card.headline} is a lead development in this week’s {section_label.lower()} briefing. "
+                f"{card.dek or card.lede} What stands out is not just the headline itself, but how quickly this update has moved from announcement to practical implications for teams tracking momentum across the market."
+            ),
+            (
+                f"The immediate update is straightforward: {card.lede} "
+                "For readers following execution signals, the important question is how this development changes near-term priorities and whether the underlying progress can be sustained over time."
+            ),
+            (
+                f"Context from the reporting reinforces that this is tied to real operating decisions, not just narrative positioning. {card.context or card.why_it_matters} "
+                "That makes it useful as a benchmark for what credible progress looks like in the current cycle."
+            ),
+            (
+                f"Key facts remain central to the story: {details}. "
+                "When viewed together, these details indicate where the organization is concentrating resources and what outcomes stakeholders are likely to expect over the next few quarters."
+            ),
+            (
+                "For peers in adjacent categories, this kind of update tends to raise the bar on execution quality. "
+                "It can influence hiring pace, partnership timing, product roadmaps, and investor expectations, especially when similar signals cluster in a short period."
+            ),
+            (
+                "The practical takeaway is to watch follow-through rather than headlines alone. "
+                "Announcements set direction, but sustained delivery is what ultimately confirms whether the strategy is durable and whether the early momentum can translate into long-term outcomes."
+            ),
+        ]
+
+        if source_url:
+            body_parts.append(
+                f"Source context: this article was expanded from the structured newsletter record and linked source ({source_url}) using deterministic local rendering. "
+                "It is intended to improve readability while preserving the factual details in the original item."
+            )
+
+        text = '\n\n'.join(body_parts)
+        while _word_count(text) < 320:
+            text += (
+                "\n\nIn short, this story should be read as a directional signal with measurable checkpoints ahead: adoption, operational consistency, and the ability to execute as scrutiny increases."
+            )
+        return text
 
     def add_cards(cards: List[StoryCard], section_key: str, section_label: str):
         for idx, card in enumerate(cards, start=1):
@@ -1397,17 +1620,26 @@ def _home_articles_payload(
             if card.key_details:
                 body_parts.append('Key details: ' + '; '.join(card.key_details[:4]))
 
+            story_id = f'{section_key}-{idx}'
+            asset = ai_assets.get(story_id, {})
+            source_url = card.citations[0].url if card.citations else ''
+            merged_body = asset.get('body', '')
+            if _word_count(merged_body) < 220:
+                merged_body = _offline_longform(card, section_label, source_url)
+
             payload.append({
-                'id': f'{section_key}-{idx}',
+                'id': story_id,
                 'sectionKey': section_key,
                 'sectionLabel': section_label,
                 'headline': card.headline,
                 'dek': card.dek or card.lede,
                 'summary': card.lede,
-                'author': 'AI Factory News Desk',
+                'author': 'OrdoAI News Desk',
                 'date': card.date or date_str,
-                'sourceUrl': card.citations[0].url if card.citations else '',
-                'body': '\n\n'.join(body_parts),
+                'sourceUrl': source_url,
+                'body': merged_body,
+                'imageUrl': asset.get('image_url') or _svg_placeholder_data_uri(card.headline, section_label),
+                'imagePrompt': asset.get('image_prompt', ''),
             })
 
     funding_cards = [lead_card] + top_cards + radar_cards if lead_card else top_cards + radar_cards
@@ -1447,10 +1679,8 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
 
     news_html = ''.join(teaser(item) for item in groups['news'][:3])
     opinion_html = ''.join(teaser(item) for item in groups['opinion'][:3])
-    articles_json = json.dumps(home_articles).replace("'", "\\'")
-
     return (
-        '<section id="home-page" class="home-page" data-page-group="home" data-articles=\'' + articles_json + '\'>\n'
+        '<section id="home-page" class="home-page" data-page-group="home">\n'
         '  <div id="home-subview-front" class="home-subview">\n'
         '    <div class="home-front-grid">\n'
         '      <div>\n'
@@ -1481,7 +1711,7 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
         '      <p id="home-article-dek" class="home-article-dek"></p>\n'
         '      <p id="home-article-meta" class="home-article-meta"></p>\n'
         '      <div class="home-article-image"></div>\n'
-        '      <p class="home-article-caption">Photo credit: AI Factory archive</p>\n'
+        '      <p id="home-article-caption" class="home-article-caption">Placeholder graphic: OrdoAI archive</p>\n'
         '      <div id="home-article-body" class="home-article-body"></div>\n'
         '      <p id="home-article-linkout" class="home-article-linkout"></p>\n'
         '    </div>\n'
@@ -1490,12 +1720,175 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
     )
 
 
+def _load_ai_assets(config: Dict) -> Dict[str, Dict[str, str]]:
+    output_dir = Path(config.get('output', {}).get('output_dir', 'output'))
+    assets_path = output_dir / 'newsletter_ai_assets.json'
+
+    if not assets_path.exists():
+        return {}
+
+    try:
+        payload = json.loads(assets_path.read_text(encoding='utf-8'))
+        articles = payload.get('articles', {})
+        return articles if isinstance(articles, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def build_home_articles_payload(
+    funding_items: List[FundingItem],
+    event_items: List[EventItem],
+    accelerator_items: List[AcceleratorItem],
+    config: Dict,
+) -> List[Dict[str, str]]:
+    tracker = CitationTracker()
+
+    all_funding_cards = []
+    for idx, item in enumerate(funding_items):
+        if idx == 0:
+            all_funding_cards.append(funding_to_story(item, tracker, position='lead'))
+        elif idx < 4:
+            all_funding_cards.append(funding_to_story(item, tracker, position='top'))
+        else:
+            all_funding_cards.append(funding_to_story(item, tracker, position='radar'))
+
+    event_cards = sorted(
+        [event_to_story(i, tracker) for i in event_items],
+        key=_event_sort_key,
+    )
+    event_cards = _filter_upcoming_event_cards(event_cards)
+    accel_cards = [accelerator_to_story(i, tracker) for i in accelerator_items]
+
+    lead_card = all_funding_cards[0] if all_funding_cards else None
+    top_cards = all_funding_cards[1:4] if len(all_funding_cards) > 1 else []
+    radar_cards = all_funding_cards[4:] if len(all_funding_cards) > 4 else []
+
+    ai_assets = _load_ai_assets(config)
+    return _home_articles_payload(
+        lead_card,
+        top_cards,
+        radar_cards,
+        event_cards,
+        accel_cards,
+        issue_date(),
+        ai_assets=ai_assets,
+    )
+
+
+def render_home_article_page(article: Dict[str, str], config: Dict) -> str:
+    title = config.get('newsletter', {}).get('title', 'OrdoAI')
+    headline = escape(article.get('headline', 'Story'))
+    section_label = escape(article.get('sectionLabel', 'News'))
+    author = escape(article.get('author', 'OrdoAI News Desk'))
+    published = escape(article.get('date', issue_date()))
+    source_url = article.get('sourceUrl', '')
+    image_url = article.get('imageUrl', '')
+    image_prompt = article.get('imagePrompt', '')
+
+    body_parts = [part.strip() for part in (article.get('body', '') or '').split('\n\n') if part.strip()]
+    if not body_parts and article.get('summary'):
+        body_parts = [article['summary']]
+    body_html = '\n'.join(f'<p>{escape(part)}</p>' for part in body_parts)
+
+    image_block = ''
+    if image_url:
+        caption = 'AI-generated illustration based on newsletter story content'
+        if image_prompt:
+            caption = 'AI-generated illustration'
+        image_block = (
+            '<figure class="story-image">\n'
+            f'  <img src="{escape(image_url)}" alt="{headline}" loading="lazy">\n'
+            f'  <figcaption>{caption}</figcaption>\n'
+            '</figure>'
+        )
+
+    source_block = ''
+    if source_url:
+        source_block = (
+            '<p class="story-linkout">'
+            f'<a href="{escape(source_url)}" target="_blank" rel="noopener noreferrer">Read original source →</a>'
+            '</p>'
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{headline} — {title}</title>
+    <style>
+        :root {{
+            --serif: Georgia, 'Times New Roman', 'Noto Serif', serif;
+            --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --text: #111;
+            --text-2: #2a2a2a;
+            --accent: #e10600;
+            --border: #d6d6d6;
+            --bg: #f5f5f5;
+        }}
+        * {{ box-sizing: border-box; }}
+        body {{ margin: 0; background: var(--bg); color: var(--text); font-family: var(--serif); }}
+        .container {{ max-width: 860px; margin: 0 auto; padding: 36px 28px 60px; }}
+        .back-link {{ font-family: var(--sans); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); text-decoration: none; font-weight: 700; }}
+        .kicker {{ display: inline-block; margin-top: 24px; background: var(--accent); color: #fff; padding: 7px 10px; font-family: var(--sans); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }}
+        h1 {{ font-size: 3.2rem; line-height: 1.08; margin: 24px 0 14px; }}
+        .meta {{ font-family: var(--sans); font-size: 1.02rem; color: var(--text-2); margin-bottom: 18px; }}
+        .meta .author {{ color: var(--accent); font-weight: 700; }}
+        .story-image {{ margin: 0 0 24px; border: 1px solid var(--border); background: #fff; }}
+        .story-image img {{ display: block; width: 100%; height: auto; }}
+        .story-image figcaption {{ font-family: var(--sans); font-size: .82rem; color: #6f6f6f; padding: 8px 12px; border-top: 1px solid var(--border); }}
+        .story-body p {{ font-size: 2rem; line-height: 1.55; margin: 0 0 18px; }}
+        .story-linkout {{ margin-top: 22px; font-family: var(--sans); font-size: 1rem; }}
+        .story-linkout a {{ color: var(--accent); }}
+        @media (max-width: 900px) {{
+            h1 {{ font-size: 2.45rem; }}
+            .story-body p {{ font-size: 1.4rem; }}
+        }}
+    </style>
+</head>
+<body>
+    <main class="container">
+        <a class="back-link" href="../newsletter.html#home">← Back to Home</a>
+        <span class="kicker">{section_label}</span>
+        <h1>{headline}</h1>
+        <p class="meta"><span class="author">{author}</span> • {published}</p>
+        {image_block}
+        <section class="story-body">
+            {body_html}
+        </section>
+        {source_block}
+    </main>
+</body>
+</html>
+"""
+
+
 # ── event chronological sort ────────────────────────────────────
 
 def _event_sort_key(card: StoryCard):
     """Sort events by extracted day number; recurring events go last."""
     m = re.search(r'(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d+)', card.date)
     return (0, int(m.group(1))) if m else (1, 0)
+
+
+def _filter_upcoming_event_cards(event_cards: List[StoryCard]) -> List[StoryCard]:
+    """Keep events that are upcoming within the next 5 weeks (35 days)."""
+    today_iso = datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now().date()
+    filtered: List[StoryCard] = []
+    for card in event_cards:
+        date_iso = _event_date_iso(card.date)
+        if not date_iso:
+            continue
+        if date_iso >= today_iso:
+            try:
+                event_day = datetime.strptime(date_iso, '%Y-%m-%d').date()
+            except ValueError:
+                continue
+            delta_days = (event_day - today).days
+            if 0 <= delta_days <= 35:
+                filtered.append(card)
+    return filtered
 
 
 def _slugify(text: str) -> str:
@@ -1543,14 +1936,29 @@ def _event_date_iso(date_text: str) -> str:
     if not label or label == 'Unscheduled':
         return ''
 
-    for fmt in ('%B %d, %Y', '%B %d'):
+    for fmt in (
+        '%B %d, %Y',
+        '%B %d, %Y %I:%M %p',
+        '%b %d, %Y',
+        '%b %d, %Y %I:%M %p',
+        '%B %d',
+        '%b %d',
+    ):
         try:
             parsed = datetime.strptime(label, fmt)
-            if fmt == '%B %d':
+            if fmt in ('%B %d', '%b %d'):
                 parsed = parsed.replace(year=datetime.now().year)
             return parsed.strftime('%Y-%m-%d')
         except ValueError:
             continue
+
+    if _parse_datetime is not None:
+        try:
+            parsed = _parse_datetime(label, fuzzy=True)
+            return parsed.strftime('%Y-%m-%d')
+        except Exception:
+            pass
+
     return ''
 
 
@@ -1674,18 +2082,29 @@ document.addEventListener('DOMContentLoaded', function () {
     var pageSections = document.querySelectorAll('[data-page-group]');
     if (!topicLinks.length || !pageSections.length) return;
 
+    function normalizePage(page) {
+        if (page === 'investments') return 'money';
+        if (page === 'businesses' || page === 'news') return 'models';
+        return page;
+    }
+
     function pageGroupFor(page) {
-        return page === 'news' ? 'businesses' : page;
+        var normalized = normalizePage(page);
+        if (normalized === 'home') return 'home';
+        if (normalized === 'money') return 'investments';
+        if (normalized === 'models') return 'businesses';
+        return normalized;
     }
 
     function showPage(page) {
-        var pageGroup = pageGroupFor(page);
+        var normalized = normalizePage(page);
+        var pageGroup = pageGroupFor(normalized);
         pageSections.forEach(function (section) {
             section.hidden = section.getAttribute('data-page-group') !== pageGroup;
         });
 
         topicLinks.forEach(function (link) {
-            var isActive = link.getAttribute('data-page') === page;
+            var isActive = link.getAttribute('data-page') === normalized;
             link.classList.toggle('is-active', isActive);
             link.setAttribute('aria-current', isActive ? 'page' : 'false');
         });
@@ -1700,7 +2119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return parent ? parent.getAttribute('data-page-group') : '';
     }
 
-    var initialPage = pageFromHash() || topicLinks[0].getAttribute('data-page') || 'investments';
+    var initialPage = normalizePage(pageFromHash() || topicLinks[0].getAttribute('data-page') || 'money');
     showPage(initialPage);
 
     topicLinks.forEach(function (link) {
@@ -1730,7 +2149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!targetNode) return;
         var parent = targetNode.closest('[data-page-group]');
         if (!parent) return;
-        showPage(parent.getAttribute('data-page-group'));
+        showPage(normalizePage(parent.getAttribute('data-page-group')));
     });
 });
 
@@ -1743,7 +2162,29 @@ document.addEventListener('DOMContentLoaded', function() {
     var listView = document.getElementById('home-subview-list');
     var articleView = document.getElementById('home-subview-article');
     var homeArticlesAttr = homePageEl.getAttribute('data-articles');
-    var articles = homeArticlesAttr ? JSON.parse(homeArticlesAttr) : [];
+    var articles = (window.homeArticles && Array.isArray(window.homeArticles))
+        ? window.homeArticles
+        : (homeArticlesAttr ? JSON.parse(homeArticlesAttr) : []);
+
+    function esc(value) {
+        return (value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function formatDate(value) {
+        if (!value) return '';
+        if (/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) {
+            var parsed = new Date(value + 'T00:00:00');
+            if (!isNaN(parsed.getTime())) {
+                return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+        }
+        return value;
+    }
 
     function showView(view) {
         [frontView, listView, articleView].forEach(function(v) {
@@ -1764,11 +2205,11 @@ document.addEventListener('DOMContentLoaded', function() {
             var listItemsContainer = document.getElementById('home-list-items');
             listItemsContainer.innerHTML = items.map(function(article) {
                 return (
-                    '<button type="button" class="home-list-item" data-open-article="' + article.id + '">' +
+                    '<button type="button" class="home-list-item" data-open-article="' + esc(article.id) + '">' +
                     '  <div class="home-list-thumb"></div>' +
                     '  <div>' +
-                    '    <h3 class="home-list-headline">' + article.headline + '</h3>' +
-                    '    <p class="home-list-summary">' + article.summary + '</p>' +
+                    '    <h3 class="home-list-headline">' + esc(article.headline) + '</h3>' +
+                    '    <p class="home-list-summary">' + esc(article.summary) + '</p>' +
                     '  </div>' +
                     '</button>'
                 );
@@ -1778,30 +2219,46 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Handle article card clicks (from front page or list view)
         var openArticle = event.target.closest('[data-open-article]');
         if (openArticle) {
             var articleId = openArticle.getAttribute('data-open-article');
             var article = articles.find(function(a) { return a.id === articleId; });
             if (!article) return;
-            
+
             document.getElementById('home-article-kicker').textContent = article.sectionLabel;
             document.getElementById('home-article-title').textContent = article.headline;
             document.getElementById('home-article-dek').textContent = article.dek;
-            document.getElementById('home-article-meta').innerHTML = 
-                '<span class="author">' + article.author + '</span> • ' + article.date;
-            
+            var prettyDate = formatDate(article.date);
+            document.getElementById('home-article-meta').innerHTML =
+                '<span class="author">' + esc(article.author) + '</span>, <span class="role">Staff Writer</span>' + (prettyDate ? ' • ' + esc(prettyDate) : '');
+
+            var homeImage = document.querySelector('.home-article-image');
+            var captionNode = document.getElementById('home-article-caption');
+            if (homeImage) {
+                if (article.imageUrl) {
+                    homeImage.innerHTML = '<img src="' + esc(article.imageUrl) + '" alt="' + esc(article.headline) + '" loading="lazy">';
+                    if (captionNode) {
+                        captionNode.textContent = 'AI-generated editorial image based on newsletter story content';
+                    }
+                } else {
+                    homeImage.innerHTML = '';
+                    if (captionNode) {
+                        captionNode.textContent = 'Placeholder graphic: OrdoAI archive';
+                    }
+                }
+            }
+
             var bodyHtml = (article.body || '').split('\\n\\n').map(function(para) {
-                return '<p>' + para + '</p>';
+                return '<p>' + esc(para) + '</p>';
             }).join('');
             document.getElementById('home-article-body').innerHTML = bodyHtml;
-            
+
             var linkoutHtml = '';
             if (article.sourceUrl) {
-                linkoutHtml = '<a href="' + article.sourceUrl + '" target="_blank">Read original article →</a>';
+                linkoutHtml = '<a href="' + esc(article.sourceUrl) + '" target="_blank" rel="noopener noreferrer">Read original article →</a>';
             }
             document.getElementById('home-article-linkout').innerHTML = linkoutHtml;
-            
+
             showView(articleView);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
@@ -1894,6 +2351,16 @@ document.addEventListener('DOMContentLoaded', function () {
             bodyParts.push(dek);
         }
 
+        var articleMatch = null;
+        if (window.homeArticles && Array.isArray(window.homeArticles)) {
+            articleMatch = window.homeArticles.find(function (item) {
+                return (item.headline || '').trim() === headline;
+            }) || null;
+        }
+        if (articleMatch && articleMatch.body) {
+            bodyParts = articleMatch.body.split(/\n\n+/).filter(Boolean);
+        }
+
         var sourceAnchor = cardNode.querySelector('.story-sources a:not(.cite-sup)');
         var sourceHtml = '';
         if (sourceAnchor) {
@@ -1905,16 +2372,23 @@ document.addEventListener('DOMContentLoaded', function () {
             return '<p>' + esc(part) + '</p>';
         }).join('');
 
+        var focusImageHtml = '  <div class="story-focus-image"></div>';
+        var focusCaption = '  <p class="story-focus-caption">Placeholder graphic by OrdoAI archive</p>';
+        if (articleMatch && articleMatch.imageUrl) {
+            focusImageHtml = '  <div class="story-focus-image"><img src="' + esc(articleMatch.imageUrl) + '" alt="' + esc(headline) + '" loading="lazy"></div>';
+            focusCaption = '  <p class="story-focus-caption">AI-generated illustration based on newsletter content</p>';
+        }
+
         focusContent.innerHTML = (
             '<article class="story-focus-article">' +
             '  <span class="story-focus-kicker">' + esc(kicker) + '</span>' +
             '  <h2 class="story-focus-headline">' + esc(headline) + '</h2>' +
             (dek ? '  <p class="story-focus-dek">' + esc(dek) + '</p>' : '') +
-            '  <p class="story-focus-meta"><span class="author">AI Factory News Desk</span>' +
+            '  <p class="story-focus-meta"><span class="author">OrdoAI News Desk</span>' +
             (announced ? ' • ' + esc(announced) : '') +
             '</p>' +
-            '  <div class="story-focus-image"></div>' +
-            '  <p class="story-focus-caption">Photo by AI Factory archive</p>' +
+            focusImageHtml +
+            focusCaption +
             '  <div class="story-focus-body">' + bodyHtml + '</div>' +
             sourceHtml +
             '</article>'
@@ -2001,6 +2475,7 @@ def render_html_page(
         [event_to_story(i, tracker) for i in event_items],
         key=_event_sort_key,
     )
+    event_cards = _filter_upcoming_event_cards(event_cards)
     accel_cards = [accelerator_to_story(i, tracker) for i in accelerator_items]
 
     # ── split funding into lead / top / radar ───────────────────
@@ -2019,9 +2494,18 @@ def render_html_page(
     tp = build_trend_prose(trend_data)
 
     # ── build HTML sections ─────────────────────────────────────
+    ai_assets = _load_ai_assets(config)
     
     # Home newspaper experience (front page → list → article)
-    home_articles = _home_articles_payload(lead_card, top_cards, radar_cards, event_cards, accel_cards, date_str)
+    home_articles = _home_articles_payload(
+        lead_card,
+        top_cards,
+        radar_cards,
+        event_cards,
+        accel_cards,
+        date_str,
+        ai_assets=ai_assets,
+    )
     home_page_html = _home_front_page_html(home_articles)
     home_articles_json = json.dumps(home_articles)
 
@@ -2096,7 +2580,7 @@ def render_html_page(
         events_html = (
             '<hr class="section-rule">\n'
             '<section id="events" data-page-group="events">\n'
-            '  <span class="section-label">Events This Week</span>\n'
+            '  <span class="section-label">Upcoming Events</span>\n'
             f'  <p class="section-transition">{transition("events")}</p>\n'
             + ''.join(_event_html(c) for c in event_cards)
             + '\n</section>'
@@ -2119,6 +2603,7 @@ def render_html_page(
 
     people_html = _vc_people_html()
     vc_firms_html = _vc_firms_html(tracker)
+    model_benchmarks_html = _model_benchmarks_html()
 
     # Bibliography
     all_cites = tracker.all
@@ -2155,8 +2640,9 @@ def render_html_page(
         toc_items.append('<li><a href="#funding-radar">Funding Radar</a></li>')
     if trend_data:
         toc_items.append('<li><a href="#trends">Trend Brief</a></li>')
+    toc_items.append('<li><a href="#model-benchmarks">Model Benchmarks</a></li>')
     if event_cards:
-        toc_items.append('<li><a href="#events">Events This Week</a></li>')
+        toc_items.append('<li><a href="#events">Upcoming Events</a></li>')
     if accel_cards:
         toc_items.append('<li><a href="#accelerators">Accelerator Watch</a></li>')
     if people_html:
@@ -2174,18 +2660,17 @@ def render_html_page(
 
     people_target = '#people' if people_html else ('#accelerators' if accel_cards else ('#top-stories' if top_cards else '#lead'))
     events_target = '#events' if event_cards else '#calendar'
-    news_target = '#top-stories' if top_cards else '#lead'
-    investments_target = '#lead'
-    businesses_target = '#top-stories' if top_cards else ('#trends' if trend_data else '#lead')
+    home_target = '#home'
+    money_target = '#lead'
+    models_target = '#model-benchmarks'
     masthead_topics_html = (
         '<nav class="masthead-topics" aria-label="Topic sections">\n'
         '  <ul class="masthead-topics-list">\n'
-        f'    <li><a class="masthead-topic-link" data-page="home" href="#home">Home</a></li>\n'
-        f'    <li><a class="masthead-topic-link" data-page="news" href="{news_target}">News</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="home" href="{home_target}">Home</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="money" href="{money_target}">Money</a></li>\n'
+        f'    <li><a class="masthead-topic-link" data-page="models" href="{models_target}">Models</a></li>\n'
         f'    <li><a class="masthead-topic-link" data-page="people" href="{people_target}">People</a></li>\n'
         f'    <li><a class="masthead-topic-link" data-page="events" href="{events_target}">Events</a></li>\n'
-        f'    <li><a class="masthead-topic-link" data-page="investments" href="{investments_target}">Investments</a></li>\n'
-        f'    <li><a class="masthead-topic-link" data-page="businesses" href="{businesses_target}">Businesses</a></li>\n'
         '  </ul>\n'
         '</nav>'
     )
@@ -2216,7 +2701,7 @@ def render_html_page(
 
 <main class="container" id="home">
 
-    {home_page_html.replace('"', '&quot;')}
+    {home_page_html}
     <script id="home-articles-data">
     window.homeArticles = {home_articles_json};
     </script>
@@ -2242,6 +2727,7 @@ def render_html_page(
     {top_stories_html}
     {radar_html}
     {trends_html}
+    {model_benchmarks_html}
     {people_html}
     {vc_firms_html}
     {events_html}
@@ -2253,7 +2739,7 @@ def render_html_page(
     <div class="signup-container">
         <h2 class="signup-headline">Stay in the Loop</h2>
         <p class="signup-subtext">
-            Get the AI Factory Newsletter delivered to your inbox every week.
+            Get the OrdoAI newsletter delivered to your inbox every week.
             The latest funding rounds, events, and accelerator opportunities — curated for NYC's tech community.
         </p>
         <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
@@ -2261,7 +2747,7 @@ def render_html_page(
             <button type="submit" class="signup-button">Subscribe</button>
         </form>
         <div class="signup-success" id="signupSuccess">
-            You're in! Welcome to the AI Factory community.
+            You're in! Welcome to the OrdoAI community.
         </div>
         <p class="signup-privacy">No spam, ever. Unsubscribe anytime.</p>
     </div>

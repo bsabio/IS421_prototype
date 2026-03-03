@@ -32,6 +32,15 @@ python3 -m newsroom.render --format md
 **Time:** < 1 second  
 **Output:** `output/newsletter.md`
 
+### Step 4 (Optional): AI Enrich Paragraphs + Images
+```bash
+# .env should include OPENAI_API_KEY=...
+python3 -m newsroom.ai_toolkit
+python3 -m newsroom.render --format html
+```
+**What it does:** Uses OpenAI-compatible APIs to rewrite story bodies into natural paragraphs and generate contextual images for full-page article placeholders  
+**Output:** `output/newsletter_ai_assets.json` + enriched `output/newsletter.html`
+
 ---
 
 ## ✏️ Customizing Content

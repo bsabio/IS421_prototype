@@ -192,6 +192,24 @@ The HTML output features a masthead, editor's note, lead story hero, table of
 contents, "Why It Matters" callouts, key-number chips, and a full bibliography.
 It is responsive (mobile + print-friendly).
 
+### 2b. AI Toolkit (Optional: image + paragraph enrichment)
+
+If your `.env` includes an OpenAI-compatible API key, you can generate story-specific
+images and richer paragraph prose for the full-page newsletter article views.
+
+```bash
+# .env should include OPENAI_API_KEY=...
+
+# Build AI assets from ranked data
+python3 -m newsroom.ai_toolkit
+
+# Re-render HTML to apply assets
+python3 -m newsroom.render --format html
+```
+
+The toolkit writes `output/newsletter_ai_assets.json`, and the renderer automatically
+uses it to replace image placeholders and body text in article/focus views.
+
 ### 3. Customize Content
 
 Edit the mock data files to change content:

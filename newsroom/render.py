@@ -10,7 +10,11 @@ from typing import List
 
 from .models import FundingItem, EventItem, AcceleratorItem
 from .templates import render_markdown, render_html
-from .web_template import render_html_page
+from .web_template import (
+    render_html_page,
+    build_home_articles_payload,
+    render_home_article_page,
+)
 from .utils import load_config
 
 
@@ -82,6 +86,26 @@ def main():
         with open(html_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
         print(f"✓ HTML saved to: {html_file}")
+
+        home_articles = build_home_articles_payload(
+            funding_items, event_items, accelerator_items, config
+        )
+        articles_dir = output_dir / 'articles'
+        articles_dir.mkdir(exist_ok=True)
+
+        for article in home_articles:
+            article_path = article.get('articleUrl', '')
+            if article_path.startswith('articles/'):
+                article_filename = article_path.replace('articles/', '', 1)
+            else:
+                article_filename = f"{article.get('id', 'story')}.html"
+
+            article_html = render_home_article_page(article, config)
+            with open(articles_dir / article_filename, 'w', encoding='utf-8') as f:
+                f.write(article_html)
+
+        if home_articles:
+            print(f"✓ Article pages saved to: {articles_dir} ({len(home_articles)} files)")
     
     print()
     print("=== Newsletter Generation Complete ===")

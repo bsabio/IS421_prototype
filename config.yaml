@@ -1,7 +1,7 @@
 # AI Factory Newsletter Configuration
 
 newsletter:
-  title: "AI Factory Newsletter"
+  title: "OrdoAI"
   subtitle: "Weekly startup funding, events, and accelerators"
   
 search:
