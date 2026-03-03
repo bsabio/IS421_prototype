@@ -32,7 +32,7 @@ def main():
     
     args = parser.parse_args()
     
-    print("=== AI Factory Newsletter - Rendering ===")
+    print("=== OrdoAI - Rendering ===")
     print(f"Generating newsletter in {args.format} format...")
     print()
     
@@ -92,6 +92,9 @@ def main():
         )
         articles_dir = output_dir / 'articles'
         articles_dir.mkdir(exist_ok=True)
+
+        for stale_file in articles_dir.glob('*.html'):
+            stale_file.unlink()
 
         for article in home_articles:
             article_path = article.get('articleUrl', '')

@@ -21,10 +21,9 @@ from typing import Dict, List, Any
 
 import requests
 
-from .editorial import CitationTracker, funding_to_story, event_to_story, accelerator_to_story, issue_date
 from .models import FundingItem, EventItem, AcceleratorItem
 from .utils import load_config
-from .web_template import _event_sort_key, _home_articles_payload
+from .web_template import build_home_articles_payload
 
 
 def _word_count(text: str) -> int:
@@ -208,7 +207,7 @@ def _load_env_file(env_path: Path) -> Dict[str, str]:
     return values
 
 
-def _build_home_articles_from_ranked(ranked_path: Path) -> List[Dict[str, str]]:
+def _build_home_articles_from_ranked(ranked_path: Path, config: Dict[str, Any]) -> List[Dict[str, str]]:
     with ranked_path.open("r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -216,31 +215,11 @@ def _build_home_articles_from_ranked(ranked_path: Path) -> List[Dict[str, str]]:
     event_items = [EventItem.from_dict(item) for item in data.get("events", [])]
     accelerator_items = [AcceleratorItem.from_dict(item) for item in data.get("accelerators", [])]
 
-    tracker = CitationTracker()
-
-    all_funding_cards = []
-    for idx, item in enumerate(funding_items):
-        if idx == 0:
-            all_funding_cards.append(funding_to_story(item, tracker, position="lead"))
-        elif idx < 4:
-            all_funding_cards.append(funding_to_story(item, tracker, position="top"))
-        else:
-            all_funding_cards.append(funding_to_story(item, tracker, position="radar"))
-
-    event_cards = sorted([event_to_story(item, tracker) for item in event_items], key=_event_sort_key)
-    accel_cards = [accelerator_to_story(item, tracker) for item in accelerator_items]
-
-    lead_card = all_funding_cards[0] if all_funding_cards else None
-    top_cards = all_funding_cards[1:4] if len(all_funding_cards) > 1 else []
-    radar_cards = all_funding_cards[4:] if len(all_funding_cards) > 4 else []
-
-    return _home_articles_payload(
-        lead_card,
-        top_cards,
-        radar_cards,
-        event_cards,
-        accel_cards,
-        issue_date(),
+    return build_home_articles_payload(
+        funding_items=funding_items,
+        event_items=event_items,
+        accelerator_items=accelerator_items,
+        config=config,
     )
 
 
@@ -320,7 +299,7 @@ def main(argv: List[str] | None = None) -> None:
     base_url = args.base_url or os.getenv("OPENAI_BASE_URL") or "https://api.openai.com"
     client = OpenAICompatibleClient(api_key=api_key, base_url=base_url, timeout=args.timeout)
 
-    articles = _build_home_articles_from_ranked(ranked_path)
+    articles = _build_home_articles_from_ranked(ranked_path, cfg)
     if args.max_articles > 0:
         articles = articles[: args.max_articles]
 

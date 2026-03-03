@@ -164,7 +164,7 @@ def _merge_live_events(existing: List[EventItem], live: List[EventItem]) -> List
     return merged
 
 
-def load_mock_data(config: Dict) -> Dict:
+def load_mock_data(config: Dict, enrich_live_events: bool = False) -> Dict:
     """
     Load mock data from JSON files (PROTOTYPE MODE)
     
@@ -198,18 +198,19 @@ def load_mock_data(config: Dict) -> Dict:
             event_items = [EventItem.from_dict(item) for item in ranked.get('events', [])]
             accelerator_items = [AcceleratorItem.from_dict(item) for item in ranked.get('accelerators', [])]
 
-            try:
-                garys_events = _extract_garys_guide_events(limit=8)
-                meetup_events = _extract_meetup_events(limit=8)
-                live_events = garys_events + meetup_events
-                if live_events:
-                    before = len(event_items)
-                    event_items = _merge_live_events(event_items, live_events)
-                    added = len(event_items) - before
-                    if added > 0:
-                        print(f"   ✓ Added {added} live events from Gary's Guide / Meetup")
-            except Exception:
-                pass
+            if enrich_live_events:
+                try:
+                    garys_events = _extract_garys_guide_events(limit=8)
+                    meetup_events = _extract_meetup_events(limit=8)
+                    live_events = garys_events + meetup_events
+                    if live_events:
+                        before = len(event_items)
+                        event_items = _merge_live_events(event_items, live_events)
+                        added = len(event_items) - before
+                        if added > 0:
+                            print(f"   ✓ Added {added} live events from Gary's Guide / Meetup")
+                except requests.RequestException:
+                    print("   ⚠️ Live event enrichment skipped due to network error")
 
             print(f"   ✓ Loaded {len(funding_items)} funding items from ranked.json")
             print(f"   ✓ Loaded {len(event_items)} event items from ranked.json (+ live)")
@@ -242,19 +243,19 @@ def load_mock_data(config: Dict) -> Dict:
             event_items = [EventItem.from_dict(item) for item in data]
             print(f"   ✓ Loaded {len(event_items)} event items")
 
-    # Add live event fallbacks from Gary's Guide and Meetup (best-effort)
-    try:
-        garys_events = _extract_garys_guide_events(limit=8)
-        meetup_events = _extract_meetup_events(limit=8)
-        live_events = garys_events + meetup_events
-        if live_events:
-            before = len(event_items)
-            event_items = _merge_live_events(event_items, live_events)
-            added = len(event_items) - before
-            if added > 0:
-                print(f"   ✓ Added {added} live events from Gary's Guide / Meetup")
-    except Exception:
-        pass
+    if enrich_live_events:
+        try:
+            garys_events = _extract_garys_guide_events(limit=8)
+            meetup_events = _extract_meetup_events(limit=8)
+            live_events = garys_events + meetup_events
+            if live_events:
+                before = len(event_items)
+                event_items = _merge_live_events(event_items, live_events)
+                added = len(event_items) - before
+                if added > 0:
+                    print(f"   ✓ Added {added} live events from Gary's Guide / Meetup")
+        except requests.RequestException:
+            print("   ⚠️ Live event enrichment skipped due to network error")
     
     # Load accelerator items
     accelerators_file = mock_dir / "accelerators.json"
@@ -289,6 +290,11 @@ def main():
         default='7d',
         help='Time range to collect (e.g., 7d for 7 days) - only used for real sources'
     )
+    parser.add_argument(
+        '--enrich-live-events',
+        action='store_true',
+        help="In mock mode, enrich events with live Gary's Guide/Meetup fetches (off by default for deterministic runs)"
+    )
     
     args = parser.parse_args()
     
@@ -302,7 +308,7 @@ def main():
     
     if args.source == 'mock':
         # PROTOTYPE MODE: Load mock data (already normalized)
-        all_items = load_mock_data(config)
+        all_items = load_mock_data(config, enrich_live_events=args.enrich_live_events)
         
         # Save directly to deduped.json (skip normalization step)
         data_dir = Path(config['storage']['data_dir'])

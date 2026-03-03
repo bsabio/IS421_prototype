@@ -68,6 +68,38 @@ body {
 a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 a:hover { color: var(--accent-hover); }
 img { max-width: 100%; }
+.hero-headline a,
+.story-headline a,
+.radar-headline a,
+.event-headline a,
+.accel-headline a {
+    color: inherit;
+    text-decoration: none;
+}
+.hero-headline a:hover,
+.story-headline a:hover,
+.radar-headline a:hover,
+.event-headline a:hover,
+.accel-headline a:hover {
+    text-decoration: underline;
+}
+.business-url {
+    color: var(--accent) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 2px;
+}
+.business-url:hover {
+    color: var(--accent-hover) !important;
+}
+.story-open-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+}
 
 /* ── Container ────────────────────────────────────────────── */
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
@@ -211,6 +243,7 @@ img { max-width: 100%; }
     font-size: 1rem;
 }
 .home-teaser {
+    display: block;
     width: 100%;
     text-align: left;
     border: 1px solid var(--border);
@@ -218,6 +251,8 @@ img { max-width: 100%; }
     padding: 12px;
     margin-bottom: 10px;
     cursor: pointer;
+    color: inherit;
+    text-decoration: none;
 }
 .home-teaser:hover {
     border-color: var(--accent);
@@ -789,6 +824,31 @@ img { max-width: 100%; }
     color: var(--text-2);
     font-size: 0.96rem;
 }
+.model-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 10px 0 16px;
+}
+.model-highlight-card {
+    border: 1px solid var(--border);
+    background: var(--bg-warm);
+    padding: 10px 12px;
+}
+.model-highlight-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+.model-highlight-value {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.25;
+}
 .benchmark-table {
     width: 100%;
     border-collapse: collapse;
@@ -807,6 +867,9 @@ img { max-width: 100%; }
     letter-spacing: 0.08em;
     color: var(--text-2);
     background: var(--bg-warm);
+}
+.benchmark-table tr.benchmark-row-top td {
+    background: var(--accent-light);
 }
 .benchmark-score {
     font-weight: 700;
@@ -834,6 +897,14 @@ img { max-width: 100%; }
 }
 .benchmark-defs strong {
     color: var(--text);
+}
+.benchmark-composite {
+    display: inline-block;
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: #fff;
 }
 
 /* ── Event Card ───────────────────────────────────────────── */
@@ -1229,56 +1300,84 @@ def _why_html(text: str, label: str = 'Here\u2019s What This Means') -> str:
     )
 
 
+def _open_story_link(article_id: str, article_url: str) -> str:
+    if not article_url:
+        return ''
+    return (
+        f'<p><a class="story-open-link" href="{escape(article_url)}" data-open-article="{escape(article_id)}">'
+        'Read full article →'
+        '</a></p>'
+    )
+
+
 # ── section renderers ────────────────────────────────────────────
 
-def _hero_html(card: StoryCard) -> str:
+def _hero_html(card: StoryCard, article_id: str = '', article_url: str = '') -> str:
     ctx = f'<p class="story-context">{card.context}</p>' if card.context else ''
+    headline_html = card.headline
+    if article_url:
+        headline_html = f'<a href="{escape(article_url)}" data-open-article="{escape(article_id)}">{escape(card.headline)}</a>'
+    data_attr = f' data-open-article="{escape(article_id)}"' if article_id else ''
+    open_link = _open_story_link(article_id, article_url)
     return (
         f'<section id="lead" class="lead-story" data-page-group="investments">\n'
         f'  <span class="section-label">Lead Story</span>\n'
-        f'  <article class="hero-card">\n'
-        f'    <h2 class="hero-headline">{card.headline}</h2>\n'
+        f'  <article class="hero-card"{data_attr}>\n'
+        f'    <h2 class="hero-headline">{headline_html}</h2>\n'
         f'    <p class="hero-dek">{card.dek}</p>\n'
         f'    {_chips_html(card)}\n'
         f'    <p class="story-lede">{card.lede}</p>\n'
         f'    {ctx}\n'
         f'    {_why_html(card.why_it_matters)}\n'
         f'    {_details_html(card.key_details)}\n'
+        f'    {open_link}\n'
         f'    {_cite_source_line(card.citations)}\n'
         f'  </article>\n'
         f'</section>'
     )
 
 
-def _story_html(card: StoryCard) -> str:
+def _story_html(card: StoryCard, article_id: str = '', article_url: str = '') -> str:
     chips = _chips_html(card) if card.card_type == 'funding' else ''
     ctx = f'<p class="story-context">{card.context}</p>' if card.context else ''
+    headline_html = card.headline
+    if article_url:
+        headline_html = f'<a href="{escape(article_url)}" data-open-article="{escape(article_id)}">{escape(card.headline)}</a>'
+    data_attr = f' data-open-article="{escape(article_id)}"' if article_id else ''
+    open_link = _open_story_link(article_id, article_url)
     return (
-        f'<article class="story-card">\n'
-        f'  <h3 class="story-headline">{card.headline}</h3>\n'
+        f'<article class="story-card"{data_attr}>\n'
+        f'  <h3 class="story-headline">{headline_html}</h3>\n'
         f'  <p class="story-dek">{card.dek}</p>\n'
         f'  {chips}\n'
         f'  <p class="story-lede">{card.lede}</p>\n'
         f'  {ctx}\n'
         f'  {_why_html(card.why_it_matters)}\n'
         f'  {_details_html(card.key_details)}\n'
+        f'  {open_link}\n'
         f'  {_cite_source_line(card.citations)}\n'
         f'</article>'
     )
 
 
-def _radar_card_html(card: StoryCard) -> str:
+def _radar_card_html(card: StoryCard, article_id: str = '', article_url: str = '') -> str:
+    headline_html = card.headline
+    if article_url:
+        headline_html = f'<a href="{escape(article_url)}" data-open-article="{escape(article_id)}">{escape(card.headline)}</a>'
+    data_attr = f' data-open-article="{escape(article_id)}"' if article_id else ''
+    open_link = _open_story_link(article_id, article_url)
     return (
-        f'<div class="radar-card">\n'
-        f'  <h4 class="radar-headline">{card.headline}</h4>\n'
+        f'<div class="radar-card"{data_attr}>\n'
+        f'  <h4 class="radar-headline">{headline_html}</h4>\n'
         f'  <p class="radar-lede">{card.lede}</p>\n'
+        f'  {open_link}\n'
         f'  {_why_html(card.why_it_matters)}\n'
         f'  {_cite_source_line(card.citations)}\n'
         f'</div>'
     )
 
 
-def _event_html(card: StoryCard) -> str:
+def _event_html(card: StoryCard, article_id: str = '', article_url: str = '') -> str:
     month_label = _event_month_label(card.date)
     month_key = _event_month_key(card.date)
     date_label = _event_date_label(card.date)
@@ -1288,9 +1387,14 @@ def _event_html(card: StoryCard) -> str:
         f'<a href="{card.registration_url}" class="event-btn" '
         f'target="_blank">Register \u2192</a>'
     ) if card.registration_url else ''
+    headline_html = card.headline
+    if article_url:
+        headline_html = f'<a href="{escape(article_url)}" data-open-article="{escape(article_id)}">{escape(card.headline)}</a>'
+    data_attr = f' data-open-article="{escape(article_id)}"' if article_id else ''
+    open_link = _open_story_link(article_id, article_url)
     return (
-        f'<article class="event-card" data-event-month-key="{month_key}" data-event-month-label="{month_label}" data-event-date-key="{date_key}" data-event-date-label="{date_label}" data-event-date-iso="{date_iso}">\n'
-        f'  <h3 class="event-headline">{card.headline}</h3>\n'
+        f'<article class="event-card"{data_attr} data-event-month-key="{month_key}" data-event-month-label="{month_label}" data-event-date-key="{date_key}" data-event-date-label="{date_label}" data-event-date-iso="{date_iso}">\n'
+        f'  <h3 class="event-headline">{headline_html}</h3>\n'
         f'  <p class="event-dek">{card.dek}</p>\n'
         f'  <div class="event-meta">\n'
         f'    <span class="event-meta-item"><span class="event-meta-icon">\U0001F4C5</span> {card.date}</span>\n'
@@ -1298,23 +1402,30 @@ def _event_html(card: StoryCard) -> str:
         f'    <span class="event-meta-item"><span class="event-meta-icon">\U0001F4B5</span> {card.cost}</span>\n'
         f'  </div>\n'
         f'  {_why_html(card.why_it_matters, "Why You Should Be There")}\n'
+        f'  {open_link}\n'
         f'  {_cite_source_line(card.citations)}\n'
         f'  {reg}\n'
         f'</article>'
     )
 
 
-def _accel_html(card: StoryCard) -> str:
+def _accel_html(card: StoryCard, article_id: str = '', article_url: str = '') -> str:
     focus = (
         f'<div class="accel-focus">{card.category}</div>'
     ) if card.category else ''
+    headline_html = card.headline
+    if article_url:
+        headline_html = f'<a href="{escape(article_url)}" data-open-article="{escape(article_id)}">{escape(card.headline)}</a>'
+    data_attr = f' data-open-article="{escape(article_id)}"' if article_id else ''
+    open_link = _open_story_link(article_id, article_url)
     return (
-        f'<article class="accel-card">\n'
-        f'  <h3 class="accel-headline">{card.headline}</h3>\n'
+        f'<article class="accel-card"{data_attr}>\n'
+        f'  <h3 class="accel-headline">{headline_html}</h3>\n'
         f'  {focus}\n'
         f'  <p class="story-lede">{card.lede}</p>\n'
         f'  {_why_html(card.why_it_matters)}\n'
         f'  {_details_html(card.key_details)}\n'
+        f'  {open_link}\n'
         f'  {_cite_source_line(card.citations)}\n'
         f'</article>'
     )
@@ -1329,16 +1440,52 @@ def _model_benchmarks_html() -> str:
         ("DeepSeek-V3", 1241, 79.5, 86.1, 83.7),
     ]
 
-    row_html = ''
+    best_for = {
+        "GPT-4.1": "High-stakes general use",
+        "Claude 3.7 Sonnet": "Long-form writing + coding",
+        "Gemini 2.0 Pro": "Multimodal workflows",
+        "Llama 3.1 405B": "Open-weight enterprise control",
+        "DeepSeek-V3": "Cost-efficient deployment",
+    }
+
+    elo_values = [r[1] for r in rows]
+    min_elo = min(elo_values)
+    max_elo = max(elo_values)
+
+    scored_rows = []
     for model, arena_elo, mmlu, gsm8k, humaneval in rows:
+        elo_norm = 100.0 if max_elo == min_elo else ((arena_elo - min_elo) / (max_elo - min_elo)) * 100.0
+        composite = (0.40 * elo_norm) + (0.20 * mmlu) + (0.20 * gsm8k) + (0.20 * humaneval)
+        scored_rows.append((model, arena_elo, mmlu, gsm8k, humaneval, composite))
+
+    scored_rows.sort(key=lambda item: item[5], reverse=True)
+
+    best_overall = scored_rows[0]
+    best_reasoning = max(scored_rows, key=lambda item: item[3])
+    best_coding = max(scored_rows, key=lambda item: item[4])
+
+    highlights_html = (
+        '<div class="model-highlights">'
+        f'<article class="model-highlight-card"><span class="model-highlight-label">Top Overall</span><div class="model-highlight-value">{best_overall[0]}</div></article>'
+        f'<article class="model-highlight-card"><span class="model-highlight-label">Best Reasoning (GSM8K)</span><div class="model-highlight-value">{best_reasoning[0]} ({best_reasoning[3]:.1f}%)</div></article>'
+        f'<article class="model-highlight-card"><span class="model-highlight-label">Best Coding (HumanEval)</span><div class="model-highlight-value">{best_coding[0]} ({best_coding[4]:.1f}%)</div></article>'
+        '</div>'
+    )
+
+    row_html = ''
+    for rank, (model, arena_elo, mmlu, gsm8k, humaneval, composite) in enumerate(scored_rows, start=1):
         elo_width = max(5, min(100, int((arena_elo - 1100) / 3.5)))
+        top_class = ' class="benchmark-row-top"' if rank == 1 else ''
         row_html += (
-            '<tr>'
+            f'<tr{top_class}>'
+            f'<td>{rank}</td>'
             f'<td><strong>{model}</strong></td>'
             f'<td><span class="benchmark-score">{arena_elo}</span><div class="benchmark-bar"><span style="width:{elo_width}%"></span></div></td>'
             f'<td class="benchmark-score">{mmlu:.1f}%</td>'
             f'<td class="benchmark-score">{gsm8k:.1f}%</td>'
             f'<td class="benchmark-score">{humaneval:.1f}%</td>'
+            f'<td><span class="benchmark-composite">{composite:.1f}</span></td>'
+            f'<td>{best_for.get(model, "General use")}</td>'
             '</tr>'
         )
 
@@ -1369,8 +1516,10 @@ def _model_benchmarks_html() -> str:
         '  <span class="section-label">Model Benchmarks</span>\n'
         '  <p class="section-transition">Performance snapshot for current frontier and open-weight models, including LLM Arena ranking context and core capability tests.</p>\n'
         '  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live context: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>\n'
+        f'  {highlights_html}\n'
+        '  <p class="model-benchmark-note">Composite score formula: 40% Arena Elo (normalized), 20% MMLU, 20% GSM8K, 20% HumanEval.</p>\n'
         '  <table class="benchmark-table">\n'
-        '    <thead><tr><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GSM8K</th><th>HumanEval</th></tr></thead>\n'
+        '    <thead><tr><th>Rank</th><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GSM8K</th><th>HumanEval</th><th>Composite</th><th>Best For</th></tr></thead>\n'
         f'    <tbody>{row_html}</tbody>\n'
         '  </table>\n'
         '  <h3 class="story-headline">Models Releasing Soon</h3>\n'
@@ -1522,21 +1671,52 @@ def _vc_firms_html(tracker: CitationTracker) -> str:
 
 def _vc_people_html() -> str:
     people_by_firm = [
-        ('Andreessen Horowitz (a16z)', ['Marc Andreessen', 'Ben Horowitz']),
-        ('ARCH Venture Partners', ['Robert Nelsen', 'Keith Crandell', 'Kristina Burow', 'Mark McDonnell', 'Steve Gillis', 'Paul Berns']),
-        ('General Catalyst', ['Ahmed Alveed']),
-        ('Bessemer Venture Partners', ['Kent Bennett', 'Byron Deeter', 'Mike Droesch', 'Maha Malik', 'Sam Bondy', 'Brian Feinstein', 'Sameer Dholakia', 'Caty Rea', 'Alex Yuditski', 'Aia Sarycheva']),
-        ('New Enterprise Associates (NEA)', ['Scott Sandell', 'Tony Florence', 'Mohamad Makhzoumi', 'Ali Behbahani', 'Paul Walker', 'Rick Yang']),
-        ('Flagship Pioneering', ['Daniel Acker', 'Raffi Afeyan', 'Theonie Anastassiadis', 'Yiqun Bai', 'Simon Brunner']),
-        ('B Capital', ['Nick Whitehead', 'Patrick Harmon', 'Priya Banerjee']),
+        {
+            'firm': 'Andreessen Horowitz (a16z)',
+            'website': 'https://a16z.com',
+            'people': ['Marc Andreessen', 'Ben Horowitz'],
+        },
+        {
+            'firm': 'ARCH Venture Partners',
+            'website': 'https://www.archventure.com',
+            'people': ['Robert Nelsen', 'Keith Crandell', 'Kristina Burow', 'Mark McDonnell', 'Steve Gillis', 'Paul Berns'],
+        },
+        {
+            'firm': 'General Catalyst',
+            'website': 'https://www.generalcatalyst.com',
+            'people': ['Ahmed Alveed'],
+        },
+        {
+            'firm': 'Bessemer Venture Partners',
+            'website': 'https://www.bvp.com',
+            'people': ['Kent Bennett', 'Byron Deeter', 'Mike Droesch', 'Maha Malik', 'Sam Bondy', 'Brian Feinstein', 'Sameer Dholakia', 'Caty Rea', 'Alex Yuditski', 'Aia Sarycheva'],
+        },
+        {
+            'firm': 'New Enterprise Associates (NEA)',
+            'website': 'https://www.nea.com',
+            'people': ['Scott Sandell', 'Tony Florence', 'Mohamad Makhzoumi', 'Ali Behbahani', 'Paul Walker', 'Rick Yang'],
+        },
+        {
+            'firm': 'Flagship Pioneering',
+            'website': 'https://www.flagshippioneering.com',
+            'people': ['Daniel Acker', 'Raffi Afeyan', 'Theonie Anastassiadis', 'Yiqun Bai', 'Simon Brunner'],
+        },
+        {
+            'firm': 'B Capital',
+            'website': 'https://www.bcapgroup.com',
+            'people': ['Nick Whitehead', 'Patrick Harmon', 'Priya Banerjee'],
+        },
     ]
 
     people_cards = ''
-    for firm_name, names in people_by_firm:
+    for item in people_by_firm:
+        firm_name = item['firm']
+        website = item['website']
+        names = item['people']
         names_html = ''.join(f'<li>{name}</li>' for name in names)
         people_cards += (
             '<article class="story-card">\n'
-            f'  <h3 class="story-headline">{firm_name}</h3>\n'
+            f'  <h3 class="story-headline">{firm_name} — <a class="business-url" href="{website}" target="_blank" rel="noopener noreferrer">{website}</a></h3>\n'
             f'  <ul class="key-details">{names_html}</ul>\n'
             '</article>\n'
         )
@@ -1640,12 +1820,13 @@ def _home_articles_payload(
                 'body': merged_body,
                 'imageUrl': asset.get('image_url') or _svg_placeholder_data_uri(card.headline, section_label),
                 'imagePrompt': asset.get('image_prompt', ''),
+                'articleUrl': f'articles/{story_id}-{_slugify(card.headline)}.html',
             })
 
     funding_cards = [lead_card] + top_cards + radar_cards if lead_card else top_cards + radar_cards
     add_cards(funding_cards, 'front-page', 'Front Page')
-    add_cards(event_cards, 'news', 'News')
-    add_cards(accel_cards, 'opinion', 'Opinion')
+    add_cards(event_cards, 'news', 'Events')
+    add_cards(accel_cards, 'opinion', 'Accelerators')
     return payload
 
 
@@ -1654,26 +1835,41 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
     for article in home_articles:
         groups.setdefault(article['sectionKey'], []).append(article)
 
+    def teaser_headline(article: Dict[str, str]) -> str:
+        headline = (article.get('headline') or '').strip()
+        if article.get('sectionKey') == 'news':
+            shortened = re.sub(r'\s+(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s+[A-Za-z]{3}\s+\d{1,2}.*$', '', headline, flags=re.IGNORECASE)
+            if shortened and len(shortened) >= 18:
+                headline = shortened
+        if len(headline) > 98:
+            headline = headline[:95].rstrip() + '...'
+        return escape(headline)
+
     def teaser(article: Dict[str, str]) -> str:
+        destination = article.get('articleUrl', '')
+        if article.get('sectionKey') == 'news' and article.get('sourceUrl'):
+            destination = article.get('sourceUrl', '')
+
         return (
-            f'<button type="button" class="home-teaser" data-open-article="{article["id"]}">\n'
+            f'<a class="home-teaser" href="{escape(destination)}">\n'
             f'  <div class="home-teaser-kicker">{article["sectionLabel"]}</div>\n'
-            f'  <div class="home-teaser-headline">{article["headline"]}</div>\n'
+            f'  <div class="home-teaser-headline">{teaser_headline(article)}</div>\n'
             f'  <div class="home-teaser-meta">{article["author"]} • {article["date"]}</div>\n'
-            f'</button>'
+            f'</a>'
         )
 
     lead = groups['front-page'][0] if groups['front-page'] else None
     lead_html = ''
     if lead:
+        lead_destination = escape(lead.get('articleUrl', '#'))
         lead_html = (
             '<div class="home-front-lead">\n'
             f'  <button type="button" class="home-col-link" data-open-list="front-page">Front Page</button>\n'
-            f'  <button type="button" class="home-teaser" data-open-article="{lead["id"]}">\n'
+            f'  <a class="home-teaser" href="{lead_destination}">\n'
             f'    <h2 class="home-front-lead-headline">{lead["headline"]}</h2>\n'
             f'    <p class="home-front-lead-body">{lead["summary"]}</p>\n'
             f'    <div class="home-teaser-meta">{lead["author"]} • {lead["date"]}</div>\n'
-            f'  </button>\n'
+            f'  </a>\n'
             '</div>'
         )
 
@@ -1684,12 +1880,12 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
         '  <div id="home-subview-front" class="home-subview">\n'
         '    <div class="home-front-grid">\n'
         '      <div>\n'
-        '        <button type="button" class="home-col-link" data-open-list="news">News</button>\n'
+        '        <button type="button" class="home-col-link" data-open-list="news">Events</button>\n'
         f'{news_html}\n'
         '      </div>\n'
         f'      <div>{lead_html}</div>\n'
         '      <div>\n'
-        '        <button type="button" class="home-col-link" data-open-list="opinion">Opinion</button>\n'
+        '        <button type="button" class="home-col-link" data-open-list="opinion">Accelerators</button>\n'
         f'{opinion_html}\n'
         '      </div>\n'
         '    </div>\n'
@@ -1697,16 +1893,16 @@ def _home_front_page_html(home_articles: List[Dict[str, str]]) -> str:
         '  <section id="home-subview-list" class="home-subview is-hidden">\n'
         '    <div class="home-view-head">\n'
         '      <button type="button" class="home-back-btn" data-home-back="front">← Back to Front Page</button>\n'
-        '      <h2 id="home-list-title" class="home-list-title">News</h2>\n'
+        '      <h2 id="home-list-title" class="home-list-title">Events</h2>\n'
         '    </div>\n'
         '    <div id="home-list-items"></div>\n'
         '  </section>\n'
         '  <article id="home-subview-article" class="home-subview is-hidden">\n'
         '    <div class="home-view-head">\n'
-        '      <button type="button" class="home-back-btn" data-home-back="list">← Back to Newspaper</button>\n'
+        '      <button type="button" class="home-back-btn" data-home-back="list">← Back to Home</button>\n'
         '    </div>\n'
         '    <div class="home-article-wrap">\n'
-        '      <span id="home-article-kicker" class="home-article-kicker">News</span>\n'
+        '      <span id="home-article-kicker" class="home-article-kicker">Events</span>\n'
         '      <h2 id="home-article-title" class="home-article-title"></h2>\n'
         '      <p id="home-article-dek" class="home-article-dek"></p>\n'
         '      <p id="home-article-meta" class="home-article-meta"></p>\n'
@@ -1733,6 +1929,17 @@ def _load_ai_assets(config: Dict) -> Dict[str, Dict[str, str]]:
         return articles if isinstance(articles, dict) else {}
     except (OSError, json.JSONDecodeError):
         return {}
+
+
+def _home_articles_client_payload(home_articles: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    keep_keys = (
+        'id', 'sectionKey', 'sectionLabel', 'headline', 'dek', 'summary',
+        'author', 'date', 'sourceUrl', 'imageUrl', 'articleUrl'
+    )
+    client_items: List[Dict[str, str]] = []
+    for article in home_articles:
+        client_items.append({key: article.get(key, '') for key in keep_keys})
+    return client_items
 
 
 def build_home_articles_payload(
@@ -1784,20 +1991,52 @@ def render_home_article_page(article: Dict[str, str], config: Dict) -> str:
     source_url = article.get('sourceUrl', '')
     image_url = article.get('imageUrl', '')
     image_prompt = article.get('imagePrompt', '')
+    article_id = (article.get('id', '') or '').strip()
+
+    def _normalized_article_image_src(raw: str) -> str:
+        value = (raw or '').strip()
+        if not value:
+            return ''
+        if value.startswith('data:image/') or value.startswith('http://') or value.startswith('https://'):
+            return value
+        if value.startswith('../'):
+            return value
+        if value.startswith('images/'):
+            return f'../{value}'
+        return f'../images/{Path(value).name}'
+
+    image_src = ''
+    output_dir = Path(config.get('output', {}).get('output_dir', 'output'))
+    if article_id:
+        local_image_file = output_dir / 'images' / f'{article_id}.png'
+        if local_image_file.exists():
+            image_src = f'../images/{article_id}.png'
+    if not image_src:
+        image_src = _normalized_article_image_src(image_url)
 
     body_parts = [part.strip() for part in (article.get('body', '') or '').split('\n\n') if part.strip()]
     if not body_parts and article.get('summary'):
         body_parts = [article['summary']]
-    body_html = '\n'.join(f'<p>{escape(part)}</p>' for part in body_parts)
+    body_chunks: List[str] = []
+    for idx, part in enumerate(body_parts):
+        body_chunks.append(f'<p>{escape(part)}</p>')
+        if idx == 1 and image_src:
+            body_chunks.append(
+                '<figure class="story-image-inline">\n'
+                f'  <img src="{escape(image_src)}" alt="{headline}" loading="lazy">\n'
+                '  <figcaption>In-article reference image</figcaption>\n'
+                '</figure>'
+            )
+    body_html = '\n'.join(body_chunks)
 
     image_block = ''
-    if image_url:
+    if image_src:
         caption = 'AI-generated illustration based on newsletter story content'
         if image_prompt:
             caption = 'AI-generated illustration'
         image_block = (
             '<figure class="story-image">\n'
-            f'  <img src="{escape(image_url)}" alt="{headline}" loading="lazy">\n'
+            f'  <img src="{escape(image_src)}" alt="{headline}" loading="lazy">\n'
             f'  <figcaption>{caption}</figcaption>\n'
             '</figure>'
         )
@@ -1809,6 +2048,8 @@ def render_home_article_page(article: Dict[str, str], config: Dict) -> str:
             f'<a href="{escape(source_url)}" target="_blank" rel="noopener noreferrer">Read original source →</a>'
             '</p>'
         )
+
+    subtitle = escape(config.get('newsletter', {}).get('subtitle', 'Weekly startup funding, events, and accelerators'))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1828,27 +2069,37 @@ def render_home_article_page(article: Dict[str, str], config: Dict) -> str:
         }}
         * {{ box-sizing: border-box; }}
         body {{ margin: 0; background: var(--bg); color: var(--text); font-family: var(--serif); }}
-        .container {{ max-width: 860px; margin: 0 auto; padding: 36px 28px 60px; }}
+        .container {{ max-width: 980px; margin: 0 auto; padding: 30px 26px 52px; }}
         .back-link {{ font-family: var(--sans); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); text-decoration: none; font-weight: 700; }}
         .kicker {{ display: inline-block; margin-top: 24px; background: var(--accent); color: #fff; padding: 7px 10px; font-family: var(--sans); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }}
-        h1 {{ font-size: 3.2rem; line-height: 1.08; margin: 24px 0 14px; }}
-        .meta {{ font-family: var(--sans); font-size: 1.02rem; color: var(--text-2); margin-bottom: 18px; }}
+        h1 {{ font-size: 2.5rem; line-height: 1.12; margin: 22px 0 12px; }}
+        .meta {{ font-family: var(--sans); font-size: .98rem; color: var(--text-2); margin-bottom: 16px; }}
         .meta .author {{ color: var(--accent); font-weight: 700; }}
         .story-image {{ margin: 0 0 24px; border: 1px solid var(--border); background: #fff; }}
         .story-image img {{ display: block; width: 100%; height: auto; }}
         .story-image figcaption {{ font-family: var(--sans); font-size: .82rem; color: #6f6f6f; padding: 8px 12px; border-top: 1px solid var(--border); }}
-        .story-body p {{ font-size: 2rem; line-height: 1.55; margin: 0 0 18px; }}
+        .story-image-inline {{ float: right; width: 42%; margin: 4px 0 16px 20px; border: 1px solid var(--border); background: #fff; }}
+        .story-image-inline img {{ display: block; width: 100%; height: auto; }}
+        .story-image-inline figcaption {{ font-family: var(--sans); font-size: .78rem; color: #6f6f6f; padding: 7px 10px; border-top: 1px solid var(--border); }}
+        .story-body {{ font-size: 1.12rem; line-height: 1.68; }}
+        .story-body p {{ font-size: 1.12em; line-height: 1.68; margin: 0 0 15px; }}
         .story-linkout {{ margin-top: 22px; font-family: var(--sans); font-size: 1rem; }}
         .story-linkout a {{ color: var(--accent); }}
         @media (max-width: 900px) {{
-            h1 {{ font-size: 2.45rem; }}
-            .story-body p {{ font-size: 1.4rem; }}
+            h1 {{ font-size: 2rem; }}
+            .story-image-inline {{ float: none; width: 100%; margin: 8px 0 14px; }}
+            .story-body {{ font-size: 1.02rem; }}
+            .story-body p {{ font-size: 1.05em; }}
         }}
     </style>
 </head>
 <body>
-    <main class="container">
-        <a class="back-link" href="../newsletter.html#home">← Back to Home</a>
+    <header class="container" style="padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 18px;">
+        <div style="font-family: var(--serif); font-size: 2rem; font-weight: 700;">{title}</div>
+        <div style="font-family: var(--sans); color: var(--text-2); margin-top: 4px;">{subtitle}</div>
+    </header>
+    <main class="container" style="padding-top: 8px;">
+        <a class="back-link" href="../newsletter.html#home">← Back to Today’s Full Issue</a>
         <span class="kicker">{section_label}</span>
         <h1>{headline}</h1>
         <p class="meta"><span class="author">{author}</span> • {published}</p>
@@ -2225,6 +2476,16 @@ document.addEventListener('DOMContentLoaded', function() {
             var article = articles.find(function(a) { return a.id === articleId; });
             if (!article) return;
 
+            if (article.sectionKey === 'news' && article.sourceUrl) {
+                window.location.href = article.sourceUrl;
+                return;
+            }
+
+            if (article.articleUrl) {
+                window.location.href = article.articleUrl;
+                return;
+            }
+
             document.getElementById('home-article-kicker').textContent = article.sectionLabel;
             document.getElementById('home-article-title').textContent = article.headline;
             document.getElementById('home-article-dek').textContent = article.dek;
@@ -2361,6 +2622,11 @@ document.addEventListener('DOMContentLoaded', function () {
             bodyParts = articleMatch.body.split(/\n\n+/).filter(Boolean);
         }
 
+        if (articleMatch && articleMatch.articleUrl) {
+            window.location.href = articleMatch.articleUrl;
+            return;
+        }
+
         var sourceAnchor = cardNode.querySelector('.story-sources a:not(.cite-sup)');
         var sourceHtml = '';
         if (sourceAnchor) {
@@ -2397,8 +2663,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function restorePage(page) {
+        var pageGroup = page;
+        if (page === 'money') pageGroup = 'investments';
+        if (page === 'models') pageGroup = 'businesses';
         pageSections.forEach(function (section) {
-            section.hidden = section.getAttribute('data-page-group') !== page;
+            section.hidden = section.getAttribute('data-page-group') !== pageGroup;
         });
 
         document.querySelectorAll('.masthead-topic-link[data-page]').forEach(function (link) {
@@ -2507,19 +2776,31 @@ def render_html_page(
         ai_assets=ai_assets,
     )
     home_page_html = _home_front_page_html(home_articles)
-    home_articles_json = json.dumps(home_articles)
+    home_articles_json = json.dumps(_home_articles_client_payload(home_articles))
+    article_url_by_id = {
+        article.get('id', ''): article.get('articleUrl', '')
+        for article in home_articles
+        if article.get('id')
+    }
 
     # Lead story
-    lead_html = _hero_html(lead_card) if lead_card else ''
+    lead_html = ''
+    if lead_card:
+        lead_id = 'front-page-1'
+        lead_html = _hero_html(lead_card, article_id=lead_id, article_url=article_url_by_id.get(lead_id, ''))
 
     # Top stories
     if top_cards:
+        top_cards_html = ''
+        for offset, card in enumerate(top_cards, start=2):
+            story_id = f'front-page-{offset}'
+            top_cards_html += _story_html(card, article_id=story_id, article_url=article_url_by_id.get(story_id, ''))
         top_stories_html = (
             '<hr class="section-rule">\n'
             '<section id="top-stories" data-page-group="businesses">\n'
             '  <span class="section-label">Top Stories</span>\n'
             f'  <p class="section-transition">{transition("top_stories")}</p>\n'
-            + ''.join(_story_html(c) for c in top_cards) +
+            + top_cards_html +
             '\n</section>'
         )
     else:
@@ -2529,11 +2810,17 @@ def render_html_page(
     if radar_cards:
         groups = group_by_round(radar_cards)
         radar_inner = ''
+        radar_index = len(top_cards) + 2
         for stage, cards in groups:
+            group_cards_html = ''
+            for card in cards:
+                story_id = f'front-page-{radar_index}'
+                group_cards_html += _radar_card_html(card, article_id=story_id, article_url=article_url_by_id.get(story_id, ''))
+                radar_index += 1
             radar_inner += (
                 f'<div class="radar-group">\n'
                 f'  <h3 class="radar-group-title">{stage}</h3>\n'
-                + ''.join(_radar_card_html(c) for c in cards)
+                + group_cards_html
                 + '\n</div>\n'
             )
         radar_html = (
@@ -2577,12 +2864,16 @@ def render_html_page(
 
     # Events
     if event_cards:
+        events_cards_html = ''
+        for idx, card in enumerate(event_cards, start=1):
+            story_id = f'news-{idx}'
+            events_cards_html += _event_html(card, article_id=story_id, article_url=article_url_by_id.get(story_id, ''))
         events_html = (
             '<hr class="section-rule">\n'
             '<section id="events" data-page-group="events">\n'
             '  <span class="section-label">Upcoming Events</span>\n'
             f'  <p class="section-transition">{transition("events")}</p>\n'
-            + ''.join(_event_html(c) for c in event_cards)
+            + events_cards_html
             + '\n</section>'
         )
     else:
@@ -2590,12 +2881,16 @@ def render_html_page(
 
     # Accelerators
     if accel_cards:
+        accel_cards_html = ''
+        for idx, card in enumerate(accel_cards, start=1):
+            story_id = f'opinion-{idx}'
+            accel_cards_html += _accel_html(card, article_id=story_id, article_url=article_url_by_id.get(story_id, ''))
         accels_html = (
             '<hr class="section-rule">\n'
             '<section id="accelerators" data-page-group="people">\n'
             '  <span class="section-label">Accelerator Watch</span>\n'
             f'  <p class="section-transition">{transition("accelerators")}</p>\n'
-            + ''.join(_accel_html(c) for c in accel_cards)
+            + accel_cards_html
             + '\n</section>'
         )
     else:
