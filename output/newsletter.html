@@ -3,14 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oracle of Ordo Times — Issue #10</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        corePlugins: { preflight: false },
-        prefix: 'tw-',
-      }
-    </script>
+    <title>OrdoAI — Issue #13</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
 /* ── Reset + Base ─────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1042,6 +1036,52 @@ img { max-width: 100%; }
     margin-bottom: 10px;
 }
 
+/* ── Funding Heatmap ─────────────────────────────────────── */
+.heatmap-section {
+    margin-top: 40px;
+}
+.funding-heatmap-map {
+    height: 360px;
+    width: 100%;
+    border: 1px solid var(--border);
+    background: #f7f7f7;
+    margin-top: 14px;
+}
+.heatmap-note {
+    margin-top: 10px;
+    color: var(--text-3);
+    font-size: 0.8rem;
+}
+
+/* ── Source Transparency Tooltip ─────────────────────────── */
+.source-preview-link {
+    position: relative;
+}
+.source-preview-tooltip {
+    position: fixed;
+    z-index: 9999;
+    max-width: 320px;
+    pointer-events: none;
+    background: #111;
+    color: #fff;
+    border: 1px solid #222;
+    padding: 10px 12px;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 120ms ease, transform 120ms ease;
+}
+.source-preview-tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.source-preview-score {
+    font-weight: 700;
+    color: #ffd978;
+    margin-bottom: 4px;
+}
+
 /* ── Bibliography ─────────────────────────────────────────── */
 .bibliography { margin-top: 32px; }
 .bib-list { list-style: none; padding: 0; }
@@ -1230,57 +1270,16 @@ img { max-width: 100%; }
 
 <header class="masthead">
     <div class="container">
-        <h1 class="masthead-title">Oracle of Ordo Times</h1>
+        <h1 class="masthead-title">OrdoAI</h1>
         <p class="masthead-subtitle">Weekly startup funding, events, and accelerators</p>
         <p class="masthead-slogan">Don't stand on the sidelines, get in the game!</p>
-        <!-- SVG Section Icons -->
-        <div class="tw-flex tw-justify-center tw-gap-8 tw-my-4">
-          <!-- Money & Models Icon -->
-          <div class="tw-text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="20" cy="24" r="14"/>
-              <path d="M20 17v14"/>
-              <path d="M15 21h10c1.5 0 3 1 3 3s-1.5 3-3 3h-10"/>
-              <path d="M30 12l4-4m0 0l4 4m-4-4v10"/>
-              <path d="M38 20l-4 4"/>
-            </svg>
-            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">Money &amp; Models</span>
-          </div>
-          <!-- People & Events Icon -->
-          <div class="tw-text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="16" cy="16" r="6"/>
-              <circle cx="32" cy="16" r="6"/>
-              <path d="M4 38c0-7 5-12 12-12 3 0 5.5 1 7.5 3"/>
-              <path d="M44 38c0-7-5-12-12-12-3 0-5.5 1-7.5 3"/>
-              <path d="M24 30v10"/>
-              <path d="M20 36h8"/>
-            </svg>
-            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">People &amp; Events</span>
-          </div>
-          <!-- API Status Icon -->
-          <div class="tw-text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="#e10600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="8" width="16" height="12" rx="2"/>
-              <rect x="28" y="8" width="16" height="12" rx="2"/>
-              <rect x="16" y="28" width="16" height="12" rx="2"/>
-              <path d="M12 20v4h12"/>
-              <path d="M36 20v4h-12"/>
-              <path d="M24 24v4"/>
-              <circle cx="12" cy="14" r="2" fill="#e10600"/>
-              <circle cx="36" cy="14" r="2" fill="#e10600"/>
-              <circle cx="24" cy="34" r="2" fill="#e10600"/>
-            </svg>
-            <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-mt-1" style="color:var(--text-3)">API Status</span>
-          </div>
-        </div>
         <nav class="masthead-topics" aria-label="Topic sections">
   <ul class="masthead-topics-list">
     <li><a class="masthead-topic-link" data-page="home" href="#home">Home</a></li>
     <li><a class="masthead-topic-link" data-page="money" href="#lead">Money</a></li>
     <li><a class="masthead-topic-link" data-page="models" href="#model-benchmarks">Models</a></li>
     <li><a class="masthead-topic-link" data-page="people" href="#people">People</a></li>
-    <li><a class="masthead-topic-link" data-page="events" href="#events">Events</a></li>
+    <li><a class="masthead-topic-link" data-page="events" href="#calendar">Events</a></li>
   </ul>
 </nav>
         <div class="masthead-rule"></div>
@@ -1294,26 +1293,14 @@ img { max-width: 100%; }
     <div class="home-front-grid">
       <div>
         <button type="button" class="home-col-link" data-open-list="news">Events</button>
-<a class="home-teaser" href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
-  <div class="home-teaser-kicker">Events</div>
-  <div class="home-teaser-headline">Workshop: Pitch &amp; Positioning with AI</div>
-  <div class="home-teaser-meta">Ordo Times Desk • Mar 9</div>
-</a><a class="home-teaser" href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
-  <div class="home-teaser-kicker">Events</div>
-  <div class="home-teaser-headline">Waitlist The AI Briefing by Startup Grind</div>
-  <div class="home-teaser-meta">Ordo Times Desk • Mar 13</div>
-</a><a class="home-teaser" href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&amp;recSource=event-search&amp;searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&amp;eventOrigin=find_page%24all">
-  <div class="home-teaser-kicker">Events</div>
-  <div class="home-teaser-headline">Startups, Investors and Professionals Pitch and Networking Event NYC</div>
-  <div class="home-teaser-meta">Ordo Times Desk • Mar 10</div>
-</a>
+
       </div>
       <div><div class="home-front-lead">
   <button type="button" class="home-col-link" data-open-list="front-page">Front Page</button>
-  <a class="home-teaser" href="articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html">
-    <h2 class="home-front-lead-headline">MediCare Secures $20M Series B Backed by Health Ventures</h2>
-    <p class="home-front-lead-body">Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.</p>
-    <div class="home-teaser-meta">Ordo Times Desk • 2026-02-03</div>
+  <a class="home-teaser" href="articles/front-page-1-climateos-secures-20m-series-a-backed-by-climate-capital.html">
+    <h2 class="home-front-lead-headline">ClimateOS Secures $20M Series A Backed by Climate Capital</h2>
+    <p class="home-front-lead-body">Good evening. We begin with news out of New York, NY, where ClimateOS has secured $20M in a series a round led by Climate Capital. Breakthrough Energy Ventures and NextGen Venture Partners also took part in the round. The announcement came february 1, 2026.</p>
+    <div class="home-teaser-meta">OrdoAI News Desk • 2026-02-01</div>
   </a>
 </div></div>
       <div>
@@ -1321,15 +1308,15 @@ img { max-width: 100%; }
 <a class="home-teaser" href="articles/opinion-1-techstars-nyc.html">
   <div class="home-teaser-kicker">Accelerators</div>
   <div class="home-teaser-headline">TechStars NYC</div>
-  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
-</a><a class="home-teaser" href="articles/opinion-2-era-entrepreneur-roundtable-accelerator.html">
+  <div class="home-teaser-meta">OrdoAI News Desk • March 27, 2026</div>
+</a><a class="home-teaser" href="articles/opinion-2-entrepreneur-roundtable-accelerator-era.html">
   <div class="home-teaser-kicker">Accelerators</div>
-  <div class="home-teaser-headline">ERA (Entrepreneur Roundtable Accelerator)</div>
-  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
+  <div class="home-teaser-headline">Entrepreneur Roundtable Accelerator (ERA)</div>
+  <div class="home-teaser-meta">OrdoAI News Desk • March 27, 2026</div>
 </a><a class="home-teaser" href="articles/opinion-3-entrepreneur-first-nyc.html">
   <div class="home-teaser-kicker">Accelerators</div>
   <div class="home-teaser-headline">Entrepreneur First NYC</div>
-  <div class="home-teaser-meta">Ordo Times Desk • March 03, 2026</div>
+  <div class="home-teaser-meta">OrdoAI News Desk • March 27, 2026</div>
 </a>
       </div>
     </div>
@@ -1351,46 +1338,36 @@ img { max-width: 100%; }
       <p id="home-article-dek" class="home-article-dek"></p>
       <p id="home-article-meta" class="home-article-meta"></p>
       <div class="home-article-image"></div>
-      <p id="home-article-caption" class="home-article-caption">Placeholder graphic: Oracle of Ordo Times archive</p>
+      <p id="home-article-caption" class="home-article-caption">Placeholder graphic: OrdoAI archive</p>
       <div id="home-article-body" class="home-article-body"></div>
       <p id="home-article-linkout" class="home-article-linkout"></p>
     </div>
   </article>
 </section>
     <script id="home-articles-data">
-    window.homeArticles = [{"id": "front-page-1", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "MediCare Secures $20M Series B Backed by Health Ventures", "dek": "MediCare announced $20 million Series B round.", "summary": "Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.", "author": "Ordo Times Desk", "date": "2026-02-03", "sourceUrl": "https://techcrunch.com/2026/02/03/medicare-series-b-20m", "imageUrl": "images/front-page-1.png", "articleUrl": "articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html"}, {"id": "front-page-2", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "Acme AI Secures $15M Series A Backed by Venture Partners", "dek": "Acme AI announced today it has raised $15 million in Series A funding.", "summary": "Breaking in New York tonight: Acme AI just closed $15M in a series a round, with Venture Partners leading the charge. Tech Fund and Angel Investors also took part in the round. The announcement came 2026-02-05.", "author": "Ordo Times Desk", "date": "2026-02-05", "sourceUrl": "https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a", "imageUrl": "images/front-page-2.png", "articleUrl": "articles/front-page-2-acme-ai-secures-15m-series-a-backed-by-venture-partners.html"}, {"id": "front-page-3", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "CyberShield Secures $12M Series A Backed by Security Ventures", "dek": "CyberShield announced $12M Series A for next-gen security.", "summary": "Major news tonight out of New York. CyberShield secured $12M with Security Ventures at the helm. Tech Capital and Industry Investors also took part in the round. The announcement came 2026-02-01.", "author": "Ordo Times Desk", "date": "2026-02-01", "sourceUrl": "https://techcrunch.com/2026/02/01/cybershield-series-a", "imageUrl": "images/front-page-3.png", "articleUrl": "articles/front-page-3-cybershield-secures-12m-series-a-backed-by-security-ventures.html"}, {"id": "front-page-4", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "PayFlow Secures $8M Seed Backed by NYC Ventures", "dek": "Brooklyn-based PayFlow raised $8 million in seed funding.", "summary": "Major news tonight out of Brooklyn. PayFlow secured $8M with NYC Ventures at the helm. Fintech Capital also took part in the round. The announcement came 2026-02-04.", "author": "Ordo Times Desk", "date": "2026-02-04", "sourceUrl": "https://alleywatch.com/2026/02/04/payflow-seed-funding", "imageUrl": "images/front-page-4.png", "articleUrl": "articles/front-page-4-payflow-secures-8m-seed-backed-by-nyc-ventures.html"}, {"id": "front-page-5", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "LearnNow Secures $5M Seed Backed by Education Fund", "dek": "LearnNow raised $5 million seed round to transform education.", "summary": "Flying under the radar: LearnNow in New York closed $5M from Education Fund. Angel Network also took part in the round. The announcement came 2026-02-02.", "author": "Ordo Times Desk", "date": "2026-02-02", "sourceUrl": "https://techcrunch.com/2026/02/02/learnnow-seed-round", "imageUrl": "images/front-page-5.png", "articleUrl": "articles/front-page-5-learnnow-secures-5m-seed-backed-by-education-fund.html"}, {"id": "news-1", "sectionKey": "news", "sectionLabel": "Events", "headline": "Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Workshop: Pitch & Positioning with AI Mon, Mar 9 \u00b7 5:30 PM EDT by AI Integration and Empowerment 1 attendee is coming up on Mar 9 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 9", "sourceUrl": "https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-1.png", "articleUrl": "articles/news-1-workshop-pitch-positioning-with-ai-mon-mar-9-5-30-pm-edt-by-ai-integration-and-empowerment-1-attendee.html"}, {"id": "news-2", "sectionKey": "news", "sectionLabel": "Events", "headline": "Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees", "dek": "Curated from Meetup event search.", "summary": "This is the event everyone's talking about. Waitlist The AI Briefing by Startup Grind Fri, Mar 13 \u00b7 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees is coming up on Mar 13 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 13", "sourceUrl": "https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-2.png", "articleUrl": "articles/news-2-waitlist-the-ai-briefing-by-startup-grind-fri-mar-13-10-00-am-edt-by-startup-grind-nyc-4-7-2-attendees.html"}, {"id": "news-3", "sectionKey": "news", "sectionLabel": "Events", "headline": "Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees", "dek": "Curated from Meetup event search.", "summary": "You need to know about Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 \u00b7 7:00 PM EDT by Startup Pitch & Networking \u2013 NYC 4.5 6 attendees. The event is set on Mar 10 at Meetup listing in NYC. Tickets are See listing. ", "author": "Ordo Times Desk", "date": "Mar 10", "sourceUrl": "https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all", "imageUrl": "images/news-3.png", "articleUrl": "articles/news-3-startups-investors-and-professionals-pitch-and-networking-event-nyc-tue-mar-10-7-00-pm-edt-by-startup-pitch-networking-nyc-4-5-6-attendees.html"}, {"id": "opinion-1", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "TechStars NYC", "dek": "World's most active pre-seed investor.", "summary": "Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/techstars-nyc", "imageUrl": "images/opinion-1.png", "articleUrl": "articles/opinion-1-techstars-nyc.html"}, {"id": "opinion-2", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "ERA (Entrepreneur Roundtable Accelerator)", "dek": "$100K investment for 6% equity.", "summary": "This is the moment to learn about ERA (Entrepreneur Roundtable Accelerator) in New York, NY. They're laser-focused on b2b, saas, marketplaces, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/era", "imageUrl": "images/opinion-2.png", "articleUrl": "articles/opinion-2-era-entrepreneur-roundtable-accelerator.html"}, {"id": "opinion-3", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Entrepreneur First NYC", "dek": "Pre-team accelerator for exceptional individuals building deep tech companies.", "summary": "This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/ef-nyc", "imageUrl": "images/opinion-3.png", "articleUrl": "articles/opinion-3-entrepreneur-first-nyc.html"}, {"id": "opinion-4", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Columbia Startup Lab", "dek": "Free office space and mentorship for Columbia founders.", "summary": "Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/columbia", "imageUrl": "images/opinion-4.png", "articleUrl": "articles/opinion-4-columbia-startup-lab.html"}, {"id": "opinion-5", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Blueprint Health", "dek": "Healthcare-focused accelerator with $20K investment and extensive mentor network.", "summary": "Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/blueprint", "imageUrl": "images/opinion-5.png", "articleUrl": "articles/opinion-5-blueprint-health.html"}, {"id": "opinion-6", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Y Combinator", "dek": "$500K for 7% equity.", "summary": "Here's why Y Combinator is on every founder's radar in Mountain View, CA (accepts NYC startups). They're laser-focused on all sectors, working with founders who are tackling some of the biggest challenges in this space. 3-month program ending in Demo Day. And here's the opportunity: applications are open right now.", "author": "Ordo Times Desk", "date": "March 03, 2026", "sourceUrl": "https://openvc.app/accelerators/yc", "imageUrl": "images/opinion-6.png", "articleUrl": "articles/opinion-6-y-combinator.html"}];
+    window.homeArticles = [{"id": "front-page-1", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "ClimateOS Secures $20M Series A Backed by Climate Capital", "dek": "ClimateOS raised $20M Series A for enterprise carbon tracking and offset platform.", "summary": "Good evening. We begin with news out of New York, NY, where ClimateOS has secured $20M in a series a round led by Climate Capital. Breakthrough Energy Ventures and NextGen Venture Partners also took part in the round. The announcement came february 1, 2026.", "author": "OrdoAI News Desk", "date": "2026-02-01", "sourceUrl": "https://techcrunch.com/2026/02/01/climateos-series-a", "imageUrl": "images/front-page-1.png", "articleUrl": "articles/front-page-1-climateos-secures-20m-series-a-backed-by-climate-capital.html"}, {"id": "front-page-2", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "DataPipe Secures $18M Series A Backed by Infrastructure Partners", "dek": "DataPipe raised $18M Series A for real-time data pipeline platform.", "summary": "Breaking in New York, NY tonight: DataPipe just closed $18M in a series a round, with Infrastructure Partners leading the charge. Data Collective and Amplify Partners also took part in the round. The announcement came january 26, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-26", "sourceUrl": "https://techcrunch.com/2026/01/26/datapipe-series-a", "imageUrl": "images/front-page-2.png", "articleUrl": "articles/front-page-2-datapipe-secures-18m-series-a-backed-by-infrastructure-partners.html"}, {"id": "front-page-3", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "QuantumHealth Secures $15M Series B Backed by HealthX Ventures", "dek": "QuantumHealth secured $15 million Series B to expand telemedicine to underserved communities.", "summary": "This just in from Manhattan, NY. QuantumHealth has landed $15M, backed by HealthX Ventures. Impact America Fund and Mount Sinai Innovation Partners also took part in the round. The announcement came february 2, 2026.", "author": "OrdoAI News Desk", "date": "2026-02-02", "sourceUrl": "https://techcrunch.com/2026/02/02/quantumhealth-series-b", "imageUrl": "images/front-page-3.png", "articleUrl": "articles/front-page-3-quantumhealth-secures-15m-series-b-backed-by-healthx-ventures.html"}, {"id": "front-page-4", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "SecureStack Secures $12M Series A Backed by Cybersecurity Ventures", "dek": "SecureStack announced $12M Series A for AI-powered code security scanning.", "summary": "This just in from New York, NY. SecureStack has landed $12M, backed by Cybersecurity Ventures. Engineering Capital and Secure Octane also took part in the round. The announcement came january 31, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-31", "sourceUrl": "https://techcrunch.com/2026/01/31/securestack-series-a", "imageUrl": "images/front-page-4.png", "articleUrl": "articles/front-page-4-securestack-secures-12m-series-a-backed-by-cybersecurity-ventures.html"}, {"id": "front-page-5", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "RetailOS Secures $10M Series A Backed by Retail Ventures", "dek": "RetailOS raised $10M Series A for AI-powered retail analytics and inventory optimization.", "summary": "Another deal closing tonight \u2014 RetailOS landed $10M, backed by Retail Ventures out of {loc}. Commerce Labs and Brooklyn Ventures also took part in the round. The announcement came january 29, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-29", "sourceUrl": "https://techcrunch.com/2026/01/29/retailos-series-a", "imageUrl": "images/front-page-5.png", "articleUrl": "articles/front-page-5-retailos-secures-10m-series-a-backed-by-retail-ventures.html"}, {"id": "front-page-6", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "FinanceFlow Secures $8M Series A Backed by Fintech Ventures NYC", "dek": "Brooklyn-based FinanceFlow announced $8M Series A to automate cash flow management.", "summary": "Don't sleep on this one: FinanceFlow just pulled in $8M with Fintech Ventures NYC leading in {loc}. Commerce Capital and Brooklyn Bridge Ventures also took part in the round. The announcement came february 3, 2026.", "author": "OrdoAI News Desk", "date": "2026-02-03", "sourceUrl": "https://alleywatch.com/2026/02/financeflow-series-a", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EFront%20Page%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3EFinanceFlow%20Secures%20$8M%20Series%20A%20Backed%20by%20Fintech%20Ventures%20NYC%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/front-page-6-financeflow-secures-8m-series-a-backed-by-fintech-ventures-nyc.html"}, {"id": "front-page-7", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "WorkflowAI Secures $7M Seed Backed by Enterprise Tech Fund", "dek": "WorkflowAI closed $7M seed for no-code enterprise workflow automation.", "summary": "One more to watch: WorkflowAI raised $7M in a seed round led by Enterprise Tech Fund, operating out of {loc}. Operator Partners and Work-Bench also took part in the round. The announcement came january 28, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-28", "sourceUrl": "https://alleywatch.com/2026/01/workflowai-seed", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EFront%20Page%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3EWorkflowAI%20Secures%20$7M%20Seed%20Backed%20by%20Enterprise%20Tech%20Fund%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/front-page-7-workflowai-secures-7m-seed-backed-by-enterprise-tech-fund.html"}, {"id": "front-page-8", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "FoodLoop Secures $5M Seed Backed by Construct Capital", "dek": "FoodLoop secured $5M seed to connect restaurants with food banks using AI matching.", "summary": "Worth noting: Brooklyn, NY-based FoodLoop secured $5M from Construct Capital. Climate Angels and First Round Capital also took part in the round. The announcement came january 30, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-30", "sourceUrl": "https://alleywatch.com/2026/01/foodloop-seed-funding", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EFront%20Page%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3EFoodLoop%20Secures%20$5M%20Seed%20Backed%20by%20Construct%20Capital%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/front-page-8-foodloop-secures-5m-seed-backed-by-construct-capital.html"}, {"id": "front-page-9", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "NeuroLearn Secures $4M Seed Backed by Learn Capital", "dek": "NeuroLearn secured $4M seed for neuroscience-based adaptive learning platform.", "summary": "Another deal closing tonight \u2014 NeuroLearn landed $4M, backed by Learn Capital out of {loc}. Owl Ventures and EdTech Collective also took part in the round. The announcement came january 27, 2026.", "author": "OrdoAI News Desk", "date": "2026-01-27", "sourceUrl": "https://techcrunch.com/2026/01/27/neurolearn-seed", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EFront%20Page%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3ENeuroLearn%20Secures%20$4M%20Seed%20Backed%20by%20Learn%20Capital%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/front-page-9-neurolearn-secures-4m-seed-backed-by-learn-capital.html"}, {"id": "front-page-10", "sectionKey": "front-page", "sectionLabel": "Front Page", "headline": "CampusAI Secures $2.5M Seed Backed by University Ventures", "dek": "CampusAI closed a $2.5 million seed round to expand its AI-powered tutoring platform.", "summary": "Another deal closing tonight \u2014 CampusAI landed $2.5M, backed by University Ventures out of {loc}. Reach Capital and EdTech Angels also took part in the round. The announcement came february 4, 2026.", "author": "OrdoAI News Desk", "date": "2026-02-04", "sourceUrl": "https://techcrunch.com/2026/02/04/campusai-seed-round", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EFront%20Page%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3ECampusAI%20Secures%20$2.5M%20Seed%20Backed%20by%20University%20Ventures%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/front-page-10-campusai-secures-2-5m-seed-backed-by-university-ventures.html"}, {"id": "opinion-1", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "TechStars NYC", "dek": "$120K for 6% equity.", "summary": "Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, all sectors, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/techstars-nyc", "imageUrl": "images/opinion-1.png", "articleUrl": "articles/opinion-1-techstars-nyc.html"}, {"id": "opinion-2", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Entrepreneur Roundtable Accelerator (ERA)", "dek": "$100K for 6% equity.", "summary": "This is the moment to learn about Entrepreneur Roundtable Accelerator (ERA) in New York, NY. They're laser-focused on b2b saas, marketplaces, enterprise, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/era", "imageUrl": "images/opinion-2.png", "articleUrl": "articles/opinion-2-entrepreneur-roundtable-accelerator-era.html"}, {"id": "opinion-3", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Entrepreneur First NYC", "dek": "Pre-team accelerator for exceptional individuals.", "summary": "This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai/ml, hard tech, working with founders who are tackling some of the biggest challenges in this space. Build your company and team from scratch. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/ef-nyc", "imageUrl": "images/opinion-3.png", "articleUrl": "articles/opinion-3-entrepreneur-first-nyc.html"}, {"id": "opinion-4", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Columbia Startup Lab", "dek": "Free co-working space, mentorship, and $0-25K grants.", "summary": "Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders (students, alumni, faculty), working with founders who are tackling some of the biggest challenges in this space. For Columbia community members building startups. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/columbia-lab", "imageUrl": "images/opinion-4.png", "articleUrl": "articles/opinion-4-columbia-startup-lab.html"}, {"id": "opinion-5", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Blueprint Health", "dek": "$20K + $100K convertible note for 6% equity.", "summary": "Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, digital health, working with founders who are tackling some of the biggest challenges in this space. 3-month program focused exclusively on healthcare technology. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/blueprint", "imageUrl": "images/opinion-5.png", "articleUrl": "articles/opinion-5-blueprint-health.html"}, {"id": "opinion-6", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "Urban.us", "dek": "$100K-250K investment.", "summary": "Urban.us is building the next generation of startups in Brooklyn, NY. They're laser-focused on climate tech, smart cities, urban innovation, working with founders who are tackling some of the biggest challenges in this space. Focus on startups solving urban challenges like housing, transportation, and sustainability. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/urban-us", "imageUrl": "images/opinion-6.png", "articleUrl": "articles/opinion-6-urban-us.html"}, {"id": "opinion-7", "sectionKey": "opinion", "sectionLabel": "Accelerators", "headline": "NYU Tandon Future Labs", "dek": "Free incubator space in Brooklyn.", "summary": "This is the moment to learn about NYU Tandon Future Labs in Brooklyn, NY. They're laser-focused on tech startups (students, alumni, faculty welcome), working with founders who are tackling some of the biggest challenges in this space. Access to NYU network, mentors, and funding opportunities. And here's the opportunity: applications are open right now.", "author": "OrdoAI News Desk", "date": "March 27, 2026", "sourceUrl": "https://openvc.app/accelerators/nyu-tandon", "imageUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%20675%22%20role=%22img%22%20aria-label=%22Placeholder%20graphic%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%20y1=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%%22%20stop-color=%22#f5f6ff%22/%3E%3Cstop%20offset=%22100%%22%20stop-color=%22#e8edff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%221200%22%20height=%22675%22%20fill=%22url(#g)%22/%3E%3Crect%20x=%2270%22%20y=%2270%22%20width=%221060%22%20height=%22535%22%20rx=%2224%22%20fill=%22#ffffff%22%20stroke=%22#d7def7%22/%3E%3Ctext%20x=%22110%22%20y=%22170%22%20font-size=%2240%22%20font-family=%22Georgia,%20serif%22%20fill=%22#23315d%22%3EAccelerators%3C/text%3E%3Ctext%20x=%22110%22%20y=%22250%22%20font-size=%2252%22%20font-family=%22Georgia,%20serif%22%20fill=%22#1b1f30%22%3ENYU%20Tandon%20Future%20Labs%3C/text%3E%3Ctext%20x=%22110%22%20y=%22330%22%20font-size=%2228%22%20font-family=%22Georgia,%20serif%22%20fill=%22#4a567f%22%3EPlaceholder%20SVG%20graphic%20for%20newsletter%20production%20preview.%3C/text%3E%3C/svg%3E", "articleUrl": "articles/opinion-7-nyu-tandon-future-labs.html"}];
+    </script>
+    <script id="newsroom-data-payload">
+    window.NEWSROOM_HEATMAP_DATA = [{"startup_name": "ClimateOS", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 20000000.0, "amount": "$20M", "categories": ["Climate"], "who": "ClimateOS, co-led by Climate Capital and Breakthrough Energy Ventures", "why": "Building enterprise carbon accounting platform as regulations tighten. 50+ Fortune 500 customers already onboarded."}, {"startup_name": "DataPipe", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 18000000.0, "amount": "$18M", "categories": ["Infrastructure"], "who": "DataPipe, led by Infrastructure Partners", "why": "Real-time data pipeline platform that makes streaming data as easy as batch processing. Handles 1 trillion events/month."}, {"startup_name": "QuantumHealth", "location": "Manhattan, NY", "lat": 40.7831, "lng": -73.9712, "amount_numeric": 15000000.0, "amount": "$15M", "categories": ["Health"], "who": "QuantumHealth, led by HealthX Ventures", "why": "Expanding telemedicine access to underserved urban and rural communities. Already completed 100,000+ virtual visits."}, {"startup_name": "SecureStack", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 12000000.0, "amount": "$12M", "categories": ["Cybersecurity", "Infrastructure"], "who": "SecureStack, led by Cybersecurity Ventures", "why": "AI-powered security scanning for developers that integrates directly into GitHub/GitLab. Prevents vulnerabilities before deployment."}, {"startup_name": "RetailOS", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 10000000.0, "amount": "$10M", "categories": ["Ecommerce", "Ai Ml"], "who": "RetailOS, led by Retail Ventures", "why": "AI-powered analytics help physical retailers optimize inventory and reduce shrinkage. 30% improvement in inventory turnover for customers."}, {"startup_name": "FinanceFlow", "location": "Brooklyn, NY", "lat": 40.6782, "lng": -73.9442, "amount_numeric": 8000000.0, "amount": "$8M", "categories": ["Fintech"], "who": "FinanceFlow, led by Fintech Ventures NYC", "why": "Automating cash flow management and payment processing for small businesses. Plans to expand to 10,000 merchants by year-end."}, {"startup_name": "WorkflowAI", "location": "Manhattan, NY", "lat": 40.7831, "lng": -73.9712, "amount_numeric": 7000000.0, "amount": "$7M", "categories": ["Enterprise", "Ai Ml"], "who": "WorkflowAI, led by Enterprise Tech Fund", "why": "No-code platform lets business users automate complex workflows without engineering. Saves enterprises 1,000+ hours monthly."}, {"startup_name": "FoodLoop", "location": "Brooklyn, NY", "lat": 40.6782, "lng": -73.9442, "amount_numeric": 5000000.0, "amount": "$5M", "categories": ["Climate", "Ai Ml"], "who": "FoodLoop, led by Construct Capital", "why": "AI platform connects restaurants with excess food to nearby food banks and shelters. Already rescued 500,000 lbs of food from NYC waste."}, {"startup_name": "NeuroLearn", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 4000000.0, "amount": "$4M", "categories": ["Edtech", "Ai Ml"], "who": "NeuroLearn, led by Learn Capital", "why": "Platform uses neuroscience principles to adapt lessons to individual learning patterns. Students show 40% faster comprehension."}, {"startup_name": "CampusAI", "location": "New York, NY", "lat": 40.7128, "lng": -74.006, "amount_numeric": 2500000.0, "amount": "$2.5M", "categories": ["Ai Ml", "Edtech"], "who": "CampusAI, founded by former Columbia CS students, led by University Ventures", "why": "Building AI tutoring platform that adapts to each student's learning style. Early traction with 10 universities and 5,000 active students."}];
+    window.NEWSROOM_SOCIAL_SNIPPETS = {"climateos": {"x_thread": ["ClimateOS raises $20M Series A for carbon accounting platform — ClimateOS announced $20M series-a funding in New York, NY. #AI #Startups #VentureCapital #Climate", "Why it matters: Building enterprise carbon accounting platform as regulations tighten. 50+ Fortune 500 customers already onboarded.", "What to watch: Series A backed by Bill Gates' Breakthrough Energy following strong enterprise adoption Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: ClimateOS raises $20M Series A for carbon accounting platform. ClimateOS, co-led by Climate Capital and Breakthrough Energy Ventures secured $20M (series-a). The strategic angle is Building enterprise carbon accounting platform as regulations tighten. 50+ Fortune 500 customers already onboarded.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #Climate"}, "datapipe": {"x_thread": ["DataPipe raises $18M Series A for data infrastructure — DataPipe announced $18M series-a funding in New York, NY. #AI #Startups #VentureCapital #Infrastructure", "Why it matters: Real-time data pipeline platform that makes streaming data as easy as batch processing. Handles 1 trillion events/month.", "What to watch: Series A follows adoption by major enterprises including finance and retail customers Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: DataPipe raises $18M Series A for data infrastructure. DataPipe, led by Infrastructure Partners secured $18M (series-a). The strategic angle is Real-time data pipeline platform that makes streaming data as easy as batch processing. Handles 1 trillion events/month.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #Infrastructure"}, "quantumhealth": {"x_thread": ["QuantumHealth raises $15M Series B for telemedicine platform — QuantumHealth announced $15M series-b funding in Manhattan, NY. #AI #Startups #VentureCapital #Health", "Why it matters: Expanding telemedicine access to underserved urban and rural communities. Already completed 100,000+ virtual visits.", "What to watch: Series B follows successful partnership with Mount Sinai Health System Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: QuantumHealth raises $15M Series B for telemedicine platform. QuantumHealth, led by HealthX Ventures secured $15M (series-b). The strategic angle is Expanding telemedicine access to underserved urban and rural communities. Already completed 100,000+ virtual visits.. For operators and investors, this is a useful indicator for category momentum in Manhattan, NY. #AI #Startups #VentureCapital #Health"}, "securestack": {"x_thread": ["SecureStack raises $12M Series A for developer security platform — SecureStack announced $12M series-a funding in New York, NY. #AI #Startups #VentureCapital #Cybersecurity #Infrastructure", "Why it matters: AI-powered security scanning for developers that integrates directly into GitHub/GitLab. Prevents vulnerabilities before deployment.", "What to watch: Series A follows rapid adoption by 500+ engineering teams at tech companies Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: SecureStack raises $12M Series A for developer security platform. SecureStack, led by Cybersecurity Ventures secured $12M (series-a). The strategic angle is AI-powered security scanning for developers that integrates directly into GitHub/GitLab. Prevents vulnerabilities before deployment.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #Cybersecurity #Infrastructure"}, "retailos": {"x_thread": ["RetailOS raises $10M Series A for retail analytics platform — RetailOS announced $10M series-a funding in New York, NY. #AI #Startups #VentureCapital #Ecommerce #AiMl", "Why it matters: AI-powered analytics help physical retailers optimize inventory and reduce shrinkage. 30% improvement in inventory turnover for customers.", "What to watch: Series A after demonstrating $5M+ in cost savings for retail customers Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: RetailOS raises $10M Series A for retail analytics platform. RetailOS, led by Retail Ventures secured $10M (series-a). The strategic angle is AI-powered analytics help physical retailers optimize inventory and reduce shrinkage. 30% improvement in inventory turnover for customers.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #Ecommerce #AiMl"}, "financeflow": {"x_thread": ["FinanceFlow secures $8M Series A for small business payment platform — FinanceFlow announced $8M series-a funding in Brooklyn, NY. #AI #Startups #VentureCapital #Fintech", "Why it matters: Automating cash flow management and payment processing for small businesses. Plans to expand to 10,000 merchants by year-end.", "What to watch: Series A secured after reaching $2M ARR with 2,000 active merchant customers Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: FinanceFlow secures $8M Series A for small business payment platform. FinanceFlow, led by Fintech Ventures NYC secured $8M (series-a). The strategic angle is Automating cash flow management and payment processing for small businesses. Plans to expand to 10,000 merchants by year-end.. For operators and investors, this is a useful indicator for category momentum in Brooklyn, NY. #AI #Startups #VentureCapital #Fintech"}, "workflowai": {"x_thread": ["WorkflowAI raises $7M seed for enterprise automation — WorkflowAI announced $7M seed funding in Manhattan, NY. #AI #Startups #VentureCapital #Enterprise #AiMl", "Why it matters: No-code platform lets business users automate complex workflows without engineering. Saves enterprises 1,000+ hours monthly.", "What to watch: Seed follows pilots with 50 enterprise customers showing rapid ROI Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: WorkflowAI raises $7M seed for enterprise automation. WorkflowAI, led by Enterprise Tech Fund secured $7M (seed). The strategic angle is No-code platform lets business users automate complex workflows without engineering. Saves enterprises 1,000+ hours monthly.. For operators and investors, this is a useful indicator for category momentum in Manhattan, NY. #AI #Startups #VentureCapital #Enterprise #AiMl"}, "foodloop": {"x_thread": ["FoodLoop raises $5M seed to tackle food waste with AI — FoodLoop announced $5M seed funding in Brooklyn, NY. #AI #Startups #VentureCapital #Climate #AiMl", "Why it matters: AI platform connects restaurants with excess food to nearby food banks and shelters. Already rescued 500,000 lbs of food from NYC waste.", "What to watch: Seed funding after pilot showed 10x efficiency improvement in food rescue operations Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: FoodLoop raises $5M seed to tackle food waste with AI. FoodLoop, led by Construct Capital secured $5M (seed). The strategic angle is AI platform connects restaurants with excess food to nearby food banks and shelters. Already rescued 500,000 lbs of food from NYC waste.. For operators and investors, this is a useful indicator for category momentum in Brooklyn, NY. #AI #Startups #VentureCapital #Climate #AiMl"}, "neurolearn": {"x_thread": ["NeuroLearn raises $4M seed for adaptive learning platform — NeuroLearn announced $4M seed funding in New York, NY. #AI #Startups #VentureCapital #Edtech #AiMl", "Why it matters: Platform uses neuroscience principles to adapt lessons to individual learning patterns. Students show 40% faster comprehension.", "What to watch: Seed funding after research partnership with Columbia Teachers College validated approach Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: NeuroLearn raises $4M seed for adaptive learning platform. NeuroLearn, led by Learn Capital secured $4M (seed). The strategic angle is Platform uses neuroscience principles to adapt lessons to individual learning patterns. Students show 40% faster comprehension.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #Edtech #AiMl"}, "campusai": {"x_thread": ["CampusAI raises $2.5M seed to bring AI tutors to universities — CampusAI announced $2.5M seed funding in New York, NY. #AI #Startups #VentureCapital #AiMl #Edtech", "Why it matters: Building AI tutoring platform that adapts to each student's learning style. Early traction with 10 universities and 5,000 active students.", "What to watch: Secured seed funding after proving product-market fit with pilots at NYU and Columbia Founders/students: what question would you ask this team next?"], "linkedin_post": "Funding signal: CampusAI raises $2.5M seed to bring AI tutors to universities. CampusAI, founded by former Columbia CS students, led by University Ventures secured $2.5M (seed). The strategic angle is Building AI tutoring platform that adapts to each student's learning style. Early traction with 10 universities and 5,000 active students.. For operators and investors, this is a useful indicator for category momentum in New York, NY. #AI #Startups #VentureCapital #AiMl #Edtech"}};
     </script>
 
-    <section class="calendar-toolbar" id="calendar" data-page-group="events">
-  <div class="calendar-switcher" data-calendar-switcher>
-    <div class="calendar-filter-group">
-      <span class="calendar-filter-icon" aria-hidden="true">🗓️</span>
-      <label class="calendar-filter-label" for="calendar-date-filter">Select Start Date:</label>
-      <div class="calendar-filter-input-wrap">
-        <input id="calendar-date-filter" class="calendar-filter-input" data-calendar-date type="date" value="2026-03-09">
-        <span class="calendar-filter-input-icon" aria-hidden="true">📅</span>
-      </div>
-      <button type="button" class="calendar-nav-btn" data-calendar-prev>Previous</button>
-      <button type="button" class="calendar-nav-btn" data-calendar-next>Next</button>
-    </div>
-    <div data-calendar-dates hidden>2026-03-09,2026-03-10,2026-03-13</div>
-  </div>
-</section>
+    
 
     <section class="editors-note">
         <h2>From the Editorial Desk</h2>
-        <p>Good evening, everyone. Tonight we're tracking 5 startup funding deals here in New York City, totaling a combined $60.0M. The sectors driving the action: Health, AI/ML, Cybersecurity. We're also keeping an eye on 12 events on the calendar this month. And 6 accelerator programs that deserve your attention. Let's get to it.</p>
+        <p>Good evening, everyone. Tonight we're tracking 10 startup funding deals here in New York City, totaling a combined $101.5M. The sectors driving the action: AI/ML, Climate, Infrastructure. We're also keeping an eye on 8 events on the calendar this month. And 7 accelerator programs that deserve your attention. Let's get to it.</p>
     </section>
 
     <nav class="toc">
   <h3>In This Issue</h3>
   <ol>
-    <li><a href="#lead">Lead: MediCare Secures $20M Series B Backed by Health Ventures</a></li>
+    <li><a href="#lead">Lead: ClimateOS Secures $20M Series A Backed by Climate Capital</a></li>
     <li><a href="#top-stories">Top Stories</a></li>
     <li><a href="#funding-radar">Funding Radar</a></li>
+    <li><a href="#funding-heatmap">Funding Heatmap</a></li>
     <li><a href="#trends">Trend Brief</a></li>
     <li><a href="#model-benchmarks">Model Benchmarks</a></li>
-    <li><a href="#events">Upcoming Events</a></li>
     <li><a href="#accelerators">Accelerator Watch</a></li>
     <li><a href="#people">People</a></li>
     <li><a href="#vc-firms">Top VC Firms</a></li>
@@ -1409,29 +1386,29 @@ img { max-width: 100%; }
     <section id="lead" class="lead-story" data-page-group="investments">
   <span class="section-label">Lead Story</span>
   <article class="hero-card" data-open-article="front-page-1">
-    <h2 class="hero-headline"><a href="articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html" data-open-article="front-page-1">MediCare Secures $20M Series B Backed by Health Ventures</a></h2>
-    <p class="hero-dek">MediCare announced $20 million Series B round.</p>
+    <h2 class="hero-headline"><a href="articles/front-page-1-climateos-secures-20m-series-a-backed-by-climate-capital.html" data-open-article="front-page-1">ClimateOS Secures $20M Series A Backed by Climate Capital</a></h2>
+    <p class="hero-dek">ClimateOS raised $20M Series A for enterprise carbon tracking and offset platform.</p>
     <div class="chips">
 <span class="chip chip-amount">$20M</span>
-<span class="chip chip-round">Series B</span>
-<span class="chip chip-tag">Health</span>
+<span class="chip chip-round">Series A</span>
+<span class="chip chip-tag">Climate</span>
 </div>
-    <p class="story-lede">Good evening. We begin with news out of Manhattan, where MediCare has secured $20M in a series b round led by Health Ventures. Impact Capital and Strategic Investors also took part in the round. The announcement came 2026-02-03.</p>
-    <p class="story-context">Health Ventures led the investment with strong participation</p>
+    <p class="story-lede">Good evening. We begin with news out of New York, NY, where ClimateOS has secured $20M in a series a round led by Climate Capital. Breakthrough Energy Ventures and NextGen Venture Partners also took part in the round. The announcement came february 1, 2026.</p>
+    <p class="story-context">Customers include Fortune 500 companies across finance and retail Climate Capital and Breakthrough Energy Ventures co-led the round</p>
     <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>Expanding telemedicine platform to reach underserved communities nationwide. Secured Series B from leading healthcare-focused investors.</p>
+  <p>Building enterprise carbon accounting platform as regulations tighten. 50+ Fortune 500 customers already onboarded. Series A backed by Bill Gates' Breakthrough Energy following strong enterprise adoption.</p>
 </aside>
     <ul class="key-details">
 <li>Amount: $20M</li>
-<li>Round: Series B</li>
-<li>Lead investor: Health Ventures</li>
-<li>Other investors: Impact Capital, Strategic Investors</li>
-<li>Location: Manhattan</li>
-<li>Announced: Feb 03, 2026</li>
+<li>Round: Series A</li>
+<li>Lead investor: Climate Capital</li>
+<li>Other investors: Breakthrough Energy Ventures, NextGen Venture Partners</li>
+<li>Location: New York, NY</li>
+<li>Announced: Feb 01, 2026</li>
 </ul>
-    <p><a class="story-open-link" href="articles/front-page-1-medicare-secures-20m-series-b-backed-by-health-ventures.html" data-open-article="front-page-1">Read full article →</a></p>
-    <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/03/medicare-series-b-20m" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/03/medicare-series-b-20m" target="_blank" rel="noopener noreferrer" class="cite-sup">[1]</a></div>
+    <p><a class="story-open-link" href="articles/front-page-1-climateos-secures-20m-series-a-backed-by-climate-capital.html" data-open-article="front-page-1">Read full article →</a></p>
+    <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/01/climateos-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/01/climateos-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[1]</a>, <a href="https://alleywatch.com/2026/02/climateos-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/02/climateos-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[2]</a></div>
   </article>
 </section>
     <hr class="section-rule">
@@ -1439,77 +1416,78 @@ img { max-width: 100%; }
   <span class="section-label">Top Stories</span>
   <p class="section-transition">But that was not the only deal making news tonight. Several other rounds also caught our attention this week.</p>
 <article class="story-card" data-open-article="front-page-2">
-  <h3 class="story-headline"><a href="articles/front-page-2-acme-ai-secures-15m-series-a-backed-by-venture-partners.html" data-open-article="front-page-2">Acme AI Secures $15M Series A Backed by Venture Partners</a></h3>
-  <p class="story-dek">Acme AI announced today it has raised $15 million in Series A funding.</p>
+  <h3 class="story-headline"><a href="articles/front-page-2-datapipe-secures-18m-series-a-backed-by-infrastructure-partners.html" data-open-article="front-page-2">DataPipe Secures $18M Series A Backed by Infrastructure Partners</a></h3>
+  <p class="story-dek">DataPipe raised $18M Series A for real-time data pipeline platform.</p>
   <div class="chips">
-<span class="chip chip-amount">$15M</span>
+<span class="chip chip-amount">$18M</span>
 <span class="chip chip-round">Series A</span>
-<span class="chip chip-tag">AI/ML</span>
+<span class="chip chip-tag">Infrastructure</span>
 </div>
-  <p class="story-lede">Breaking in New York tonight: Acme AI just closed $15M in a series a round, with Venture Partners leading the charge. Tech Fund and Angel Investors also took part in the round. The announcement came 2026-02-05.</p>
-  <p class="story-context">The round was led by Venture Partners with participation from Tech Fund Company plans to use funds to expand engineering team</p>
+  <p class="story-lede">Breaking in New York, NY tonight: DataPipe just closed $18M in a series a round, with Infrastructure Partners leading the charge. Data Collective and Amplify Partners also took part in the round. The announcement came january 26, 2026.</p>
+  <p class="story-context">Processes 1 trillion events monthly for enterprise customers Infrastructure Partners led the round</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>Building autonomous AI agents for enterprise automation and expanding engineering team. Secured funding through series-a round led by top-tier VC firm Venture Partners.</p>
+  <p>Real-time data pipeline platform that makes streaming data as easy as batch processing. Handles 1 trillion events/month. Series A follows adoption by major enterprises including finance and retail customers.</p>
+</aside>
+  <ul class="key-details">
+<li>Amount: $18M</li>
+<li>Round: Series A</li>
+<li>Lead investor: Infrastructure Partners</li>
+<li>Other investors: Data Collective, Amplify Partners</li>
+<li>Location: New York, NY</li>
+<li>Announced: Jan 26, 2026</li>
+</ul>
+  <p><a class="story-open-link" href="articles/front-page-2-datapipe-secures-18m-series-a-backed-by-infrastructure-partners.html" data-open-article="front-page-2">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/01/26/datapipe-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/01/26/datapipe-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[3]</a>, <a href="https://alleywatch.com/2026/01/datapipe-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/01/datapipe-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[4]</a></div>
+</article><article class="story-card" data-open-article="front-page-3">
+  <h3 class="story-headline"><a href="articles/front-page-3-quantumhealth-secures-15m-series-b-backed-by-healthx-ventures.html" data-open-article="front-page-3">QuantumHealth Secures $15M Series B Backed by HealthX Ventures</a></h3>
+  <p class="story-dek">QuantumHealth secured $15 million Series B to expand telemedicine to underserved communities.</p>
+  <div class="chips">
+<span class="chip chip-amount">$15M</span>
+<span class="chip chip-round">Series B</span>
+<span class="chip chip-tag">Health</span>
+</div>
+  <p class="story-lede">This just in from Manhattan, NY. QuantumHealth has landed $15M, backed by HealthX Ventures. Impact America Fund and Mount Sinai Innovation Partners also took part in the round. The announcement came february 2, 2026.</p>
+  <p class="story-context">Platform has facilitated 100,000+ virtual visits since launch HealthX Ventures led the round with support from Mount Sinai Innovation Partners</p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>Expanding telemedicine access to underserved urban and rural communities. Already completed 100,000+ virtual visits. Series B follows successful partnership with Mount Sinai Health System.</p>
 </aside>
   <ul class="key-details">
 <li>Amount: $15M</li>
-<li>Round: Series A</li>
-<li>Lead investor: Venture Partners</li>
-<li>Other investors: Tech Fund, Angel Investors</li>
-<li>Location: New York</li>
-<li>Announced: Feb 05, 2026</li>
+<li>Round: Series B</li>
+<li>Lead investor: HealthX Ventures</li>
+<li>Other investors: Impact America Fund, Mount Sinai Innovation Partners</li>
+<li>Location: Manhattan, NY</li>
+<li>Announced: Feb 02, 2026</li>
 </ul>
-  <p><a class="story-open-link" href="articles/front-page-2-acme-ai-secures-15m-series-a-backed-by-venture-partners.html" data-open-article="front-page-2">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[2]</a>, <a href="https://alleywatch.com/2026/02/acme-ai-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/02/acme-ai-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[3]</a></div>
-</article><article class="story-card" data-open-article="front-page-3">
-  <h3 class="story-headline"><a href="articles/front-page-3-cybershield-secures-12m-series-a-backed-by-security-ventures.html" data-open-article="front-page-3">CyberShield Secures $12M Series A Backed by Security Ventures</a></h3>
-  <p class="story-dek">CyberShield announced $12M Series A for next-gen security.</p>
+  <p><a class="story-open-link" href="articles/front-page-3-quantumhealth-secures-15m-series-b-backed-by-healthx-ventures.html" data-open-article="front-page-3">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/02/quantumhealth-series-b" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/02/quantumhealth-series-b" target="_blank" rel="noopener noreferrer" class="cite-sup">[5]</a></div>
+</article><article class="story-card" data-open-article="front-page-4">
+  <h3 class="story-headline"><a href="articles/front-page-4-securestack-secures-12m-series-a-backed-by-cybersecurity-ventures.html" data-open-article="front-page-4">SecureStack Secures $12M Series A Backed by Cybersecurity Ventures</a></h3>
+  <p class="story-dek">SecureStack announced $12M Series A for AI-powered code security scanning.</p>
   <div class="chips">
 <span class="chip chip-amount">$12M</span>
 <span class="chip chip-round">Series A</span>
 <span class="chip chip-tag">Cybersecurity</span>
+<span class="chip chip-tag">Infrastructure</span>
 </div>
-  <p class="story-lede">Major news tonight out of New York. CyberShield secured $12M with Security Ventures at the helm. Tech Capital and Industry Investors also took part in the round. The announcement came 2026-02-01.</p>
-  
+  <p class="story-lede">This just in from New York, NY. SecureStack has landed $12M, backed by Cybersecurity Ventures. Engineering Capital and Secure Octane also took part in the round. The announcement came january 31, 2026.</p>
+  <p class="story-context">Platform scans 1 billion+ lines of code monthly for vulnerabilities Cybersecurity Ventures led with participation from Engineering Capital</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>Developing AI-powered threat detection and response platform for enterprises. Secured Series A from top cybersecurity investors.</p>
+  <p>AI-powered security scanning for developers that integrates directly into GitHub/GitLab. Prevents vulnerabilities before deployment. Series A follows rapid adoption by 500+ engineering teams at tech companies.</p>
 </aside>
   <ul class="key-details">
 <li>Amount: $12M</li>
 <li>Round: Series A</li>
-<li>Lead investor: Security Ventures</li>
-<li>Other investors: Tech Capital, Industry Investors</li>
-<li>Location: New York</li>
-<li>Announced: Feb 01, 2026</li>
+<li>Lead investor: Cybersecurity Ventures</li>
+<li>Other investors: Engineering Capital, Secure Octane</li>
+<li>Location: New York, NY</li>
+<li>Announced: Jan 31, 2026</li>
 </ul>
-  <p><a class="story-open-link" href="articles/front-page-3-cybershield-secures-12m-series-a-backed-by-security-ventures.html" data-open-article="front-page-3">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/01/cybershield-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/01/cybershield-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[4]</a></div>
-</article><article class="story-card" data-open-article="front-page-4">
-  <h3 class="story-headline"><a href="articles/front-page-4-payflow-secures-8m-seed-backed-by-nyc-ventures.html" data-open-article="front-page-4">PayFlow Secures $8M Seed Backed by NYC Ventures</a></h3>
-  <p class="story-dek">Brooklyn-based PayFlow raised $8 million in seed funding.</p>
-  <div class="chips">
-<span class="chip chip-amount">$8M</span>
-<span class="chip chip-round">Seed</span>
-<span class="chip chip-tag">Fintech</span>
-</div>
-  <p class="story-lede">Major news tonight out of Brooklyn. PayFlow secured $8M with NYC Ventures at the helm. Fintech Capital also took part in the round. The announcement came 2026-02-04.</p>
-  <p class="story-context">NYC Ventures led the round with participation from Fintech Capital</p>
-  <aside class="why-it-matters">
-  <h4>Here’s What This Means</h4>
-  <p>Developing next-generation payment infrastructure for small businesses. Secured seed funding from NYC-focused venture capital firms.</p>
-</aside>
-  <ul class="key-details">
-<li>Amount: $8M</li>
-<li>Round: Seed</li>
-<li>Lead investor: NYC Ventures</li>
-<li>Other investors: Fintech Capital</li>
-<li>Location: Brooklyn</li>
-<li>Announced: Feb 04, 2026</li>
-</ul>
-  <p><a class="story-open-link" href="articles/front-page-4-payflow-secures-8m-seed-backed-by-nyc-ventures.html" data-open-article="front-page-4">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://alleywatch.com/2026/02/04/payflow-seed-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/02/04/payflow-seed-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[5]</a></div>
+  <p><a class="story-open-link" href="articles/front-page-4-securestack-secures-12m-series-a-backed-by-cybersecurity-ventures.html" data-open-article="front-page-4">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/01/31/securestack-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/01/31/securestack-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[6]</a></div>
 </article>
 </section>
     <hr class="section-rule">
@@ -1517,130 +1495,122 @@ img { max-width: 100%; }
   <span class="section-label">Funding Radar</span>
   <p class="section-transition">Meanwhile, more startups across New York City quietly closed rounds of their own.</p>
 <div class="radar-group">
-  <h3 class="radar-group-title">Seed</h3>
+  <h3 class="radar-group-title">Series A</h3>
 <div class="radar-card" data-open-article="front-page-5">
-  <h4 class="radar-headline"><a href="articles/front-page-5-learnnow-secures-5m-seed-backed-by-education-fund.html" data-open-article="front-page-5">LearnNow Secures $5M Seed Backed by Education Fund</a></h4>
-  <p class="radar-lede">Flying under the radar: LearnNow in New York closed $5M from Education Fund. Angel Network also took part in the round. The announcement came 2026-02-02.</p>
-  <p><a class="story-open-link" href="articles/front-page-5-learnnow-secures-5m-seed-backed-by-education-fund.html" data-open-article="front-page-5">Read full article →</a></p>
+  <h4 class="radar-headline"><a href="articles/front-page-5-retailos-secures-10m-series-a-backed-by-retail-ventures.html" data-open-article="front-page-5">RetailOS Secures $10M Series A Backed by Retail Ventures</a></h4>
+  <p class="radar-lede">Another deal closing tonight — RetailOS landed $10M, backed by Retail Ventures out of {loc}. Commerce Labs and Brooklyn Ventures also took part in the round. The announcement came january 29, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-5-retailos-secures-10m-series-a-backed-by-retail-ventures.html" data-open-article="front-page-5">Read full article →</a></p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>Building AI-powered personalized learning platform for K-12 students. Secured seed funding from education-focused investors.</p>
+  <p>AI-powered analytics help physical retailers optimize inventory and reduce shrinkage. 30% improvement in inventory turnover for customers. Series A after demonstrating $5M+ in cost savings for retail customers.</p>
 </aside>
-  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/02/learnnow-seed-round" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/02/learnnow-seed-round" target="_blank" rel="noopener noreferrer" class="cite-sup">[6]</a></div>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/01/29/retailos-series-a" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/01/29/retailos-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[7]</a></div>
+</div><div class="radar-card" data-open-article="front-page-6">
+  <h4 class="radar-headline"><a href="articles/front-page-6-financeflow-secures-8m-series-a-backed-by-fintech-ventures-nyc.html" data-open-article="front-page-6">FinanceFlow Secures $8M Series A Backed by Fintech Ventures NYC</a></h4>
+  <p class="radar-lede">Don't sleep on this one: FinanceFlow just pulled in $8M with Fintech Ventures NYC leading in {loc}. Commerce Capital and Brooklyn Bridge Ventures also took part in the round. The announcement came february 3, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-6-financeflow-secures-8m-series-a-backed-by-fintech-ventures-nyc.html" data-open-article="front-page-6">Read full article →</a></p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>Automating cash flow management and payment processing for small businesses. Plans to expand to 10,000 merchants by year-end. Series A secured after reaching $2M ARR with 2,000 active merchant customers.</p>
+</aside>
+  <div class="story-sources">Sources: <a href="https://alleywatch.com/2026/02/financeflow-series-a" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/02/financeflow-series-a" target="_blank" rel="noopener noreferrer" class="cite-sup">[8]</a>, <a href="https://techcrunch.com/2026/02/03/financeflow-raises-8m" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/03/financeflow-raises-8m" target="_blank" rel="noopener noreferrer" class="cite-sup">[9]</a></div>
 </div>
 </div>
+<div class="radar-group">
+  <h3 class="radar-group-title">Seed</h3>
+<div class="radar-card" data-open-article="front-page-7">
+  <h4 class="radar-headline"><a href="articles/front-page-7-workflowai-secures-7m-seed-backed-by-enterprise-tech-fund.html" data-open-article="front-page-7">WorkflowAI Secures $7M Seed Backed by Enterprise Tech Fund</a></h4>
+  <p class="radar-lede">One more to watch: WorkflowAI raised $7M in a seed round led by Enterprise Tech Fund, operating out of {loc}. Operator Partners and Work-Bench also took part in the round. The announcement came january 28, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-7-workflowai-secures-7m-seed-backed-by-enterprise-tech-fund.html" data-open-article="front-page-7">Read full article →</a></p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>No-code platform lets business users automate complex workflows without engineering. Saves enterprises 1,000+ hours monthly. Seed follows pilots with 50 enterprise customers showing rapid ROI.</p>
+</aside>
+  <div class="story-sources">Sources: <a href="https://alleywatch.com/2026/01/workflowai-seed" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/01/workflowai-seed" target="_blank" rel="noopener noreferrer" class="cite-sup">[10]</a>, <a href="https://techcrunch.com/2026/01/28/workflowai-funding" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/01/28/workflowai-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[11]</a></div>
+</div><div class="radar-card" data-open-article="front-page-8">
+  <h4 class="radar-headline"><a href="articles/front-page-8-foodloop-secures-5m-seed-backed-by-construct-capital.html" data-open-article="front-page-8">FoodLoop Secures $5M Seed Backed by Construct Capital</a></h4>
+  <p class="radar-lede">Worth noting: Brooklyn, NY-based FoodLoop secured $5M from Construct Capital. Climate Angels and First Round Capital also took part in the round. The announcement came january 30, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-8-foodloop-secures-5m-seed-backed-by-construct-capital.html" data-open-article="front-page-8">Read full article →</a></p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>AI platform connects restaurants with excess food to nearby food banks and shelters. Already rescued 500,000 lbs of food from NYC waste. Seed funding after pilot showed 10x efficiency improvement in food rescue operations.</p>
+</aside>
+  <div class="story-sources">Sources: <a href="https://alleywatch.com/2026/01/foodloop-seed-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/01/foodloop-seed-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[12]</a></div>
+</div><div class="radar-card" data-open-article="front-page-9">
+  <h4 class="radar-headline"><a href="articles/front-page-9-neurolearn-secures-4m-seed-backed-by-learn-capital.html" data-open-article="front-page-9">NeuroLearn Secures $4M Seed Backed by Learn Capital</a></h4>
+  <p class="radar-lede">Another deal closing tonight — NeuroLearn landed $4M, backed by Learn Capital out of {loc}. Owl Ventures and EdTech Collective also took part in the round. The announcement came january 27, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-9-neurolearn-secures-4m-seed-backed-by-learn-capital.html" data-open-article="front-page-9">Read full article →</a></p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>Platform uses neuroscience principles to adapt lessons to individual learning patterns. Students show 40% faster comprehension. Seed funding after research partnership with Columbia Teachers College validated approach.</p>
+</aside>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/01/27/neurolearn-seed" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/01/27/neurolearn-seed" target="_blank" rel="noopener noreferrer" class="cite-sup">[13]</a></div>
+</div><div class="radar-card" data-open-article="front-page-10">
+  <h4 class="radar-headline"><a href="articles/front-page-10-campusai-secures-2-5m-seed-backed-by-university-ventures.html" data-open-article="front-page-10">CampusAI Secures $2.5M Seed Backed by University Ventures</a></h4>
+  <p class="radar-lede">Another deal closing tonight — CampusAI landed $2.5M, backed by University Ventures out of {loc}. Reach Capital and EdTech Angels also took part in the round. The announcement came february 4, 2026.</p>
+  <p><a class="story-open-link" href="articles/front-page-10-campusai-secures-2-5m-seed-backed-by-university-ventures.html" data-open-article="front-page-10">Read full article →</a></p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>Building AI tutoring platform that adapts to each student's learning style. Early traction with 10 universities and 5,000 active students. Secured seed funding after proving product-market fit with pilots at NYU and Columbia.</p>
+</aside>
+  <div class="story-sources">Sources: <a href="https://techcrunch.com/2026/02/04/campusai-seed-round" target="_blank" rel="noopener noreferrer">TechCrunch</a> <a href="https://techcrunch.com/2026/02/04/campusai-seed-round" target="_blank" rel="noopener noreferrer" class="cite-sup">[14]</a>, <a href="https://alleywatch.com/2026/02/campusai-funding" target="_blank" rel="noopener noreferrer">AlleyWatch</a> <a href="https://alleywatch.com/2026/02/campusai-funding" target="_blank" rel="noopener noreferrer" class="cite-sup">[15]</a></div>
+</div>
+</div>
+</section>
+    <hr class="section-rule">
+<section id="funding-heatmap" class="heatmap-section" data-page-group="investments">
+  <span class="section-label">Geographic Funding Heatmap</span>
+  <p class="section-transition">Where capital is concentrating across the Tri-State startup ecosystem this cycle.</p>
+  <div id="funding-heatmap-map" class="funding-heatmap-map" role="img" aria-label="Map of startup funding by location"></div>
+  <p class="heatmap-note">Bubble radius uses square-root scaling of funding amount for visual balance.</p>
 </section>
     <hr class="section-rule">
 <section id="trends" data-page-group="businesses">
   <span class="section-label">Trend Brief</span>
   <p class="section-transition">Now, let's take a wider look at what's happening across the funding landscape.</p>
-  <p class="trend-prose">Now, when you step back and look at where the money is going, a clear picture emerges. Health is leading the way, with 1 deal this week alone. Also seeing activity: AI/ML (1), Cybersecurity (1), Fintech (1), Edtech (1).</p>
+  <p class="trend-prose">Now, when you step back and look at where the money is going, a clear picture emerges. AI/ML is leading the way, with 5 deals this week alone. Also seeing activity: Climate (2), Infrastructure (2), Edtech (2), Health (1).</p>
   <div class="trend-grid">
 <div class="trend-chip">
-  <div class="trend-chip-count">1</div>
-  <div class="trend-chip-label">Health</div>
-</div>
-<div class="trend-chip">
-  <div class="trend-chip-count">1</div>
+  <div class="trend-chip-count">5</div>
   <div class="trend-chip-label">AI/ML</div>
 </div>
 <div class="trend-chip">
-  <div class="trend-chip-count">1</div>
-  <div class="trend-chip-label">Cybersecurity</div>
+  <div class="trend-chip-count">2</div>
+  <div class="trend-chip-label">Climate</div>
 </div>
 <div class="trend-chip">
-  <div class="trend-chip-count">1</div>
-  <div class="trend-chip-label">Fintech</div>
+  <div class="trend-chip-count">2</div>
+  <div class="trend-chip-label">Infrastructure</div>
 </div>
 <div class="trend-chip">
-  <div class="trend-chip-count">1</div>
+  <div class="trend-chip-count">2</div>
   <div class="trend-chip-label">Edtech</div>
+</div>
+<div class="trend-chip">
+  <div class="trend-chip-count">1</div>
+  <div class="trend-chip-label">Health</div>
 </div>
 </div>
 </section>
     <hr class="section-rule">
 <section id="model-benchmarks" data-page-group="businesses">
-  <span class="section-label">LLM Arena Leaderboard</span>
+  <span class="section-label">Model Benchmarks</span>
   <p class="section-transition">Performance snapshot for current frontier and open-weight models, including LLM Arena ranking context and core capability tests.</p>
-  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live rankings: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>
-  <div class="model-highlights">
-    <article class="model-highlight-card"><span class="model-highlight-label">Top Overall</span><div class="model-highlight-value">Claude 3.5 Sonnet</div></article>
-    <article class="model-highlight-card"><span class="model-highlight-label">Best Reasoning (GPQA)</span><div class="model-highlight-value">Claude 3.5 Sonnet (65.0%)</div></article>
-    <article class="model-highlight-card"><span class="model-highlight-label">Best Coding (HumanEval)</span><div class="model-highlight-value">GPT-4o (92.0%)</div></article>
-  </div>
-  <p class="model-benchmark-note">Composite score formula: 40% Arena Elo (normalized), 20% MMLU, 20% GPQA, 20% HumanEval.</p>
+  <p class="model-benchmark-note">LLM Arena is a head-to-head preference leaderboard where users compare anonymous model outputs. Live context: <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>. Values below are demo newsroom snapshot values for presentation formatting.</p>
+  <div class="model-highlights"><article class="model-highlight-card"><span class="model-highlight-label">Top Overall</span><div class="model-highlight-value">GPT-4.1</div></article><article class="model-highlight-card"><span class="model-highlight-label">Best Reasoning (GSM8K)</span><div class="model-highlight-value">GPT-4.1 (95.1%)</div></article><article class="model-highlight-card"><span class="model-highlight-label">Best Coding (HumanEval)</span><div class="model-highlight-value">GPT-4.1 (92.2%)</div></article></div>
+  <p class="model-benchmark-note">Composite score formula: 40% Arena Elo (normalized), 20% MMLU, 20% GSM8K, 20% HumanEval.</p>
   <table class="benchmark-table">
-    <thead><tr><th>Rank</th><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GPQA</th><th>HumanEval</th><th>Composite</th><th>Best For</th></tr></thead>
-    <tbody>
-      <tr class="benchmark-row-top">
-        <td>1</td><td><strong>Claude 3.5 Sonnet</strong></td>
-        <td><span class="benchmark-score">1268</span><div class="benchmark-bar"><span style="width:88%"></span></div></td>
-        <td class="benchmark-score">88.7%</td><td class="benchmark-score">65.0%</td><td class="benchmark-score">90.0%</td>
-        <td><span class="benchmark-composite">96.1</span></td><td>Long-form writing + coding</td>
-      </tr>
-      <tr>
-        <td>2</td><td><strong>GPT-4o</strong></td>
-        <td><span class="benchmark-score">1257</span><div class="benchmark-bar"><span style="width:82%"></span></div></td>
-        <td class="benchmark-score">88.7%</td><td class="benchmark-score">53.6%</td><td class="benchmark-score">92.0%</td>
-        <td><span class="benchmark-composite">92.8</span></td><td>High-stakes general use</td>
-      </tr>
-      <tr>
-        <td>3</td><td><strong>Gemini 1.5 Pro</strong></td>
-        <td><span class="benchmark-score">1248</span><div class="benchmark-bar"><span style="width:76%"></span></div></td>
-        <td class="benchmark-score">85.9%</td><td class="benchmark-score">51.4%</td><td class="benchmark-score">84.1%</td>
-        <td><span class="benchmark-composite">84.5</span></td><td>Multimodal + long-context</td>
-      </tr>
-      <tr>
-        <td>4</td><td><strong>Llama 3.1 405B</strong></td>
-        <td><span class="benchmark-score">1220</span><div class="benchmark-bar"><span style="width:60%"></span></div></td>
-        <td class="benchmark-score">85.2%</td><td class="benchmark-score">46.8%</td><td class="benchmark-score">85.4%</td>
-        <td><span class="benchmark-composite">72.0</span></td><td>Open-weight enterprise control</td>
-      </tr>
-      <tr>
-        <td>5</td><td><strong>DeepSeek-V3</strong></td>
-        <td><span class="benchmark-score">1195</span><div class="benchmark-bar"><span style="width:48%"></span></div></td>
-        <td class="benchmark-score">82.6%</td><td class="benchmark-score">44.0%</td><td class="benchmark-score">83.7%</td>
-        <td><span class="benchmark-composite">62.4</span></td><td>Cost-efficient deployment</td>
-      </tr>
-    </tbody>
+    <thead><tr><th>Rank</th><th>Model</th><th>Arena Elo</th><th>MMLU</th><th>GSM8K</th><th>HumanEval</th><th>Composite</th><th>Best For</th></tr></thead>
+    <tbody><tr class="benchmark-row-top"><td>1</td><td><strong>GPT-4.1</strong></td><td><span class="benchmark-score">1387</span><div class="benchmark-bar"><span style="width:82%"></span></div></td><td class="benchmark-score">89.4%</td><td class="benchmark-score">95.1%</td><td class="benchmark-score">92.2%</td><td><span class="benchmark-composite">95.3</span></td><td>High-stakes general use</td></tr><tr><td>2</td><td><strong>Claude 3.7 Sonnet</strong></td><td><span class="benchmark-score">1331</span><div class="benchmark-bar"><span style="width:66%"></span></div></td><td class="benchmark-score">86.2%</td><td class="benchmark-score">92.8%</td><td class="benchmark-score">90.6%</td><td><span class="benchmark-composite">78.6</span></td><td>Long-form writing + coding</td></tr><tr><td>3</td><td><strong>Gemini 2.0 Pro</strong></td><td><span class="benchmark-score">1309</span><div class="benchmark-bar"><span style="width:59%"></span></div></td><td class="benchmark-score">84.7%</td><td class="benchmark-score">90.3%</td><td class="benchmark-score">89.1%</td><td><span class="benchmark-composite">71.5</span></td><td>Multimodal workflows</td></tr><tr><td>4</td><td><strong>Llama 3.1 405B</strong></td><td><span class="benchmark-score">1264</span><div class="benchmark-bar"><span style="width:46%"></span></div></td><td class="benchmark-score">81.2%</td><td class="benchmark-score">88.0%</td><td class="benchmark-score">85.4%</td><td><span class="benchmark-composite">57.2</span></td><td>Open-weight enterprise control</td></tr><tr><td>5</td><td><strong>DeepSeek-V3</strong></td><td><span class="benchmark-score">1241</span><div class="benchmark-bar"><span style="width:40%"></span></div></td><td class="benchmark-score">79.5%</td><td class="benchmark-score">86.1%</td><td class="benchmark-score">83.7%</td><td><span class="benchmark-composite">49.9</span></td><td>Cost-efficient deployment</td></tr></tbody>
   </table>
-
-  <!-- Benchmarking Guide Sidebar -->
-  <div class="tw-bg-gray-50 tw-border tw-border-gray-200 tw-rounded-lg tw-p-5 tw-my-6">
-    <h3 class="tw-text-sm tw-font-bold tw-uppercase tw-tracking-widest tw-text-gray-500 tw-mb-3">Benchmarking Guide</h3>
-    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-4">
-      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
-        <strong class="tw-block tw-text-sm">MMLU</strong>
-        <span class="tw-text-xs tw-text-gray-600">Massive Multitask Language Understanding — tests broad academic &amp; professional knowledge across 57 subjects from STEM to humanities.</span>
-      </div>
-      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
-        <strong class="tw-block tw-text-sm">GPQA</strong>
-        <span class="tw-text-xs tw-text-gray-600">Graduate-level Google-Proof Q&amp;A — expert-level science questions that cannot be easily answered via search. Measures deep reasoning.</span>
-      </div>
-      <div class="tw-border-l-4 tw-border-red-500 tw-pl-3">
-        <strong class="tw-block tw-text-sm">HumanEval</strong>
-        <span class="tw-text-xs tw-text-gray-600">OpenAI code generation benchmark — measures the ability to write correct Python functions from docstrings. Pass@1 metric.</span>
-      </div>
-    </div>
-  </div>
-
-  <h3 class="story-headline">Latest Releases — Update Feed</h3>
+  <h3 class="story-headline">Models Releasing Soon</h3>
+  <ul class="benchmark-defs"><li><strong>GPT-5:</strong> Expected to expand multimodal planning and stronger tool-use reliability.</li><li><strong>Claude 4:</strong> Likely focused on long-context consistency and enterprise governance controls.</li><li><strong>Gemini 2.5:</strong> Expected to improve reasoning depth and native video/document workflows.</li><li><strong>Llama 4:</strong> Open-weight trajectory with stronger coding and agentic orchestration benchmarks.</li></ul>
+  <h3 class="story-headline">Latest Model Updates & Comparisons</h3>
+  <ul class="benchmark-defs"><li><strong>Reasoning:</strong> Frontier closed models still lead in chain-of-thought stability under complex prompts.</li><li><strong>Coding:</strong> Claude and GPT families remain strongest on code quality; open models continue to narrow the gap.</li><li><strong>Cost/Speed:</strong> Open-weight models often win on cost control and deployment flexibility for internal workloads.</li></ul>
   <ul class="benchmark-defs">
-    <li><strong>GPT-5:</strong> Expected to expand multimodal planning and stronger tool-use reliability. Compared to GPT-4o, expected to improve GPQA by 10+ points.</li>
-    <li><strong>Claude 4 (Opus):</strong> Likely focused on long-context consistency and enterprise governance controls. Industry leaders see it challenging GPT-4o's coding edge.</li>
-    <li><strong>Gemini 2.0:</strong> Expected to improve reasoning depth and native video/document workflows, building on Gemini 1.5 Pro's long-context lead.</li>
-    <li><strong>Llama 4:</strong> Open-weight trajectory with stronger coding and agentic orchestration benchmarks — could close the gap with closed-source leaders.</li>
-  </ul>
-  <h3 class="story-headline">Latest Model Updates &amp; Comparisons</h3>
-  <ul class="benchmark-defs">
-    <li><strong>Reasoning:</strong> Frontier closed models still lead in chain-of-thought stability under complex prompts.</li>
-    <li><strong>Coding:</strong> Claude and GPT families remain strongest on code quality; open models continue to narrow the gap.</li>
-    <li><strong>Cost/Speed:</strong> Open-weight models often win on cost control and deployment flexibility for internal workloads.</li>
-  </ul>
-  <ul class="benchmark-defs">
-    <li><strong>Arena Elo:</strong> preference-style ranking from head-to-head model comparisons on <a href="https://arena.ai/" target="_blank" rel="noopener noreferrer">arena.ai</a>.</li>
-    <li><strong>MMLU:</strong> broad academic and professional knowledge test across 57 subjects.</li>
-    <li><strong>GPQA:</strong> graduate-level science questions requiring deep reasoning, not solvable by search.</li>
+    <li><strong>Arena Elo:</strong> preference-style ranking from head-to-head model comparisons.</li>
+    <li><strong>MMLU:</strong> broad academic and professional knowledge test across many subjects.</li>
+    <li><strong>GSM8K:</strong> grade-school math reasoning benchmark.</li>
     <li><strong>HumanEval:</strong> code generation pass-rate benchmark for programming tasks.</li>
   </ul>
 </section>
@@ -1686,216 +1656,182 @@ img { max-width: 100%; }
   <p class="story-dek">Active AI investor with published analysis on AI application spending and enterprise demand trends.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Marc Andreessen, Ben Horowitz</p></aside>
   <ul class="key-details"><li><a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" target="_blank">AI Application Spending Report</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" target="_blank" rel="noopener noreferrer" class="cite-sup">[25]</a></div>
+  <div class="story-sources">Sources: <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" target="_blank" rel="noopener noreferrer" class="cite-sup">[31]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">ARCH Venture Partners</h3>
   <p class="story-dek">Deep-tech focused investor with new-fund momentum and long-running science commercialization track record.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Robert Nelsen, Keith Crandell, Kristina Burow, Mark McDonnell, Steve Gillis, Paul Berns</p></aside>
   <ul class="key-details"><li><a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" target="_blank">Fund XIII Announcement</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" target="_blank" rel="noopener noreferrer" class="cite-sup">[26]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" target="_blank" rel="noopener noreferrer" class="cite-sup">[32]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">General Catalyst</h3>
   <p class="story-dek">Backs AI infrastructure and application-layer companies, including Together AI, with a clear AI adoption thesis.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Ahmed Alveed</p></aside>
   <ul class="key-details"><li><a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" target="_blank">Investment in Together AI</a></li><li><a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" target="_blank">AI Adoption in Startups</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[27]</a>, <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" target="_blank" rel="noopener noreferrer" class="cite-sup">[28]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[33]</a>, <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" target="_blank" rel="noopener noreferrer" class="cite-sup">[34]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">Bessemer Venture Partners</h3>
   <p class="story-dek">Publishes extensive AI market frameworks and vertical AI analysis used by operators and founders.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Kent Bennett, Byron Deeter, Mike Droesch, Maha Malik, Sam Bondy, Brian Feinstein, Sameer Dholakia, Caty Rea, Alex Yuditski, Aia Sarycheva</p></aside>
   <ul class="key-details"><li><a href="https://www.bvp.com/ai" target="_blank">BVP AI Hub</a></li><li><a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" target="_blank">Future of Vertical AI</a></li><li><a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" target="_blank">Everything Everywhere All AI (2024)</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.bvp.com/ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[29]</a>, <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" target="_blank" rel="noopener noreferrer" class="cite-sup">[30]</a>, <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" target="_blank" rel="noopener noreferrer" class="cite-sup">[31]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.bvp.com/ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[35]</a>, <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" target="_blank" rel="noopener noreferrer" class="cite-sup">[36]</a>, <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" target="_blank" rel="noopener noreferrer" class="cite-sup">[37]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">New Enterprise Associates (NEA)</h3>
   <p class="story-dek">Large multi-stage platform with notable AI bets including Synthesia and Perplexity.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Scott Sandell, Tony Florence, Mohamad Makhzoumi, Ali Behbahani, Paul Walker, Rick Yang</p></aside>
   <ul class="key-details"><li><a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" target="_blank">Data + AI Revolution (Foresight)</a></li><li><a href="https://www.nea.com/blog/synthesia-ai-video-creation" target="_blank">Investment in Synthesia</a></li><li><a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" target="_blank">Investment in Perplexity</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" target="_blank" rel="noopener noreferrer" class="cite-sup">[32]</a>, <a href="https://www.nea.com/blog/synthesia-ai-video-creation" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/synthesia-ai-video-creation" target="_blank" rel="noopener noreferrer" class="cite-sup">[33]</a>, <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" target="_blank" rel="noopener noreferrer" class="cite-sup">[34]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" target="_blank" rel="noopener noreferrer" class="cite-sup">[38]</a>, <a href="https://www.nea.com/blog/synthesia-ai-video-creation" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/synthesia-ai-video-creation" target="_blank" rel="noopener noreferrer" class="cite-sup">[39]</a>, <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" target="_blank" rel="noopener noreferrer" class="cite-sup">[40]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">Flagship Pioneering</h3>
   <p class="story-dek">Strong AI-in-health and AI-enabled innovation positioning across scientific and consumer applications.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Daniel Acker, Raffi Afeyan, Theonie Anastassiadis, Yiqun Bai, Simon Brunner</p></aside>
   <ul class="key-details"><li><a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" target="_blank">AI and Medicine Explainer</a></li><li><a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" target="_blank">Extuitive AI Launch</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" target="_blank" rel="noopener noreferrer" class="cite-sup">[35]</a>, <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[36]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" target="_blank" rel="noopener noreferrer" class="cite-sup">[41]</a>, <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" target="_blank" rel="noopener noreferrer" class="cite-sup">[42]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">B Capital</h3>
   <p class="story-dek">Highlights AI-driven investment momentum and global operating partnerships across its portfolio.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Nick Whitehead, Patrick Harmon, Priya Banerjee</p></aside>
   <ul class="key-details"><li><a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" target="_blank">AI-Driven Investment Momentum (2025 AGM)</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" target="_blank" rel="noopener noreferrer" class="cite-sup">[37]</a></div>
+  <div class="story-sources">Sources: <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" target="_blank" rel="noopener noreferrer" class="cite-sup">[43]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">HSG</h3>
   <p class="story-dek">Appears in your research as an AI-active investor with interest in culturally focused AI experiences.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Not specified in this research note.</p></aside>
   <ul class="key-details"><li><a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" target="_blank">HSG Startups and AI</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" target="_blank" rel="noopener noreferrer" class="cite-sup">[38]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" target="_blank" rel="noopener noreferrer" class="cite-sup">[44]</a></div>
 </article>
 <article class="story-card">
   <h3 class="story-headline">Kleiner Perkins</h3>
   <p class="story-dek">Notable AI investor with positions in Together AI and AI healthcare startup Viz.ai.</p>
   <aside class="why-it-matters"><h4>Key People</h4><p>Not specified in this research note.</p></aside>
   <ul class="key-details"><li><a href="https://www.kleinerperkins.com/perspectives/together-ai/" target="_blank">Together AI Perspective</a></li><li><a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" target="_blank">Viz.ai Investment</a></li></ul>
-  <div class="story-sources">Sources: <a href="https://www.kleinerperkins.com/perspectives/together-ai/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.kleinerperkins.com/perspectives/together-ai/" target="_blank" rel="noopener noreferrer" class="cite-sup">[39]</a>, <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" target="_blank" rel="noopener noreferrer" class="cite-sup">[40]</a></div>
+  <div class="story-sources">Sources: <a href="https://www.kleinerperkins.com/perspectives/together-ai/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.kleinerperkins.com/perspectives/together-ai/" target="_blank" rel="noopener noreferrer" class="cite-sup">[45]</a>, <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" target="_blank" rel="noopener noreferrer" class="cite-sup">[46]</a></div>
 </article>
 </section>
-    <hr class="section-rule">
-<section id="events" data-page-group="events">
-  <span class="section-label">Upcoming Events</span>
-  <p class="section-transition">Turning now to the week ahead. New York City's tech scene is alive with opportunities to connect, learn, and grow. These are the events where deals get done, partnerships form, and careers change direction. Here's where you need to be.</p>
-<article class="event-card" data-open-article="news-1" data-event-month-key="unscheduled" data-event-month-label="Unscheduled" data-event-date-key="mar-9" data-event-date-label="Mar 9" data-event-date-iso="2026-03-09">
-  <h3 class="event-headline"><a href="articles/news-1-workshop-pitch-positioning-with-ai-mon-mar-9-5-30-pm-edt-by-ai-integration-and-empowerment-1-attendee.html" data-open-article="news-1">Workshop: Pitch &amp; Positioning with AI Mon, Mar 9 · 5:30 PM EDT by AI Integration and Empowerment 1 attendee</a></h3>
-  <p class="event-dek">Curated from Meetup event search.</p>
-  <div class="event-meta">
-    <span class="event-meta-item"><span class="event-meta-icon">📅</span> Mar 9</span>
-    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Meetup listing</span>
-    <span class="event-meta-item"><span class="event-meta-icon">💵</span> See listing</span>
-  </div>
-  <aside class="why-it-matters">
-  <h4>Why You Should Be There</h4>
-  <p>Investors will be in the room. Not on a panel — actually walking around, having conversations, getting pitched in real time. If your company is ready for funding, this is one of the most efficient ways to get in front of VCs who are actively writing checks.</p>
-</aside>
-  <p><a class="story-open-link" href="articles/news-1-workshop-pitch-positioning-with-ai-mon-mar-9-5-30-pm-edt-by-ai-integration-and-empowerment-1-attendee.html" data-open-article="news-1">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer" class="cite-sup">[10]</a></div>
-  <a href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="event-btn" target="_blank">Register →</a>
-</article><article class="event-card" data-open-article="news-2" data-event-month-key="unscheduled" data-event-month-label="Unscheduled" data-event-date-key="mar-13" data-event-date-label="Mar 13" data-event-date-iso="2026-03-13">
-  <h3 class="event-headline"><a href="articles/news-2-waitlist-the-ai-briefing-by-startup-grind-fri-mar-13-10-00-am-edt-by-startup-grind-nyc-4-7-2-attendees.html" data-open-article="news-2">Waitlist The AI Briefing by Startup Grind Fri, Mar 13 · 10:00 AM EDT by Startup Grind NYC 4.7 2 attendees</a></h3>
-  <p class="event-dek">Curated from Meetup event search.</p>
-  <div class="event-meta">
-    <span class="event-meta-item"><span class="event-meta-icon">📅</span> Mar 13</span>
-    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Meetup listing</span>
-    <span class="event-meta-item"><span class="event-meta-icon">💵</span> See listing</span>
-  </div>
-  <aside class="why-it-matters">
-  <h4>Why You Should Be There</h4>
-  <p>This is where real connections happen. Last time, attendees walked away with new co-founders, first customers, and job offers. The founders, builders, investors in the room are actively looking to build — and you should be there when they do.</p>
-</aside>
-  <p><a class="story-open-link" href="articles/news-2-waitlist-the-ai-briefing-by-startup-grind-fri-mar-13-10-00-am-edt-by-startup-grind-nyc-4-7-2-attendees.html" data-open-article="news-2">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer" class="cite-sup">[11]</a></div>
-  <a href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="event-btn" target="_blank">Register →</a>
-</article><article class="event-card" data-open-article="news-3" data-event-month-key="unscheduled" data-event-month-label="Unscheduled" data-event-date-key="mar-10" data-event-date-label="Mar 10" data-event-date-iso="2026-03-10">
-  <h3 class="event-headline"><a href="articles/news-3-startups-investors-and-professionals-pitch-and-networking-event-nyc-tue-mar-10-7-00-pm-edt-by-startup-pitch-networking-nyc-4-5-6-attendees.html" data-open-article="news-3">Startups, Investors and Professionals Pitch and Networking Event NYC Tue, Mar 10 · 7:00 PM EDT by Startup Pitch &amp; Networking – NYC 4.5 6 attendees</a></h3>
-  <p class="event-dek">Curated from Meetup event search.</p>
-  <div class="event-meta">
-    <span class="event-meta-item"><span class="event-meta-icon">📅</span> Mar 10</span>
-    <span class="event-meta-item"><span class="event-meta-icon">📍</span> Meetup listing</span>
-    <span class="event-meta-item"><span class="event-meta-icon">💵</span> See listing</span>
-  </div>
-  <aside class="why-it-matters">
-  <h4>Why You Should Be There</h4>
-  <p>Think about where you want to be six months from now. The path there probably involves meeting someone who can open that door. This event puts you in a room with exactly those people — the founders, builders, investors who are building, investing, and connecting the dots across the ecosystem.</p>
-</aside>
-  <p><a class="story-open-link" href="articles/news-3-startups-investors-and-professionals-pitch-and-networking-event-nyc-tue-mar-10-7-00-pm-edt-by-startup-pitch-networking-nyc-4-5-6-attendees.html" data-open-article="news-3">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer">Source</a> <a href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" target="_blank" rel="noopener noreferrer" class="cite-sup">[13]</a></div>
-  <a href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="event-btn" target="_blank">Register →</a>
-</article>
-</section>
+    
     <hr class="section-rule">
 <section id="accelerators" data-page-group="people">
   <span class="section-label">Accelerator Watch</span>
   <p class="section-transition">And finally tonight, for those of you ready to take your startup to the next level — these are the programs that could change everything. The right accelerator at the right time can be the difference between struggling alone and building with momentum.</p>
 <article class="accel-card" data-open-article="opinion-1">
   <h3 class="accel-headline"><a href="articles/opinion-1-techstars-nyc.html" data-open-article="opinion-1">TechStars NYC</a></h3>
-  <div class="accel-focus">General Tech</div>
-  <p class="story-lede">Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.</p>
+  <div class="accel-focus">General tech, all sectors</div>
+  <p class="story-lede">Here's why TechStars NYC is on every founder's radar in New York, NY. They're laser-focused on general tech, all sectors, working with founders who are tackling some of the biggest challenges in this space. 13-week mentorship-driven program. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in general tech, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in general tech, all sectors, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
 <li>Location: New York, NY</li>
-<li>Focus: General Tech</li>
-<li>World's most active pre-seed investor</li>
+<li>Focus: General tech, all sectors</li>
+<li>$120K for 6% equity</li>
 <li>Apply: <a href="https://techstars.com/accelerators/nyc" target="_blank">https://techstars.com/accelerators/nyc</a></li>
 </ul>
   <p><a class="story-open-link" href="articles/opinion-1-techstars-nyc.html" data-open-article="opinion-1">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/techstars-nyc" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/techstars-nyc" target="_blank" rel="noopener noreferrer" class="cite-sup">[19]</a></div>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/techstars-nyc" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/techstars-nyc" target="_blank" rel="noopener noreferrer" class="cite-sup">[24]</a></div>
 </article><article class="accel-card" data-open-article="opinion-2">
-  <h3 class="accel-headline"><a href="articles/opinion-2-era-entrepreneur-roundtable-accelerator.html" data-open-article="opinion-2">ERA (Entrepreneur Roundtable Accelerator)</a></h3>
-  <div class="accel-focus">B2B, SaaS, Marketplaces</div>
-  <p class="story-lede">This is the moment to learn about ERA (Entrepreneur Roundtable Accelerator) in New York, NY. They're laser-focused on b2b, saas, marketplaces, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.</p>
+  <h3 class="accel-headline"><a href="articles/opinion-2-entrepreneur-roundtable-accelerator-era.html" data-open-article="opinion-2">Entrepreneur Roundtable Accelerator (ERA)</a></h3>
+  <div class="accel-focus">B2B SaaS, Marketplaces, Enterprise</div>
+  <p class="story-lede">This is the moment to learn about Entrepreneur Roundtable Accelerator (ERA) in New York, NY. They're laser-focused on b2b saas, marketplaces, enterprise, working with founders who are tackling some of the biggest challenges in this space. NYC's largest accelerator. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in b2b, saas, marketplaces, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in b2b saas, marketplaces, enterprise, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
 <li>Location: New York, NY</li>
-<li>Focus: B2B, SaaS, Marketplaces</li>
-<li>$100K investment for 6% equity</li>
-<li>Apply: <a href="https://era.co" target="_blank">https://era.co</a></li>
+<li>Focus: B2B SaaS, Marketplaces, Enterprise</li>
+<li>$100K for 6% equity</li>
+<li>Apply: <a href="https://era.co/apply" target="_blank">https://era.co/apply</a></li>
 </ul>
-  <p><a class="story-open-link" href="articles/opinion-2-era-entrepreneur-roundtable-accelerator.html" data-open-article="opinion-2">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/era" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/era" target="_blank" rel="noopener noreferrer" class="cite-sup">[20]</a></div>
+  <p><a class="story-open-link" href="articles/opinion-2-entrepreneur-roundtable-accelerator-era.html" data-open-article="opinion-2">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/era" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/era" target="_blank" rel="noopener noreferrer" class="cite-sup">[25]</a></div>
 </article><article class="accel-card" data-open-article="opinion-3">
   <h3 class="accel-headline"><a href="articles/opinion-3-entrepreneur-first-nyc.html" data-open-article="opinion-3">Entrepreneur First NYC</a></h3>
-  <div class="accel-focus">Deep tech, AI</div>
-  <p class="story-lede">This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.</p>
+  <div class="accel-focus">Deep tech, AI/ML, Hard tech</div>
+  <p class="story-lede">This is the moment to learn about Entrepreneur First NYC in New York, NY. They're laser-focused on deep tech, ai/ml, hard tech, working with founders who are tackling some of the biggest challenges in this space. Build your company and team from scratch. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in deep tech, ai, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in deep tech, ai/ml, hard tech, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
 <li>Location: New York, NY</li>
-<li>Focus: Deep tech, AI</li>
-<li>Pre-team accelerator for exceptional individuals building deep tech companies.</li>
-<li>Apply: <a href="https://joinef.com" target="_blank">https://joinef.com</a></li>
+<li>Focus: Deep tech, AI/ML, Hard tech</li>
+<li>Pre-team accelerator for exceptional individuals</li>
+<li>Apply: <a href="https://joinef.com/apply" target="_blank">https://joinef.com/apply</a></li>
 </ul>
   <p><a class="story-open-link" href="articles/opinion-3-entrepreneur-first-nyc.html" data-open-article="opinion-3">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/ef-nyc" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/ef-nyc" target="_blank" rel="noopener noreferrer" class="cite-sup">[21]</a></div>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/ef-nyc" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/ef-nyc" target="_blank" rel="noopener noreferrer" class="cite-sup">[26]</a></div>
 </article><article class="accel-card" data-open-article="opinion-4">
   <h3 class="accel-headline"><a href="articles/opinion-4-columbia-startup-lab.html" data-open-article="opinion-4">Columbia Startup Lab</a></h3>
-  <div class="accel-focus">Columbia-affiliated founders</div>
-  <p class="story-lede">Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.</p>
+  <div class="accel-focus">Columbia-affiliated founders (students, alumni, faculty)</div>
+  <p class="story-lede">Columbia Startup Lab is building the next generation of startups in New York, NY. They're laser-focused on columbia-affiliated founders (students, alumni, faculty), working with founders who are tackling some of the biggest challenges in this space. For Columbia community members building startups. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in columbia-affiliated founders, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in columbia-affiliated founders (students, alumni, faculty), this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
 <li>Location: New York, NY</li>
-<li>Focus: Columbia-affiliated founders</li>
-<li>Free office space and mentorship for Columbia founders.</li>
-<li>Apply: <a href="https://startuplab.columbia.edu" target="_blank">https://startuplab.columbia.edu</a></li>
+<li>Focus: Columbia-affiliated founders (students, alumni, faculty)</li>
+<li>Free co-working space, mentorship, and $0-25K grants</li>
+<li>Apply: <a href="https://startuplab.columbia.edu/apply" target="_blank">https://startuplab.columbia.edu/apply</a></li>
 </ul>
   <p><a class="story-open-link" href="articles/opinion-4-columbia-startup-lab.html" data-open-article="opinion-4">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/columbia" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/columbia" target="_blank" rel="noopener noreferrer" class="cite-sup">[22]</a></div>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/columbia-lab" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/columbia-lab" target="_blank" rel="noopener noreferrer" class="cite-sup">[27]</a></div>
 </article><article class="accel-card" data-open-article="opinion-5">
   <h3 class="accel-headline"><a href="articles/opinion-5-blueprint-health.html" data-open-article="opinion-5">Blueprint Health</a></h3>
-  <div class="accel-focus">Healthcare IT</div>
-  <p class="story-lede">Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, working with founders who are tackling some of the biggest challenges in this space. And here's the opportunity: applications are open right now.</p>
+  <div class="accel-focus">Healthcare IT, Digital Health</div>
+  <p class="story-lede">Here's why Blueprint Health is on every founder's radar in New York, NY. They're laser-focused on healthcare it, digital health, working with founders who are tackling some of the biggest challenges in this space. 3-month program focused exclusively on healthcare technology. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in healthcare it, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in healthcare it, digital health, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
 <li>Location: New York, NY</li>
-<li>Focus: Healthcare IT</li>
-<li>Healthcare-focused accelerator with $20K investment and extensive mentor network.</li>
-<li>Apply: <a href="https://blueprint.health" target="_blank">https://blueprint.health</a></li>
+<li>Focus: Healthcare IT, Digital Health</li>
+<li>$20K + $100K convertible note for 6% equity</li>
+<li>Apply: <a href="https://blueprint.health/apply" target="_blank">https://blueprint.health/apply</a></li>
 </ul>
   <p><a class="story-open-link" href="articles/opinion-5-blueprint-health.html" data-open-article="opinion-5">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/blueprint" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/blueprint" target="_blank" rel="noopener noreferrer" class="cite-sup">[23]</a></div>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/blueprint" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/blueprint" target="_blank" rel="noopener noreferrer" class="cite-sup">[28]</a></div>
 </article><article class="accel-card" data-open-article="opinion-6">
-  <h3 class="accel-headline"><a href="articles/opinion-6-y-combinator.html" data-open-article="opinion-6">Y Combinator</a></h3>
-  <div class="accel-focus">All sectors</div>
-  <p class="story-lede">Here's why Y Combinator is on every founder's radar in Mountain View, CA (accepts NYC startups). They're laser-focused on all sectors, working with founders who are tackling some of the biggest challenges in this space. 3-month program ending in Demo Day. And here's the opportunity: applications are open right now.</p>
+  <h3 class="accel-headline"><a href="articles/opinion-6-urban-us.html" data-open-article="opinion-6">Urban.us</a></h3>
+  <div class="accel-focus">Climate tech, Smart cities, Urban innovation</div>
+  <p class="story-lede">Urban.us is building the next generation of startups in Brooklyn, NY. They're laser-focused on climate tech, smart cities, urban innovation, working with founders who are tackling some of the biggest challenges in this space. Focus on startups solving urban challenges like housing, transportation, and sustainability. And here's the opportunity: applications are open right now.</p>
   <aside class="why-it-matters">
   <h4>Here’s What This Means</h4>
-  <p>If you're building in all sectors, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+  <p>If you're building in climate tech, smart cities, urban innovation, this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
 </aside>
   <ul class="key-details">
-<li>Location: Mountain View, CA (accepts NYC startups)</li>
-<li>Focus: All sectors</li>
-<li>$500K for 7% equity</li>
-<li>Apply: <a href="https://ycombinator.com/apply" target="_blank">https://ycombinator.com/apply</a></li>
+<li>Location: Brooklyn, NY</li>
+<li>Focus: Climate tech, Smart cities, Urban innovation</li>
+<li>$100K-250K investment</li>
+<li>Apply: <a href="https://urban.us/accelerator" target="_blank">https://urban.us/accelerator</a></li>
 </ul>
-  <p><a class="story-open-link" href="articles/opinion-6-y-combinator.html" data-open-article="opinion-6">Read full article →</a></p>
-  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/yc" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/yc" target="_blank" rel="noopener noreferrer" class="cite-sup">[24]</a></div>
+  <p><a class="story-open-link" href="articles/opinion-6-urban-us.html" data-open-article="opinion-6">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/urban-us" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/urban-us" target="_blank" rel="noopener noreferrer" class="cite-sup">[29]</a></div>
+</article><article class="accel-card" data-open-article="opinion-7">
+  <h3 class="accel-headline"><a href="articles/opinion-7-nyu-tandon-future-labs.html" data-open-article="opinion-7">NYU Tandon Future Labs</a></h3>
+  <div class="accel-focus">Tech startups (students, alumni, faculty welcome)</div>
+  <p class="story-lede">This is the moment to learn about NYU Tandon Future Labs in Brooklyn, NY. They're laser-focused on tech startups (students, alumni, faculty welcome), working with founders who are tackling some of the biggest challenges in this space. Access to NYU network, mentors, and funding opportunities. And here's the opportunity: applications are open right now.</p>
+  <aside class="why-it-matters">
+  <h4>Here’s What This Means</h4>
+  <p>If you're building in tech startups (students, alumni, faculty welcome), this is your chance to get into a proven program. Applications are open, and these cohorts fill up fast.</p>
+</aside>
+  <ul class="key-details">
+<li>Location: Brooklyn, NY</li>
+<li>Focus: Tech startups (students, alumni, faculty welcome)</li>
+<li>Free incubator space in Brooklyn</li>
+<li>Apply: <a href="https://futurelabs.nyc/apply" target="_blank">https://futurelabs.nyc/apply</a></li>
+</ul>
+  <p><a class="story-open-link" href="articles/opinion-7-nyu-tandon-future-labs.html" data-open-article="opinion-7">Read full article →</a></p>
+  <div class="story-sources">Sources: <a href="https://openvc.app/accelerators/nyu-tandon" target="_blank" rel="noopener noreferrer">OpenVC</a> <a href="https://openvc.app/accelerators/nyu-tandon" target="_blank" rel="noopener noreferrer" class="cite-sup">[30]</a></div>
 </article>
 </section>
 
@@ -1928,332 +1864,336 @@ img { max-width: 100%; }
   <span class="bib-num">1</span>
   <div>
     <span class="bib-source">TechCrunch</span>
-    <a href="https://techcrunch.com/2026/02/03/medicare-series-b-20m" class="bib-link" target="_blank">https://techcrunch.com/2026/02/03/medicare-series-b-20m</a>
+    <a href="https://techcrunch.com/2026/02/01/climateos-series-a" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/02/01/climateos-series-a</a>
   </div>
 </li>
 <li class="bib-item" id="src-2">
   <span class="bib-num">2</span>
   <div>
-    <span class="bib-source">TechCrunch</span>
-    <a href="https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/02/05/acme-ai-raises-15m-series-a</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/climateos-funding" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/02/climateos-funding</a>
   </div>
 </li>
 <li class="bib-item" id="src-3">
   <span class="bib-num">3</span>
   <div>
-    <span class="bib-source">AlleyWatch</span>
-    <a href="https://alleywatch.com/2026/02/acme-ai-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/02/acme-ai-funding</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/26/datapipe-series-a" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/01/26/datapipe-series-a</a>
   </div>
 </li>
 <li class="bib-item" id="src-4">
   <span class="bib-num">4</span>
   <div>
-    <span class="bib-source">TechCrunch</span>
-    <a href="https://techcrunch.com/2026/02/01/cybershield-series-a" class="bib-link" target="_blank">https://techcrunch.com/2026/02/01/cybershield-series-a</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/datapipe-funding" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/01/datapipe-funding</a>
   </div>
 </li>
 <li class="bib-item" id="src-5">
   <span class="bib-num">5</span>
   <div>
-    <span class="bib-source">AlleyWatch</span>
-    <a href="https://alleywatch.com/2026/02/04/payflow-seed-funding" class="bib-link" target="_blank">https://alleywatch.com/2026/02/04/payflow-seed-funding</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/02/quantumhealth-series-b" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/02/02/quantumhealth-series-b</a>
   </div>
 </li>
 <li class="bib-item" id="src-6">
   <span class="bib-num">6</span>
   <div>
     <span class="bib-source">TechCrunch</span>
-    <a href="https://techcrunch.com/2026/02/02/learnnow-seed-round" class="bib-link" target="_blank">https://techcrunch.com/2026/02/02/learnnow-seed-round</a>
+    <a href="https://techcrunch.com/2026/01/31/securestack-series-a" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/01/31/securestack-series-a</a>
   </div>
 </li>
 <li class="bib-item" id="src-7">
   <span class="bib-num">7</span>
   <div>
-    <span class="bib-source">Gary's Guide</span>
-    <a href="https://garysguide.com/events/vc-office-hours" class="bib-link" target="_blank">https://garysguide.com/events/vc-office-hours</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/29/retailos-series-a" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/01/29/retailos-series-a</a>
   </div>
 </li>
 <li class="bib-item" id="src-8">
   <span class="bib-num">8</span>
   <div>
-    <span class="bib-source">Gary's Guide</span>
-    <a href="https://garysguide.com/events/founders-meetup-feb" class="bib-link" target="_blank">https://garysguide.com/events/founders-meetup-feb</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/financeflow-series-a" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/02/financeflow-series-a</a>
   </div>
 </li>
 <li class="bib-item" id="src-9">
   <span class="bib-num">9</span>
   <div>
-    <span class="bib-source">Gary's Guide</span>
-    <a href="https://garysguide.com/events/fintech-happy-hour" class="bib-link" target="_blank">https://garysguide.com/events/fintech-happy-hour</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/03/financeflow-raises-8m" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/02/03/financeflow-raises-8m</a>
   </div>
 </li>
 <li class="bib-item" id="src-10">
   <span class="bib-num">10</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="bib-link" target="_blank">https://www.meetup.com/ai-integration-and-application/events/313499744/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/workflowai-seed" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/01/workflowai-seed</a>
   </div>
 </li>
 <li class="bib-item" id="src-11">
   <span class="bib-num">11</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="bib-link" target="_blank">https://www.meetup.com/startup-grind-nyc/events/313357188/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/28/workflowai-funding" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/01/28/workflowai-funding</a>
   </div>
 </li>
 <li class="bib-item" id="src-12">
   <span class="bib-num">12</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.meetup.com/startup-grind-nyc/events/313086096/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="bib-link" target="_blank">https://www.meetup.com/startup-grind-nyc/events/313086096/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/01/foodloop-seed-funding" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/01/foodloop-seed-funding</a>
   </div>
 </li>
 <li class="bib-item" id="src-13">
   <span class="bib-num">13</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="bib-link" target="_blank">https://www.meetup.com/startup-pitch-networking-nyc/events/313171933/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/01/27/neurolearn-seed" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/01/27/neurolearn-seed</a>
   </div>
 </li>
 <li class="bib-item" id="src-14">
   <span class="bib-num">14</span>
   <div>
-    <span class="bib-source">Gary's Guide</span>
-    <a href="https://www.garysguide.com/events/4lkod26/Startups-Decoded-Live" class="bib-link" target="_blank">https://www.garysguide.com/events/4lkod26/Startups-Decoded-Live</a>
+    <span class="bib-source">TechCrunch</span>
+    <a href="https://techcrunch.com/2026/02/04/campusai-seed-round" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from TechCrunch: citation extracted from the source URL used in this issue.">https://techcrunch.com/2026/02/04/campusai-seed-round</a>
   </div>
 </li>
 <li class="bib-item" id="src-15">
   <span class="bib-num">15</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.meetup.com/newyork-success-startup-entrepreneurs/events/313492314/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all" class="bib-link" target="_blank">https://www.meetup.com/newyork-success-startup-entrepreneurs/events/313492314/?recId=235d667f-6ea0-4a04-a5a1-4f979f7106d7&recSource=event-search&searchId=c8f5a3cc-4a69-4376-acdc-ace0b7af0e41&eventOrigin=find_page%24all</a>
+    <span class="bib-source">AlleyWatch</span>
+    <a href="https://alleywatch.com/2026/02/campusai-funding" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from AlleyWatch: citation extracted from the source URL used in this issue.">https://alleywatch.com/2026/02/campusai-funding</a>
   </div>
 </li>
 <li class="bib-item" id="src-16">
   <span class="bib-num">16</span>
   <div>
     <span class="bib-source">Gary's Guide</span>
-    <a href="https://www.garysguide.com/events/b6u5hhb/Rebooting-Tech-Culture" class="bib-link" target="_blank">https://www.garysguide.com/events/b6u5hhb/Rebooting-Tech-Culture</a>
+    <a href="https://garysguide.com/events/student-founder-hours" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/student-founder-hours</a>
   </div>
 </li>
 <li class="bib-item" id="src-17">
   <span class="bib-num">17</span>
   <div>
     <span class="bib-source">Gary's Guide</span>
-    <a href="https://www.garysguide.com/events/q1k2pok/GenAI-Conference-Gala-Dinner" class="bib-link" target="_blank">https://www.garysguide.com/events/q1k2pok/GenAI-Conference-Gala-Dinner</a>
+    <a href="https://garysguide.com/events/ny-tech-meetup-feb" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/ny-tech-meetup-feb</a>
   </div>
 </li>
 <li class="bib-item" id="src-18">
   <span class="bib-num">18</span>
   <div>
     <span class="bib-source">Gary's Guide</span>
-    <a href="https://www.garysguide.com/events/ncb53pg/Element46-Accelerator-Info-Session" class="bib-link" target="_blank">https://www.garysguide.com/events/ncb53pg/Element46-Accelerator-Info-Session</a>
+    <a href="https://garysguide.com/events/climate-pitch-feb" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/climate-pitch-feb</a>
   </div>
 </li>
 <li class="bib-item" id="src-19">
   <span class="bib-num">19</span>
   <div>
-    <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/techstars-nyc" class="bib-link" target="_blank">https://openvc.app/accelerators/techstars-nyc</a>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/fintech-happy-hour-feb" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/fintech-happy-hour-feb</a>
   </div>
 </li>
 <li class="bib-item" id="src-20">
   <span class="bib-num">20</span>
   <div>
-    <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/era" class="bib-link" target="_blank">https://openvc.app/accelerators/era</a>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/women-tech-brunch-feb" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/women-tech-brunch-feb</a>
   </div>
 </li>
 <li class="bib-item" id="src-21">
   <span class="bib-num">21</span>
   <div>
-    <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/ef-nyc" class="bib-link" target="_blank">https://openvc.app/accelerators/ef-nyc</a>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/techstars-demo-day-winter-26" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/techstars-demo-day-winter-26</a>
   </div>
 </li>
 <li class="bib-item" id="src-22">
   <span class="bib-num">22</span>
   <div>
-    <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/columbia" class="bib-link" target="_blank">https://openvc.app/accelerators/columbia</a>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/frc-portfolio-feb" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/frc-portfolio-feb</a>
   </div>
 </li>
 <li class="bib-item" id="src-23">
   <span class="bib-num">23</span>
   <div>
-    <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/blueprint" class="bib-link" target="_blank">https://openvc.app/accelerators/blueprint</a>
+    <span class="bib-source">Gary's Guide</span>
+    <a href="https://garysguide.com/events/ai-summit-2026" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from Gary&#x27;s Guide: citation extracted from the source URL used in this issue.">https://garysguide.com/events/ai-summit-2026</a>
   </div>
 </li>
 <li class="bib-item" id="src-24">
   <span class="bib-num">24</span>
   <div>
     <span class="bib-source">OpenVC</span>
-    <a href="https://openvc.app/accelerators/yc" class="bib-link" target="_blank">https://openvc.app/accelerators/yc</a>
+    <a href="https://openvc.app/accelerators/techstars-nyc" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/techstars-nyc</a>
   </div>
 </li>
 <li class="bib-item" id="src-25">
   <span class="bib-num">25</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" class="bib-link" target="_blank">https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/era" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/era</a>
   </div>
 </li>
 <li class="bib-item" id="src-26">
   <span class="bib-num">26</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" class="bib-link" target="_blank">https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/ef-nyc" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/ef-nyc</a>
   </div>
 </li>
 <li class="bib-item" id="src-27">
   <span class="bib-num">27</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" class="bib-link" target="_blank">https://www.generalcatalyst.com/stories/our-investment-in-together-ai</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/columbia-lab" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/columbia-lab</a>
   </div>
 </li>
 <li class="bib-item" id="src-28">
   <span class="bib-num">28</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" class="bib-link" target="_blank">https://www.generalcatalyst.com/stories/ai-adoption-in-startups</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/blueprint" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/blueprint</a>
   </div>
 </li>
 <li class="bib-item" id="src-29">
   <span class="bib-num">29</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.bvp.com/ai" class="bib-link" target="_blank">https://www.bvp.com/ai</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/urban-us" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/urban-us</a>
   </div>
 </li>
 <li class="bib-item" id="src-30">
   <span class="bib-num">30</span>
   <div>
-    <span class="bib-source">Source</span>
-    <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" class="bib-link" target="_blank">https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical</a>
+    <span class="bib-source">OpenVC</span>
+    <a href="https://openvc.app/accelerators/nyu-tandon" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from OpenVC: citation extracted from the source URL used in this issue.">https://openvc.app/accelerators/nyu-tandon</a>
   </div>
 </li>
 <li class="bib-item" id="src-31">
   <span class="bib-num">31</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" class="bib-link" target="_blank">https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf</a>
+    <a href="https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://a16z.com/the-ai-application-spending-report-where-startup-dollars-really-go/</a>
   </div>
 </li>
 <li class="bib-item" id="src-32">
   <span class="bib-num">32</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" class="bib-link" target="_blank">https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets</a>
+    <a href="https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.archventure.com/arch-venture-partners-announces-new-fund-xiii/</a>
   </div>
 </li>
 <li class="bib-item" id="src-33">
   <span class="bib-num">33</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.nea.com/blog/synthesia-ai-video-creation" class="bib-link" target="_blank">https://www.nea.com/blog/synthesia-ai-video-creation</a>
+    <a href="https://www.generalcatalyst.com/stories/our-investment-in-together-ai" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.generalcatalyst.com/stories/our-investment-in-together-ai</a>
   </div>
 </li>
 <li class="bib-item" id="src-34">
   <span class="bib-num">34</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" class="bib-link" target="_blank">https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search</a>
+    <a href="https://www.generalcatalyst.com/stories/ai-adoption-in-startups" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.generalcatalyst.com/stories/ai-adoption-in-startups</a>
   </div>
 </li>
 <li class="bib-item" id="src-35">
   <span class="bib-num">35</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" class="bib-link" target="_blank">https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine</a>
+    <a href="https://www.bvp.com/ai" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.bvp.com/ai</a>
   </div>
 </li>
 <li class="bib-item" id="src-36">
   <span class="bib-num">36</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" class="bib-link" target="_blank">https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai</a>
+    <a href="https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.bvp.com/atlas/part-i-the-future-of-ai-is-vertical</a>
   </div>
 </li>
 <li class="bib-item" id="src-37">
   <span class="bib-num">37</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" class="bib-link" target="_blank">https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/</a>
+    <a href="https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.bvp.com/assets/uploads/2024/09/AI-Bessemer-Book-Everything-Everywhere-All-AI-2024.pdf</a>
   </div>
 </li>
 <li class="bib-item" id="src-38">
   <span class="bib-num">38</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" class="bib-link" target="_blank">https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/</a>
+    <a href="https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.nea.com/blog/foresight-the-data-ai-revolution-for-the-private-markets</a>
   </div>
 </li>
 <li class="bib-item" id="src-39">
   <span class="bib-num">39</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.kleinerperkins.com/perspectives/together-ai/" class="bib-link" target="_blank">https://www.kleinerperkins.com/perspectives/together-ai/</a>
+    <a href="https://www.nea.com/blog/synthesia-ai-video-creation" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.nea.com/blog/synthesia-ai-video-creation</a>
   </div>
 </li>
 <li class="bib-item" id="src-40">
   <span class="bib-num">40</span>
   <div>
     <span class="bib-source">Source</span>
-    <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" class="bib-link" target="_blank">https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/</a>
+    <a href="https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.78" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.nea.com/blog/our-investment-in-perplexity-ai-answer-engines-and-the-end-of-traditional-search</a>
+  </div>
+</li>
+<li class="bib-item" id="src-41">
+  <span class="bib-num">41</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.75" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.flagshippioneering.com/stories/explainer-artificial-intelligence-and-medicine</a>
+  </div>
+</li>
+<li class="bib-item" id="src-42">
+  <span class="bib-num">42</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.93" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.flagshippioneering.com/news/press-release/flagship-pioneering-unveils-extuitive-to-revolutionize-consumer-product-innovation-and-creative-marketing-using-next-gen-ai</a>
+  </div>
+</li>
+<li class="bib-item" id="src-43">
+  <span class="bib-num">43</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.90" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://b.capital/news-article/b-capital-highlights-ai-driven-investment-momentum-and-global-thought-leadership-at-2025-annual-general-meeting-and-ceo-summit/</a>
+  </div>
+</li>
+<li class="bib-item" id="src-44">
+  <span class="bib-num">44</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.87" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.unisg.ch/en/newsdetail/news/hsg-startups-focus-on-artificial-intelligence/</a>
+  </div>
+</li>
+<li class="bib-item" id="src-45">
+  <span class="bib-num">45</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://www.kleinerperkins.com/perspectives/together-ai/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.84" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.kleinerperkins.com/perspectives/together-ai/</a>
+  </div>
+</li>
+<li class="bib-item" id="src-46">
+  <span class="bib-num">46</span>
+  <div>
+    <span class="bib-source">Source</span>
+    <a href="https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/" class="bib-link source-preview-link" target="_blank" rel="noopener noreferrer" data-confidence="0.81" data-source-quote="Evidence summary from Source: citation extracted from the source URL used in this issue.">https://www.kleinerperkins.com/perspectives/kleiner-perkins-and-gv-invest-21-million-in-ai-health-care-startup-viz-ai/</a>
   </div>
 </li>
 </ul>
 </section>
 </section>
 
-<!-- ── Next Tuesday Preview: Developer Demo ──────────────── -->
-<section id="dev-demo" data-page-group="home" class="tw-my-10 tw-px-4" style="max-width:var(--max-w);margin:0 auto;">
-  <span class="section-label">Next Tuesday Preview</span>
-  <p class="section-transition">Live developer demo — real JSON API response from our data pipeline, refreshed every issue.</p>
-  <div class="tw-bg-gray-900 tw-text-green-400 tw-rounded-lg tw-p-5 tw-overflow-x-auto tw-font-mono tw-text-sm tw-leading-relaxed tw-my-4" style="font-family:'Fira Code','Courier New',monospace;">
-    <div class="tw-text-gray-500 tw-text-xs tw-mb-3">GET /api/v1/newsletter/latest — 200 OK</div>
-<pre style="margin:0;white-space:pre-wrap;word-break:break-word;">{
-  "issue": 10,
-  "title": "Oracle of Ordo Times",
-  "date": "2026-03-03",
-  "sections": {
-    "front_page": {
-      "count": 5,
-      "top_story": "MediCare Secures $20M Series B"
-    },
-    "model_leaderboard": {
-      "top_model": "Claude 3.5 Sonnet",
-      "arena_elo": 1268,
-      "benchmarks": ["MMLU", "GPQA", "HumanEval"]
-    },
-    "events": {
-      "count": 6,
-      "next": "Workshop: Pitch &amp; Positioning with AI — Mar 9"
-    },
-    "accelerators": {
-      "featured": ["TechStars NYC", "ERA", "Entrepreneur First"]
-    }
-  },
-  "api_status": {
-    "pipeline": "healthy",
-    "sources_fetched": 12,
-    "last_refresh": "2026-03-03T11:26:00Z",
-    "latency_ms": 340
-  }
-}</pre>
-  </div>
-  <p class="model-benchmark-note">This endpoint powers the newsletter data layer. Schema documented in <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:0.85em;">newsroom/newsletter_schema.json</code>.</p>
-</section>
-
 <footer class="footer">
     <div class="container">
-        <div class="footer-line">Generated on March 03, 2026 at 11:26 AM</div>
-        <div class="footer-line">Oracle of Ordo Times &bull; Thank you for being here with us tonight</div>
+        <div class="footer-line">Generated on March 27, 2026 at 03:44 PM</div>
+        <div class="footer-line">OrdoAI &bull; Thank you for being here with us tonight</div>
     </div>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var switcher = document.querySelector('[data-calendar-switcher]');
@@ -2506,7 +2446,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     homeImage.innerHTML = '';
                     if (captionNode) {
-                        captionNode.textContent = 'Placeholder graphic: Oracle of Ordo Times archive';
+                        captionNode.textContent = 'Placeholder graphic: OrdoAI archive';
                     }
                 }
             }
@@ -2621,7 +2561,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }) || null;
         }
         if (articleMatch && articleMatch.body) {
-            bodyParts = articleMatch.body.split(/\n\n+/).filter(Boolean);
+            bodyParts = articleMatch.body.split(String.fromCharCode(10, 10)).filter(Boolean);
         }
 
         if (articleMatch && articleMatch.articleUrl) {
@@ -2641,7 +2581,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
 
         var focusImageHtml = '  <div class="story-focus-image"></div>';
-        var focusCaption = '  <p class="story-focus-caption">Placeholder graphic by Oracle of Ordo Times archive</p>';
+        var focusCaption = '  <p class="story-focus-caption">Placeholder graphic by OrdoAI archive</p>';
         if (articleMatch && articleMatch.imageUrl) {
             focusImageHtml = '  <div class="story-focus-image"><img src="' + esc(articleMatch.imageUrl) + '" alt="' + esc(headline) + '" loading="lazy"></div>';
             focusCaption = '  <p class="story-focus-caption">AI-generated illustration based on newsletter content</p>';
@@ -2652,7 +2592,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '  <span class="story-focus-kicker">' + esc(kicker) + '</span>' +
             '  <h2 class="story-focus-headline">' + esc(headline) + '</h2>' +
             (dek ? '  <p class="story-focus-dek">' + esc(dek) + '</p>' : '') +
-            '  <p class="story-focus-meta"><span class="author">Ordo Times Desk</span>' +
+            '  <p class="story-focus-meta"><span class="author">OrdoAI News Desk</span>' +
             (announced ? ' • ' + esc(announced) : '') +
             '</p>' +
             focusImageHtml +
@@ -2695,6 +2635,116 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!cardNode) return;
         if (focusView.contains(cardNode)) return;
         openStory(cardNode);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var mapNode = document.getElementById('funding-heatmap-map');
+    if (!mapNode || typeof L === 'undefined') return;
+
+    var points = Array.isArray(window.NEWSROOM_HEATMAP_DATA)
+        ? window.NEWSROOM_HEATMAP_DATA
+        : [];
+    if (!points.length) {
+        mapNode.innerHTML = '<p class="heatmap-note" style="padding: 14px;">No mappable funding points for this issue.</p>';
+        return;
+    }
+
+    function esc(value) {
+        return (value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function radiusForAmount(amount) {
+        var numeric = Number(amount || 0);
+        if (!isFinite(numeric) || numeric < 0) numeric = 0;
+        var scaled = Math.sqrt(numeric) / 240;
+        return Math.max(5, Math.min(28, scaled + 5));
+    }
+
+    var map = L.map(mapNode, {
+        preferCanvas: true,
+        zoomControl: true,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    var bounds = [];
+    points.forEach(function (point) {
+        if (typeof point.lat !== 'number' || typeof point.lng !== 'number') return;
+        var marker = L.circleMarker([point.lat, point.lng], {
+            radius: radiusForAmount(point.amount_numeric),
+            color: '#8b1008',
+            weight: 1,
+            fillColor: '#e10600',
+            fillOpacity: 0.52,
+        });
+
+        var popupHtml =
+            '<strong>' + esc(point.startup_name) + '</strong><br>' +
+            esc(point.location || 'Unknown location') + '<br>' +
+            'Amount: ' + esc(point.amount || 'Undisclosed');
+        marker.bindPopup(popupHtml);
+        marker.addTo(map);
+        bounds.push([point.lat, point.lng]);
+    });
+
+    if (!bounds.length) {
+        map.setView([40.7128, -74.0060], 9);
+        return;
+    }
+
+    if (bounds.length === 1) {
+        map.setView(bounds[0], 10);
+    } else {
+        map.fitBounds(bounds, { padding: [20, 20] });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var links = document.querySelectorAll('.source-preview-link');
+    if (!links.length) return;
+
+    var tooltip = document.createElement('div');
+    tooltip.className = 'source-preview-tooltip';
+    document.body.appendChild(tooltip);
+
+    function positionTooltip(event) {
+        var offsetX = 14;
+        var offsetY = 14;
+        tooltip.style.left = (event.clientX + offsetX) + 'px';
+        tooltip.style.top = (event.clientY + offsetY) + 'px';
+    }
+
+    function showTooltip(link, event) {
+        var score = link.getAttribute('data-confidence') || 'N/A';
+        var quote = link.getAttribute('data-source-quote') || 'No source quote available.';
+        tooltip.innerHTML =
+            '<div class="source-preview-score">AI Confidence Score: ' + score + '</div>' +
+            '<div>' + quote + '</div>';
+        tooltip.classList.add('is-visible');
+        if (event) {
+            positionTooltip(event);
+        }
+    }
+
+    function hideTooltip() {
+        tooltip.classList.remove('is-visible');
+    }
+
+    links.forEach(function (link) {
+        link.addEventListener('mouseenter', function (event) { showTooltip(link, event); });
+        link.addEventListener('mousemove', positionTooltip);
+        link.addEventListener('mouseleave', hideTooltip);
+        link.addEventListener('focus', function () { showTooltip(link); });
+        link.addEventListener('blur', hideTooltip);
     });
 });
 
